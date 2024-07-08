@@ -1,0 +1,11 @@
+main.container
+  h1 Go Fish
+  p An app for you to play Go Fish
+
+  - if user_signed_in?
+    = button_to "Sign out",
+                  destroy_user_session_path,
+                  method: :delete,
+                  class: "btn btn--dark"
+  - else
+    = link_to "Sign in", new_user_session_path, class: "btn btn--dark"
