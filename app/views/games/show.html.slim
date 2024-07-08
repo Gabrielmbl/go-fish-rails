@@ -2,9 +2,18 @@ main.container.mb-xxxxl
   = link_to sanitize("&larr; Back to games"), games_path
 
   .header
-    h1= @game.id
+    h1= @game.name
 
   .game_info
     p = @game.created_at
 
     p = @game.updated_at
+  
+  .game__actions
+      = button_to "Delete",
+                  game_path(@game),
+                  method: :delete,
+                  class: "btn btn--light"
+      = link_to "Edit",
+                edit_game_path(@game),
+                class: "btn btn--light"

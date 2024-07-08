@@ -1,5 +1,5 @@
-= simple_form_for game do |f|
+= simple_form_for @game do |f|
 
   = f.input :name, input_html: { autofocus: true }, required: true
-  = link_to "Cancel", games_path, class: "btn btn--light"
+  = link_to "Cancel", @path, class: "btn btn--light"
   = f.submit class: "btn btn--secondary"

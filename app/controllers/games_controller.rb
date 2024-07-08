@@ -9,6 +9,12 @@ class GamesController < ApplicationController
 
   def new
     @game = Game.build
+    @path = games_path
+  end
+
+  def edit
+    @game = Game.find(params[:id])
+    @path = game_path(@game)
   end
 
   def create
@@ -24,13 +30,28 @@ class GamesController < ApplicationController
     end
   end
 
+  def update
+    @game = Game.find(params[:id])
+
+    if @game.update(game_params)
+      respond_to do |format|
+        format.html { redirect_to @game, notice: 'Game was successfully updated.' }
+        # TODO: Why does this work when I comment this line out?
+        # format.turbo_stream { flash.now[:notice] = 'Game was successfully updated.' }
+      end
+    else
+      render :edit
+    end
+  end
+
   def destroy
     @game = Game.find(params[:id])
     @game.destroy
 
     respond_to do |format|
       format.html { redirect_to games_path, notice: 'Game was successfully destroyed.' }
-      format.turbo_stream { flash.now[:notice] = 'Game was successfully destroyed.' }
+      # TODO: Same question as before. How is this working when this line is commented out?
+      # format.turbo_stream { flash.now[:notice] = 'Game was successfully destroyed.' }
     end
   end
 
