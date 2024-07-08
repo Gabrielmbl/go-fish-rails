@@ -64,3 +64,5 @@ group :development do
   gem 'rolemodel_rails', github: 'RoleModel/rolemodel_rails'
 end
 
+
+gem "slim", "~> 5.2"
