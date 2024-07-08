@@ -1,0 +1,13 @@
+= turbo_frame_tag game do
+  .game
+    = link_to game,
+              game_path(game),
+              data: { turbo_frame: "_top" }
+    .game__actions
+      = button_to "Delete",
+                  game_path(game),
+                  method: :delete,
+                  class: "btn btn--light"
+      = link_to "Edit",
+                edit_game_path(game),
+                class: "btn btn--light"

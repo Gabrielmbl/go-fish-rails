@@ -1,0 +1,10 @@
+main.container.mb-xxxxl
+  = link_to sanitize("&larr; Back to games"), games_path
+
+  .header
+    h1= @game.id
+
+  .game_info
+    p = @game.created_at
+
+    p = @game.updated_at

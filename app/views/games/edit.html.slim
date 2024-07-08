@@ -1,0 +1,9 @@
+main.container
+  = link_to sanitize("&larr; Back to game"), game_path(@game)
+
+  .header
+    h1 Edit game
+
+  = turbo_frame_tag @game do
+    = render "form", game: @game
+

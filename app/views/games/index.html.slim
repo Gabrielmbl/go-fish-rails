@@ -1,0 +1,12 @@
+.container
+  .header
+    h1 Games
+    = link_to "New game",
+              new_game_path,
+              class: "btn btn--primary",
+              data: { turbo_frame: dom_id(Game.new) }
+
+  = turbo_frame_tag Game.new
+
+  = turbo_frame_tag "games" do
+    = render @games
