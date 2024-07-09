@@ -8,6 +8,7 @@ class GamesController < ApplicationController
   def show
     @game = Game.find(params[:id])
     @users = @game.users
+    @game_display = @game.enough_players?
   end
 
   def new

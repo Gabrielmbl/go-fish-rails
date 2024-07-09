@@ -1,29 +1,33 @@
-main.container.mb-xxxxl
-  = link_to sanitize("&larr; Back to games"), games_path
 
-  .header
-    h1= @game.name
+= link_to sanitize("&larr; Back to games"), games_path
 
-  .game_players 
-    h2 Game players
-    ul
-      - @game.users.each do |user|
-        li= user.email
+.header
+  h1= @game.name
 
-  .game_info
-    p = @game.created_at
+.game_players 
+  h2 Game players
+  ul
+    - @game.users.each do |user|
+      li= user.email
 
-    p = @game.updated_at
-  
-  .game__actions
-      = button_to "Leave",
-                  game_game_user_path(@game, current_user),
-                  method: :delete,
-                  class: "btn btn--light"
-      = button_to "Delete",
-                  game_path(@game),
-                  method: :delete,
-                  class: "btn btn--light"
-      = link_to "Edit",
-                edit_game_path(@game),
+.game_info
+  p = @game.created_at
+
+  p = @game.updated_at
+
+- if @game_display
+  .game_display
+    span Game is ready to play
+
+.game__actions
+    = button_to "Leave",
+                game_game_user_path(@game, current_user),
+                method: :delete,
                 class: "btn btn--light"
+    = button_to "Delete",
+                game_path(@game),
+                method: :delete,
+                class: "btn btn--light"
+    = link_to "Edit",
+              edit_game_path(@game),
+              class: "btn btn--light"

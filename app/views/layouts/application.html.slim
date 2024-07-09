@@ -9,10 +9,9 @@ html
     meta content="width=device-width, initial-scale=1" name="viewport"
   body.app-body
     = render "layouts/navbar"
-    #flash.flash
-      = render "layouts/flash"
-    = turbo_frame_tag 'modal'
-    = turbo_frame_tag 'panel'
-    = render 'confirm'
     .app__content
+      = render "layouts/flash"
+      = turbo_frame_tag 'modal'
+      = turbo_frame_tag 'panel'
+      = render 'confirm'
       = yield

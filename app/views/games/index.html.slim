@@ -1,20 +1,19 @@
-.container
-  .header
-    h1 Games
-    = link_to "New game", new_game_path, class: "btn-primary"
+.header
+  h1 Games
+  = link_to "New game", new_game_path, class: "btn-primary"
 
-  .your-games
-    h2 Your Games
-    - if @user_games.any?
-      - @user_games.each do |game|
-        = render partial: "game", locals: { game: game, user_in_game: true }
-    - else
-      p You are not in any games
+.your-games
+  h2 Your Games
+  - if @user_games.any?
+    - @user_games.each do |game|
+      = render partial: "game", locals: { game: game, user_in_game: true }
+  - else
+    p You are not in any games
 
-  .all-games
-    h2 All Games
-    - if @other_games.any?
-      - @other_games.each do |game|
-        = render partial: "game", locals: { game: game, user_in_game: false }
-    - else
-      p There are no games yet
+.all-games
+  h2 All Games
+  - if @other_games.any?
+    - @other_games.each do |game|
+      = render partial: "game", locals: { game: game, user_in_game: false }
+  - else
+    p There are no games yet

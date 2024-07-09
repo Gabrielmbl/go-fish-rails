@@ -79,4 +79,13 @@ RSpec.describe 'Games', :js, type: :system do
     click_on 'Back to games'
     expect(page).not_to have_text 'Join'
   end
+
+  it 'enters a game that you are in' do
+    visit games_path
+    click_on 'Join', match: :first
+    click_on 'Back to games'
+    click_on 'Play Now', match: :first
+    expect(page).to have_text 'Capybara game'
+    expect(page).to have_text 'Leave'
+  end
 end
