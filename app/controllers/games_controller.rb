@@ -24,9 +24,10 @@ class GamesController < ApplicationController
     @game = Game.build(game_params)
 
     if @game.save
+      @game.users << current_user
+
       respond_to do |format|
-        format.html { redirect_to games_path, notice: 'Game was successfully created.' }
-        format.turbo_stream { flash.now[:notice] = 'Game was successfully created.' }
+        format.html { redirect_to @game, notice: 'Game was successfully created.' }
       end
     else
       render :new
@@ -39,8 +40,6 @@ class GamesController < ApplicationController
     if @game.update(game_params)
       respond_to do |format|
         format.html { redirect_to @game, notice: 'Game was successfully updated.' }
-        # TODO: Why does this work when I comment this line out?
-        # format.turbo_stream { flash.now[:notice] = 'Game was successfully updated.' }
       end
     else
       render :edit
@@ -53,8 +52,6 @@ class GamesController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to games_path, notice: 'Game was successfully destroyed.' }
-      # TODO: Same question as before. How is this working when this line is commented out?
-      # format.turbo_stream { flash.now[:notice] = 'Game was successfully destroyed.' }
     end
   end
 

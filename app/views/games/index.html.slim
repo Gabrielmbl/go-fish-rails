@@ -1,12 +1,7 @@
 .container
   .header
     h1 Games
-    = link_to "New game",
-              new_game_path,
-              class: "btn-primary",
-              data: { turbo_frame: dom_id(Game.new) }
-
-  = turbo_frame_tag Game.new
+    = link_to "New game", new_game_path, class: "btn-primary"
 
   .your-games
     h2 Your Games
@@ -18,5 +13,8 @@
 
   .all-games
     h2 All Games
-    - @other_games.each do |game|
-      = render partial: "game", locals: { game: game, user_in_game: false }
+    - if @other_games.any?
+      - @other_games.each do |game|
+        = render partial: "game", locals: { game: game, user_in_game: false }
+    - else
+      p There are no games yet

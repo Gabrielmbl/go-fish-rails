@@ -1,6 +1,6 @@
 .game
   - if user_in_game
-    = link_to game.name, game_path(game), data: { turbo_frame: "_top" }
+    = link_to game.name, game_path(game)
   - else
     = game.name
-    = button_to "Join", game_game_users_path(game), method: :post, class: "btn btn--primary", data: { turbo_frame: "_top" }
+    = button_to "Join", game_game_users_path(game), method: :post, class: "btn btn--primary"
