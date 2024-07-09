@@ -2,7 +2,7 @@ example_id                               | status  | run_time        |
 ---------------------------------------- | ------- | --------------- |
 ./spec/helpers/games_helper_spec.rb[1:1] | pending | 0 seconds       |
 ./spec/models/game_spec.rb[1:1]          | pending | 0.00001 seconds |
-./spec/models/game_user_spec.rb[1:1]     | pending | 0.00001 seconds |
+./spec/models/game_user_spec.rb[1:1]     | passed  | 0.0398 seconds  |
 ./spec/models/user_spec.rb[1:1]          | pending | 0 seconds       |
 ./spec/requests/games_spec.rb[1:1:1]     | pending | 0 seconds       |
 ./spec/system/game_spec.rb[1:1]          | passed  | 0.07179 seconds |

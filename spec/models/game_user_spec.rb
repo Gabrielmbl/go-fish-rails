@@ -1,5 +1,15 @@
-# require 'rails_helper'
+require 'rails_helper'
 
-# RSpec.describe GameUser, type: :model do
-#   pending "add some examples to (or delete) #{__FILE__}"
-# end
+RSpec.describe GameUser, type: :model do
+  let(:game) { create(:game, name: 'Random Name') }
+  let(:user) { create(:user) }
+
+  def create_game_user
+    create(:game_user, game:, user:)
+  end
+
+  it 'makes sure the dataase is unique' do
+    create_game_user
+    expect { create_game_user }.to raise_error(ActiveRecord::RecordNotUnique)
+  end
+end
