@@ -2,6 +2,7 @@ class GamesController < ApplicationController
   def index
     @games = Game.all
     @user_games = current_user.games
+    @other_games = Game.where.not(id: @user_games.pluck(:id))
   end
 
   def show

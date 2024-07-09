@@ -58,4 +58,38 @@ RSpec.describe 'Games', :js, type: :system do
     expect(page).to have_text 'Game was successfully updated.'
     expect(page).to have_text 'Updated game'
   end
+
+  it 'joins a game' do
+    visit games_path
+    expect(page).to have_text 'You are not in any games'
+
+    click_on 'Join', match: :first
+    expect(page).to have_text 'You have joined the game.'
+    expect(page).to have_text game.name
+    expect(page).to have_text 'Leave'
+  end
+
+  it 'leaves a game' do
+    visit games_path
+    click_on 'Join', match: :first
+
+    click_on 'Leave', match: :first
+    expect(page).to have_text 'You have left the game.'
+    expect(page).to have_text 'You are not in any games'
+  end
+
+  it 'does not allow a user to join a game twice' do
+    visit games_path
+    click_on 'Join', match: :first
+    click_on 'Join', match: :first
+
+    expect(page).to have_text 'You are already in the game.'
+  end
+
+  it 'does not allow a user to leave a game they are not in' do
+    visit games_path
+    click_on 'Leave', match: :first
+
+    expect(page).to have_text 'Unable to leave the game.'
+  end
 end

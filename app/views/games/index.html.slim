@@ -8,5 +8,15 @@
 
   = turbo_frame_tag Game.new
 
-  = turbo_frame_tag "games" do
-    = render @games
+  .your-games
+    h2 Your Games
+    - if @user_games.any?
+      - @user_games.each do |game|
+        = render partial: "game", locals: { game: game, user_in_game: true }
+    - else
+      p You are not in any games
+
+  .all-games
+    h2 All Games
+    - @other_games.each do |game|
+      = render partial: "game", locals: { game: game, user_in_game: false }
