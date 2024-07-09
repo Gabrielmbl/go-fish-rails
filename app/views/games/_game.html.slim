@@ -1,6 +1,10 @@
 .game
   - if user_in_game
-    = link_to game.name, game_path(game)
+    span> #{game.name}
+    span> #{game.users.count}/#{game.required_number_players} Players
+    = button_to "Play Now", game_path(game), method: :get, class: "btn-primary"
+
   - else
-    = game.name
+    span> #{game.name} 
+    span #{game.users.count}/#{game.required_number_players} Players
     = button_to "Join", game_game_users_path(game), method: :post, class: "btn btn--primary"

@@ -30,7 +30,7 @@ class GamesController < ApplicationController
         format.html { redirect_to @game, notice: 'Game was successfully created.' }
       end
     else
-      render :new
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -42,7 +42,7 @@ class GamesController < ApplicationController
         format.html { redirect_to @game, notice: 'Game was successfully updated.' }
       end
     else
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 
@@ -58,6 +58,6 @@ class GamesController < ApplicationController
   private
 
   def game_params
-    params.require(:game).permit(:name)
+    params.require(:game).permit(:name, :required_number_players)
   end
 end

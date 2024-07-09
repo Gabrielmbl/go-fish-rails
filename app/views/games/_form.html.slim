@@ -1,4 +1,5 @@
 = simple_form_for @game do |f|
+  = form_error_notification(@game)
 
   = f.input :name, input_html: { autofocus: true }, required: true
   = f.input :required_number_players, required: true unless editing
