@@ -4,12 +4,22 @@ main.container.mb-xxxxl
   .header
     h1= @game.name
 
+  .game_players 
+    h2 Game players
+    ul
+      - @game.users.each do |user|
+        li= user.email
+
   .game_info
     p = @game.created_at
 
     p = @game.updated_at
   
   .game__actions
+      = button_to "Leave",
+                  game_game_user_path(@game, current_user),
+                  method: :delete,
+                  class: "btn btn--light"
       = button_to "Delete",
                   game_path(@game),
                   method: :delete,

@@ -10,5 +10,7 @@ Rails.application.routes.draw do
   # root "posts#index"
 
   root to: "pages#home"
-  resources :games
+  resources :games do
+    resources :game_users, only: %i[create destroy]
+  end
 end
