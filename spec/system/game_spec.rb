@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'Games', type: :system do
+RSpec.describe 'Games', :js, type: :system do
   include Warden::Test::Helpers
 
   before do
@@ -9,17 +9,18 @@ RSpec.describe 'Games', type: :system do
     login_as @user
   end
 
-  let!(:game) { create(:game) }
+  # let!(:game) { create(:game) }
+  let!(:game) { create(:game, name: 'Capybara game') }
 
-  it 'shows a game', :js do
+  it 'shows a game' do
     visit games_path
-    click_link game
+    click_link game.name
 
     expect(page).not_to have_selector 'h1', text: game
     expect(page).to have_text game.name
   end
 
-  it 'creates a new game', :js do
+  it 'creates a new game' do
     visit games_path
     expect(page).to have_selector 'h1', text: 'Games'
 
@@ -32,22 +33,22 @@ RSpec.describe 'Games', type: :system do
     expect(page).to have_text 'Capybara game'
   end
 
-  it 'destroys a game', :js do
+  it 'destroys a game' do
     visit games_path
     expect(page).to have_text game.name
 
-    click_link game
+    click_link game.name
 
     click_on 'Delete', match: :first
     expect(page).to have_text 'Game was successfully destroyed.'
     expect(page).not_to have_text game.name
   end
 
-  it 'updates a game', :js do
+  it 'updates a game' do
     visit games_path
     expect(page).to have_text game.name
 
-    click_link game
+    click_link game.name
 
     click_on 'Edit', match: :first
 
