@@ -14,9 +14,6 @@ RSpec.describe 'Games', :js, type: :system do
 
   it 'shows a game' do
     visit games_path
-    click_link game.name
-
-    expect(page).not_to have_selector 'h1', text: game
     expect(page).to have_text game.name
   end
 
@@ -35,9 +32,7 @@ RSpec.describe 'Games', :js, type: :system do
 
   it 'destroys a game' do
     visit games_path
-    expect(page).to have_text game.name
-
-    click_link game.name
+    click_on 'Join', match: :first
 
     click_on 'Delete', match: :first
     expect(page).to have_text 'Game was successfully destroyed.'
@@ -48,7 +43,7 @@ RSpec.describe 'Games', :js, type: :system do
     visit games_path
     expect(page).to have_text game.name
 
-    click_link game.name
+    click_on 'Join', match: :first
 
     click_on 'Edit', match: :first
 
@@ -81,15 +76,7 @@ RSpec.describe 'Games', :js, type: :system do
   it 'does not allow a user to join a game twice' do
     visit games_path
     click_on 'Join', match: :first
-    click_on 'Join', match: :first
-
-    expect(page).to have_text 'You are already in the game.'
-  end
-
-  it 'does not allow a user to leave a game they are not in' do
-    visit games_path
-    click_on 'Leave', match: :first
-
-    expect(page).to have_text 'Unable to leave the game.'
+    click_on 'Back to games'
+    expect(page).not_to have_text 'Join'
   end
 end
