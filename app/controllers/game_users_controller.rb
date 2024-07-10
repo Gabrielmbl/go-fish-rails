@@ -1,11 +1,12 @@
 class GameUsersController < ApplicationController
   def create
     @game = Game.find(params[:game_id])
-    @game_user = @game.game_users.build(user: current_user)
 
-    if @game.users.include?(current_user)
-      redirect_to @game, alert: 'You are already in the game.'
-    elsif @game_user.save
+    return redirect_to @game, alert: 'Unable to join.' if @game.users.include?(current_user) || @game.enough_players?
+
+    @game_user = @game.game_users.build(user: current_user)
+    if @game_user.save
+      @game.start!
       redirect_to @game, notice: 'You have joined the game.'
     else
       redirect_to games_path, alert: 'Unable to join the game.'

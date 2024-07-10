@@ -8,7 +8,7 @@ RSpec.describe GameUser, type: :model do
     create(:game_user, game:, user:)
   end
 
-  it 'makes sure the dataase is unique' do
+  it 'makes sure the database is unique' do
     create_game_user
     expect { create_game_user }.to raise_error(ActiveRecord::RecordNotUnique)
   end
