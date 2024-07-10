@@ -17,7 +17,7 @@ class Deck
     end
   end
 
-  def deal
+  def pop_card
     cards.pop
   end
 

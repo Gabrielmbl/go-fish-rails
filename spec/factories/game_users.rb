@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :game_user do
-    user { nil }
-    game { nil }
+    association :game
+    association :user
   end
 end
