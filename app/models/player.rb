@@ -2,11 +2,11 @@ require_relative 'deck'
 require_relative 'book'
 
 class Player
-  attr_reader :name, :books
+  attr_reader :user_id, :books
   attr_accessor :hand
 
-  def initialize(name = 'Random Name', hand: [], books: Book.new)
-    @name = name
+  def initialize(user_id:, hand: [], books: [])
+    @user_id = user_id
     @hand = hand
     @books = books
   end

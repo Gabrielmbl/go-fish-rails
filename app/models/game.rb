@@ -1,5 +1,5 @@
 require_relative 'player'
-require_relative 'gofish'
+require_relative 'go_fish'
 
 class Game < ApplicationRecord
   validates :name, presence: true
@@ -8,15 +8,15 @@ class Game < ApplicationRecord
   has_many :game_users, dependent: :destroy
   has_many :users, through: :game_users
 
-  serialize :go_fish, JSON, type: GoFish
+  serialize :go_fish, GoFish
 
   def start!
     return false unless enough_players?
 
-    players = users.map { |user| Player.new(user.id) }
-    go_fish = GoFish.new(players)
+    players = users.map { |user| Player.new(user_id: user.id) }
+    go_fish = GoFish.new(players:)
     go_fish.deal!
-    update(go_fish:, started_at: Time.zone.now)
+    update(go_fish:)
   end
 
   def play_round!
