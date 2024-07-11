@@ -1,0 +1,24 @@
+{
+  "id": "file:/book.json#",
+  "type": "object",
+  "required": [
+    "cards"
+  ],
+  "properties": {
+    "cards": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "items": {
+          "$ref": "file:/card.json#"
+        }
+      }
+    },
+    "value": {
+      "type": "integer"
+    },
+    "count": {
+      "type": "integer"
+    }
+  }
+}

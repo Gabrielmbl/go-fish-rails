@@ -1,10 +1,10 @@
 require_relative 'card'
 
 class Book
-  attr_accessor :cards_array
+  attr_accessor :cards
 
-  def initialize(cards_array = [])
-    @cards_array = cards_array
+  def initialize(cards = [])
+    @cards = cards
   end
 
   def self.create_book(book)

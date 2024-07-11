@@ -1,0 +1,44 @@
+{
+  "id": "file:/go_fish.json#",
+  "type": "object",
+  "required": [
+    "players",
+    "deck",
+    "current_player",
+    "game_winner"
+  ],
+  "properties": {
+    "players": {
+      "type": "array",
+      "items": {
+        "$ref": "file:/player.json#"
+      }
+    },
+    "deck": {
+      "type": "object",
+      "items": {
+        "$ref": "file:/deck.json#"
+      }
+    },
+    "current_player": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "file:/player.json#"
+        }
+      ]
+    },
+    "game_winner": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "file:/player.json#"
+        }
+      ]
+    }
+  }
+}

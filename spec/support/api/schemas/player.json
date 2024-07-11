@@ -1,0 +1,26 @@
+{
+  "id": "file:/player.json#",
+  "type": "object",
+  "required": [
+    "user_id",
+    "hand",
+    "books"
+  ],
+  "properties": {
+    "user_id": {
+      "type": "string"
+    },
+    "hand": {
+      "type": "array",
+      "items": {
+        "$ref": "file:/card.json#"
+      }
+    },
+    "books": {
+      "type": "array",
+      "items": {
+        "$ref": "file:/book.json#"
+      }
+    }
+  }
+}

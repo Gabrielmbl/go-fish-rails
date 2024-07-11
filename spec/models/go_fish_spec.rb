@@ -3,7 +3,6 @@ require 'rails_helper'
 RSpec.describe GoFish, type: :model do
   let(:player1) { Player.new(user_id: '1') }
   let(:player2) { Player.new(user_id: '2') }
-  let(:player3) { Player.new('someoneelse') }
   let(:go_fish) { GoFish.new(players: [player1, player2]) }
 
   describe '#deal!' do
@@ -15,11 +14,11 @@ RSpec.describe GoFish, type: :model do
     end
   end
 
-  # TODO: Apply JSON schema tests
   describe 'serialization' do
     describe '#dump' do
       it 'returns a JSON string' do
-        expect(GoFish.dump(go_fish)).to be_a(Hash)
+        json = GoFish.dump(go_fish)
+        expect(json).to be_a(Hash)
       end
     end
 
@@ -36,6 +35,8 @@ RSpec.describe GoFish, type: :model do
         go_fish.deal!
         json = go_fish.as_json
         loaded_go_fish = GoFish.load(json)
+
+        expect(loaded_go_fish.as_json).to match_json_schema('go_fish')
 
         expect(loaded_go_fish.players.size).to eq go_fish.players.size
         expect(loaded_go_fish.players.map(&:user_id)).to eq go_fish.players.map(&:user_id)
