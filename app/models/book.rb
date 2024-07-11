@@ -7,6 +7,11 @@ class Book
     @cards_array = cards_array
   end
 
+  def self.create_book(book)
+    cards = Card.load_cards(book['cards'])
+    Book.new(cards)
+  end
+
   def value
     sum = 0
     cards_array.each do |cards|

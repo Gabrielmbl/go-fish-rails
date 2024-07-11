@@ -24,46 +24,14 @@ class GoFish
     object.as_json
   end
 
-  # TODO: Each class should know how to load its own
   def self.load(payload)
     return unless payload
 
-    players = load_players(payload['players'])
-    deck = load_deck(payload['deck'])
-    current_player = find_player(players, payload['current_player'])
-    game_winner = find_player(players, payload['game_winner'])
+    players = Player.load_players(payload['players'])
+    deck = Deck.load_deck(payload['deck'])
+    current_player = Player.find_player(players, payload['current_player'])
+    game_winner = Player.find_player(players, payload['game_winner'])
     GoFish.new(players:, deck:, current_player:, game_winner:)
-  end
-
-  def self.find_player(players, player_data)
-    return nil unless player_data
-
-    players.find { |player| player.user_id == player_data['user_id'] }
-  end
-
-  def self.load_players(players)
-    players.map do |player|
-      Player.new(
-        user_id: player['user_id'],
-        hand: load_cards(player['hand']),
-        books: player['books'].map { |book| create_book(book) }
-      )
-    end
-  end
-
-  def self.create_book(book)
-    cards = load_cards(book['cards'])
-    Book.new(cards)
-  end
-
-  def self.load_deck(deck)
-    Deck.new.tap do |d|
-      d.cards = load_cards(deck['cards'])
-    end
-  end
-
-  def self.load_cards(cards)
-    cards.map { |card| Card.new(card['rank'], card['suit']) }
   end
 
   def play_round!

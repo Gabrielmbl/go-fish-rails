@@ -11,6 +11,22 @@ class Player
     @books = books
   end
 
+  def self.find_player(players, player_data)
+    return nil unless player_data
+
+    players.find { |player| player.user_id == player_data['user_id'] }
+  end
+
+  def self.load_players(players)
+    players.map do |player|
+      Player.new(
+        user_id: player['user_id'],
+        hand: Card.load_cards(player['hand']),
+        books: player['books'].map { |book| Book.create_book(book) }
+      )
+    end
+  end
+
   def add_to_hand(cards)
     hand.unshift(*cards)
   end

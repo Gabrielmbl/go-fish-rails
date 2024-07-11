@@ -9,6 +9,12 @@ class Deck
     @num_cards = cards.count
   end
 
+  def self.load_deck(deck)
+    Deck.new.tap do |d|
+      d.cards = Card.load_cards(deck['cards'])
+    end
+  end
+
   def create_deck
     cards = Card::SUITS.flat_map do |suit|
       Card::RANKS.map do |rank|
