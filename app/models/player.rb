@@ -17,12 +17,12 @@ class Player
     players.find { |player| player.user_id == player_data['user_id'] }
   end
 
-  def self.load_players(players)
+  def self.load(players)
     players.map do |player|
       Player.new(
         user_id: player['user_id'],
-        hand: Card.load_cards(player['hand']),
-        books: player['books'].map { |book| Book.create_book(book) }
+        hand: Card.load(player['hand']),
+        books: player['books'].map { |book| Book.load(book) }
       )
     end
   end

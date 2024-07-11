@@ -9,9 +9,9 @@ class Deck
     @num_cards = cards.count
   end
 
-  def self.load_deck(deck)
+  def self.load(deck)
     Deck.new.tap do |d|
-      d.cards = Card.load_cards(deck['cards'])
+      d.cards = Card.load(deck['cards'])
     end
   end
 

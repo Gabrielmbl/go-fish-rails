@@ -9,7 +9,7 @@ class Card
     @suit = suit
   end
 
-  def self.load_cards(cards)
+  def self.load(cards)
     cards.map { |card| Card.new(card['rank'], card['suit']) }
   end
 

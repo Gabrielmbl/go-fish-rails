@@ -7,8 +7,8 @@ class Book
     @cards = cards
   end
 
-  def self.create_book(book)
-    cards = Card.load_cards(book['cards'])
+  def self.load(book)
+    cards = Card.load(book['cards'])
     Book.new(cards)
   end
 

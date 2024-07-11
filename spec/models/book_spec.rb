@@ -10,11 +10,8 @@ RSpec.describe Book, type: :model do
   describe '#load_book' do
     it 'loads a book from a hash' do
       json = book.as_json
-      loaded_book = Book.create_book(json)
-
-      expect(loaded_book).to be_a(Book)
-      expect(loaded_book.cards.size).to eq(book.cards.size)
-      expect(loaded_book.cards).to all(be_a(Card))
+      loaded_book = Book.load(json)
+      expect(loaded_book.cards).to match_array(book.cards)
       expect(json).to match_json_schema('book')
     end
   end

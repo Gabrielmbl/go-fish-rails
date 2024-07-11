@@ -27,8 +27,8 @@ class GoFish
   def self.load(payload)
     return unless payload
 
-    players = Player.load_players(payload['players'])
-    deck = Deck.load_deck(payload['deck'])
+    players = Player.load(payload['players'])
+    deck = Deck.load(payload['deck'])
     current_player = Player.find_player(players, payload['current_player'])
     game_winner = Player.find_player(players, payload['game_winner'])
     GoFish.new(players:, deck:, current_player:, game_winner:)

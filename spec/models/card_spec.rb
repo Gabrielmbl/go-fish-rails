@@ -6,9 +6,9 @@ RSpec.describe Card, type: :model do
 
   describe '#load_card' do
     it 'loads a card from a hash' do
-      cards = Card.load_cards([card1.as_json, card2.as_json])
+      cards = Card.load([card1.as_json, card2.as_json])
 
-      expect(cards).to all(be_a(Card))
+      expect(cards).to match_array([card1, card2])
       expect(cards[0].as_json).to match_json_schema('card')
     end
   end
