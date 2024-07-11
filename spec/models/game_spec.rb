@@ -20,17 +20,17 @@ RSpec.describe Game, type: :model do
 
       it 'should populate the game with players' do
         game.start!
-        expect(game.go_fish.players.size).not_to be_zero
+        expect(game.reload.go_fish.players.size).not_to be_zero
       end
 
       it 'should initialize with correct players' do
         game.start!
-        expect(game.go_fish.players.map(&:user_id)).to match_array([user1.id, user2.id])
+        expect(game.reload.go_fish.players.map(&:user_id)).to match_array([user1.id, user2.id])
       end
 
       it 'should deal cards to each player' do
         game.start!
-        expect(game.go_fish.players.all? { |player| player.hand.size == GoFish::INITIAL_HAND_SIZE }).to be
+        expect(game.reload.go_fish.players.all? { |player| player.hand.size == GoFish::INITIAL_HAND_SIZE }).to be
       end
     end
   end
@@ -40,7 +40,7 @@ RSpec.describe Game, type: :model do
       players = [user1, user2].map { |user| Player.new(user_id: user.id) }
       go_fish = GoFish.new(players:)
       game.update(go_fish:)
-      expect(game.go_fish).to be_an_instance_of(GoFish)
+      expect(game.reload.go_fish).to be_an_instance_of(GoFish)
     end
   end
 end

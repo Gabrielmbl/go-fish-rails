@@ -6,4 +6,8 @@ class User < ApplicationRecord
 
   has_many :game_users
   has_many :games, through: :game_users
+
+  def name
+    email.split('@').first.capitalize
+  end
 end

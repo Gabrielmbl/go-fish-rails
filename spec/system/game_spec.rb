@@ -1,16 +1,17 @@
 require 'rails_helper'
 
-RSpec.describe 'Games', :js, type: :system do
+RSpec.describe 'Games', :js, :chrome, type: :system do
   include Warden::Test::Helpers
-
-  before do
-    driven_by(:selenium_chrome_headless)
-    @user = create(:user)
-    login_as @user
-  end
 
   # let!(:game) { create(:game) }
   let!(:game) { create(:game, name: 'Capybara game') }
+  let(:user) { create(:user) }
+  let(:opponent) { create(:user) }
+
+  before do
+    # driven_by(:selenium_chrome_headless)
+    login_as user
+  end
 
   it 'shows a game' do
     visit games_path
@@ -39,19 +40,49 @@ RSpec.describe 'Games', :js, type: :system do
     expect(page).not_to have_text game.name
   end
 
-  it 'updates a game' do
-    visit games_path
-    expect(page).to have_text game.name
+  describe '#update' do
+    it 'updates a game name' do
+      visit games_path
+      expect(page).to have_text game.name
 
-    click_on 'Join', match: :first
+      click_on 'Join', match: :first
 
-    click_on 'Edit', match: :first
+      click_on 'Edit', match: :first
 
-    fill_in 'Name', with: 'Updated game'
-    click_on 'Update Game'
+      fill_in 'Name', with: 'Updated game'
+      click_on 'Update Game'
 
-    expect(page).to have_text 'Game was successfully updated.'
-    expect(page).to have_text 'Updated game'
+      expect(page).to have_text 'Game was successfully updated.'
+      expect(page).to have_text 'Updated game'
+    end
+
+    before do
+      game.users << user
+      game.users << opponent
+      game.start!
+    end
+
+    it 'plays a round of the game' do
+      visit game_path(game)
+
+      select opponent.name, from: 'opponent_id'
+      select game.go_fish.players.first.hand.first.rank, from: 'rank'
+
+      click_button 'Ask'
+
+      expect(page).to have_text('Round played.')
+    end
+
+    it 'increases the number of cards in the hand of the user' do
+      visit game_path(game)
+
+      select opponent.name, from: 'opponent_id'
+      select game.go_fish.players.first.hand.first.rank, from: 'rank'
+
+      click_button 'Ask'
+
+      expect(game.go_fish.players.first.hand.count).to be > GoFish::INITIAL_HAND_SIZE
+    end
   end
 
   it 'joins a game' do

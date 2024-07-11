@@ -19,7 +19,7 @@ class Game < ApplicationRecord
     update(go_fish:)
   end
 
-  def play_round!
+  def play_round!(user_id, opponent_id, card_rank)
     go_fish.play_round!
     save!
   end

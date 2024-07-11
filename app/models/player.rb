@@ -11,6 +11,10 @@ class Player
     @books = books
   end
 
+  def name
+    User.find(@user_id).name
+  end
+
   def self.find_player(players, player_data)
     return nil unless player_data
 
