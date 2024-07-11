@@ -15,9 +15,14 @@
 
   p = @game.updated_at
 
-- if @game_display
-  .game_display
-    = @game.text
+- if @game.go_fish
+  .game_view
+    - @game.go_fish.players.each do |player|
+      .game__player
+        h2= player.name
+        ul
+          - player.hand.cards.each do |card|
+            li= card.rank
 
 .game__actions
     = button_to "Leave",
