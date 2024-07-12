@@ -9,8 +9,10 @@ class Card
     @suit = suit
   end
 
-  def self.load(cards)
-    cards.map { |card| Card.new(card['rank'], card['suit']) }
+  def self.load(card)
+    rank = card['rank']
+    suit = card['suit']
+    Card.new(rank, suit)
   end
 
   def ==(other)

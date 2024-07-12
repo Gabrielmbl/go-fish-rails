@@ -30,6 +30,21 @@ RSpec.describe GoFish, type: :model do
       expect(player1.hand.size).to eq GoFish::INITIAL_HAND_SIZE
       expect(player2.hand.size).to eq GoFish::INITIAL_HAND_SIZE
     end
+
+    it 'deals cards from the deck' do
+      go_fish.deal!
+
+      expect(go_fish.deck.cards.size).to eq(52 - (GoFish::INITIAL_HAND_SIZE * 2))
+    end
+
+    it 'shuffles the deck' do
+      deck = Deck.new
+      go_fish.deck = deck
+
+      go_fish.deal!
+
+      expect(deck.cards).not_to eq(Deck.new.cards)
+    end
   end
 
   describe 'serialization' do
@@ -66,6 +81,13 @@ RSpec.describe GoFish, type: :model do
         expect(loaded_player.hand.map { |card| [card.rank, card.suit] }).to match_array(player.hand.map do |card|
                                                                                           [card.rank, card.suit]
                                                                                         end)
+      end
+
+      it 'returns a GoFish object with the same deck' do
+        go_fish.deal!
+        json = go_fish.as_json
+        loaded_go_fish = GoFish.load(json)
+        expect(loaded_go_fish.deck.cards).to match_array(go_fish.deck.cards)
       end
 
       def compare_books(loaded_go_fish)

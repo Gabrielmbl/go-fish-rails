@@ -11,7 +11,7 @@ class GoFish
 
   def initialize(players: [], deck: Deck.new, current_player: players.first, game_winner: nil)
     @players = *players
-    @deck = Deck.new
+    @deck = deck
     @current_player = current_player
     @game_winner = game_winner
     @players_with_highest_number_of_books = nil
@@ -31,7 +31,6 @@ class GoFish
   def self.load(payload)
     return unless payload
 
-    # TODO: From JSON
     players = Player.load(payload['players'])
     deck = Deck.load(payload['deck'])
     current_player = Player.find_player(players, payload['current_player'])

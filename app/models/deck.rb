@@ -4,15 +4,14 @@ class Deck
   attr_reader :ranks, :suits, :num_cards
   attr_accessor :cards
 
-  def initialize
-    @cards = create_deck
+  def initialize(cards = create_deck)
+    @cards = cards
     @num_cards = cards.count
   end
 
   def self.load(deck)
-    Deck.new.tap do |d|
-      d.cards = Card.load(deck['cards'])
-    end
+    cards = deck['cards'].map { |card_data| Card.load(card_data) }
+    Deck.new(cards)
   end
 
   def create_deck

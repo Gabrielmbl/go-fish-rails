@@ -27,7 +27,7 @@ class Player
     players.map do |player|
       Player.new(
         user_id: player['user_id'],
-        hand: Card.load(player['hand']),
+        hand: player['hand'].map { |card| Card.load(card) },
         books: player['books'].map { |book| Book.load(book) }
       )
     end
