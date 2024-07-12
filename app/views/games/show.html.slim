@@ -27,14 +27,11 @@
     .game-feed
       .game-actions
         = form_for @game, url: game_path(@game), method: :put do |f|
-          .form-group
-            = label_tag :opponent_id, "Player"
-            = select_tag :opponent_id, options_for_select(@game.go_fish.players.reject { |player| player.user_id == current_user.id }.map { |player| [player.name, player.user_id] })
-          .form-group
-            = label_tag :rank, "Card Rank"
-            = select_tag :rank, options_for_select(@game.go_fish.players.find { |player| player.user_id == current_user.id }.hand.map { |card| [card.rank, card.rank] })
-          .form-group
-            = f.submit "Ask", class: "btn btn--light"
+          = label_tag :opponent_id, "Player"
+          = select_tag :opponent_id, options_for_select(@game.go_fish.players.reject { |player| player.user_id == current_user.id }.map { |player| [player.name, player.user_id] })
+          = label_tag :rank, "Card Rank"
+          = select_tag :rank, options_for_select(@game.go_fish.players.find { |player| player.user_id == current_user.id }.hand.map { |card| [card.rank, card.rank] })
+          = f.submit "Ask", class: "btn btn--light"
 
 
 .game__actions

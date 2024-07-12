@@ -14,11 +14,11 @@ class Book
 
   def value
     sum = 0
-    cards_array.each do |cards|
-      sum += cards.first.numerical_rank
+    cards.each do |card|
+      sum += card.numerical_rank
     end
     sum
   end
 
-  delegate :count, to: :cards_array
+  delegate :count, to: :cards
 end

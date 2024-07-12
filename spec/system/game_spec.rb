@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'Games', :js, :chrome, type: :system do
+RSpec.describe 'Games', :js, type: :system do
   include Warden::Test::Helpers
 
   # let!(:game) { create(:game) }
@@ -81,7 +81,9 @@ RSpec.describe 'Games', :js, :chrome, type: :system do
 
       click_button 'Ask'
 
-      expect(game.go_fish.players.first.hand.count).to be > GoFish::INITIAL_HAND_SIZE
+      expect(page).to have_text('Round played.')
+
+      expect(game.reload.go_fish.players.first.hand.count).to be > GoFish::INITIAL_HAND_SIZE
     end
   end
 

@@ -2,6 +2,8 @@ require_relative 'player'
 require_relative 'go_fish'
 
 class Game < ApplicationRecord
+  class InvalidTurn < StandardError; end
+
   validates :name, presence: true
   validates :required_number_players, presence: true, numericality: { only_integer: true, greater_than: 1 }
 
@@ -16,12 +18,14 @@ class Game < ApplicationRecord
     players = users.map { |user| Player.new(user_id: user.id) }
     go_fish = GoFish.new(players:)
     go_fish.deal!
-    update(go_fish:)
+    update(go_fish:, started_at: Time.zone.now)
   end
 
   def play_round!(user_id, opponent_id, card_rank)
-    go_fish.play_round!
+    go_fish.play_round!(user_id, opponent_id, card_rank)
     save!
+  rescue GoFishError => e
+    raise InvalidTurn
   end
 
   def enough_players?

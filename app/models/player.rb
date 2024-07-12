@@ -2,8 +2,8 @@ require_relative 'deck'
 require_relative 'book'
 
 class Player
-  attr_reader :user_id, :books
-  attr_accessor :hand
+  attr_reader :user_id
+  attr_accessor :hand, :books
 
   def initialize(user_id:, hand: [], books: [])
     @user_id = user_id
@@ -12,11 +12,13 @@ class Player
   end
 
   def name
-    User.find(@user_id).name
+    User.find(user_id).name
   end
 
   def self.find_player(players, player_data)
     return nil unless player_data
+
+    return players.find { |player| player.user_id.to_i == player_data } if player_data.is_a?(Integer)
 
     players.find { |player| player.user_id == player_data['user_id'] }
   end
@@ -52,19 +54,17 @@ class Player
   end
 
   def add_to_books
-    books_added = []
     rank_counts = hand.map(&:rank).group_by(&:itself).transform_values(&:count)
     rank_counts.each do |rank, count|
       next unless count == 4
 
       cards = hand.select { |card| card.rank == rank }
-      books.cards_array << cards
-      books_added << rank
+      books << Book.new(cards)
       remove_by_rank(rank)
     end
-    puts "#{name} added book(s) of #{books_added.join(', ')}" if books_added.any?
-    return "#{name} added book(s) of #{books_added.join(', ')}" if books_added.any?
+  end
 
-    nil
+  def score
+    books.sum(&:value)
   end
 end
