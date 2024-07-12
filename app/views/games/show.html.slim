@@ -17,6 +17,15 @@
 
 - if @game.go_fish
   .game_view
+    .game-board
+      - @game.go_fish.players.each do |player|
+        p= player.name
+        - if player.books.any?
+          ul
+            - player.books.each do |book|
+              li= book.first.rank
+        -else
+          p No books yet
     .your-hand
       - @game.go_fish.players.each do |player|
         - if player.user_id == current_user.id
@@ -24,14 +33,26 @@
           ul
             - player.hand.each do |card|
               li= "#{card.rank} of #{card.suit}"
+    .your-books
+        - @game.go_fish.players.each do |player|
+          - if player.user_id == current_user.id
+            h2 Your books
+            - if player.books.any?
+              ul
+                - player.books.each do |book|
+                  li= book.first.rank
+            - else
+              p No books yet
+      
     .game-feed
-      .game-actions
-        = form_for @game, url: game_path(@game), method: :put do |f|
-          = label_tag :opponent_id, "Player"
-          = select_tag :opponent_id, options_for_select(@game.go_fish.players.reject { |player| player.user_id == current_user.id }.map { |player| [player.name, player.user_id] })
-          = label_tag :rank, "Card Rank"
-          = select_tag :rank, options_for_select(@game.go_fish.players.find { |player| player.user_id == current_user.id }.hand.map { |card| [card.rank, card.rank] }.uniq)
-          = f.submit "Ask", class: "btn btn--light"
+      - if @game.go_fish.current_player.user_id == current_user.id
+        .game-actions
+          = form_for @game, url: game_rounds_path(@game), method: :create do |f|
+            = label_tag :opponent_id, "Player"
+            = select_tag :opponent_id, options_for_select(@game.go_fish.players.reject { |player| player.user_id == current_user.id }.map { |player| [player.name, player.user_id] })
+            = label_tag :rank, "Card Rank"
+            = select_tag :rank, options_for_select(@game.go_fish.players.find { |player| player.user_id == current_user.id }.hand.map { |card| [card.rank, card.rank] }.uniq)
+            = f.submit "Ask", class: "btn btn--light"
 
 
 .game__actions

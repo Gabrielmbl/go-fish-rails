@@ -1,8 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe GoFish, type: :model do
-  let(:player1) { Player.new(user_id: '1') }
-  let(:player2) { Player.new(user_id: '2') }
+  let(:user1) { create(:user) }
+  let(:player1) { Player.new(user_id: user1.id) }
+  let(:user2) { create(:user) }
+  let(:player2) { Player.new(user_id: user2.id) }
   let(:p1_id) { player1.user_id }
   let(:p2_id) { player2.user_id }
   let(:go_fish) { GoFish.new(players: [player1, player2]) }
@@ -129,6 +131,12 @@ RSpec.describe GoFish, type: :model do
         go_fish.play_round!(p1_id, p2_id, '2')
         expect(go_fish.current_player).to eq(player1)
       end
+
+      it 'should update round_result to include the rank taken' do
+        go_fish.play_round!(p1_id, p2_id, '2')
+        expect(go_fish.round_results.first.result).to include("#{player1.name} Asked #{player2.name} for any 2s")
+        expect(go_fish.round_results.first.result).to include("#{player1.name} took 2s from #{player2.name}")
+      end
     end
 
     context 'drawing from the deck' do
@@ -157,6 +165,16 @@ RSpec.describe GoFish, type: :model do
         expect(go_fish.current_player).to eq(player1)
         go_fish.play_round!(p1_id, p2_id, '4')
         expect(go_fish.current_player).to eq(player1)
+      end
+
+      it 'should update round_result to include the rank drawn' do
+        deck = Deck.new
+        deck.cards = [Card.new('5', 'Hearts')]
+        go_fish.deck = deck
+        go_fish.play_round!(p1_id, p2_id, '4')
+        expect(go_fish.round_results.first.result).to include("#{player1.name} Asked #{player2.name} for any 4s")
+        expect(go_fish.round_results.first.result).to include("Go Fish: #{player2.name} doesn't have any 4s")
+        expect(go_fish.round_results.first.result).to include("#{player1.name} drew a 5 of Hearts")
       end
     end
 

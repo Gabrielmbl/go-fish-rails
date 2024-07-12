@@ -55,7 +55,9 @@ RSpec.describe 'Games', :js, type: :system do
       expect(page).to have_text 'Game was successfully updated.'
       expect(page).to have_text 'Updated game'
     end
+  end
 
+  context 'when user asks for a card' do
     before do
       game.users << user
       game.users << opponent
@@ -63,27 +65,32 @@ RSpec.describe 'Games', :js, type: :system do
     end
 
     it 'plays a round of the game' do
-      visit game_path(game)
+      ask_for_card
 
-      select opponent.name, from: 'opponent_id'
-      select game.go_fish.players.first.hand.first.rank, from: 'rank'
-
-      click_button 'Ask'
-
-      expect(page).to have_text('Round played.')
+      expect(page).to have_text('Round played successfully.')
     end
 
     it 'increases the number of cards in the hand of the user' do
+      ask_for_card
+      expect(page).to have_text('Round played successfully.')
+
+      expect(game.reload.go_fish.players.first.hand.count).to be > GoFish::INITIAL_HAND_SIZE
+    end
+
+    it 'should display the round result' do
+      expect(game.go_fish.round_result).to nil
+      ask_for_card
+
+      expect(page).to have_content(game.go_fish.round_result.last)
+    end
+
+    def ask_for_card
       visit game_path(game)
 
       select opponent.name, from: 'opponent_id'
       select game.go_fish.players.first.hand.first.rank, from: 'rank'
 
       click_button 'Ask'
-
-      expect(page).to have_text('Round played.')
-
-      expect(game.reload.go_fish.players.first.hand.count).to be > GoFish::INITIAL_HAND_SIZE
     end
   end
 
