@@ -16,6 +16,7 @@ class GoFish
     @current_player = current_player
     @game_winner = game_winner
     @players_with_highest_number_of_books = nil
+    # example: go_fish.round_results.first.result['player'] = [Message(class: 'player_action', text: 'asked for')]
     @round_results = round_results
   end
 
@@ -48,25 +49,42 @@ class GoFish
 
     if opponent.hand_has_ranks?(card_rank)
       move_cards_from_opponent_to_player(user, opponent, card_rank)
-      append_result(user, opponent, card_rank, context: 'took')
+      append_result_took(user, opponent, card_rank)
     else
       card = fish_for_card
-      append_result(user, opponent, card_rank, context: 'drew', rank_drawn: card.rank, suit_drawn: card.suit)
+      process_card_draw(user, opponent, card_rank, card)
       switch_players if card.rank != card_rank
     end
     finalize_turn
   end
 
-  def append_result(player1, player2, card_rank, context:, rank_drawn: nil, suit_drawn: nil)
+  def append_result_took(player1, player2, card_rank)
     new_result = RoundResult.new
-    new_result.add_result("#{player1.name} Asked #{player2.name} for any #{card_rank}s")
-    if context == 'took'
-      new_result.add_result("#{player1.name} took #{card_rank}s from #{player2.name}")
-    elsif context == 'drew'
-      new_result.add_result("Go Fish: #{player2.name} doesn't have any #{card_rank}s")
-      new_result.add_result("#{player1.name} drew a #{rank_drawn} of #{suit_drawn}")
-    end
+    new_result.add_ask_result(player1, player2, card_rank)
+    new_result.add_took_result(player1, player2, card_rank)
     round_results << new_result
+  end
+
+  def append_result_drew_matched(player1, player2, card_rank, rank_drawn:, suit_drawn:)
+    new_result = RoundResult.new
+    new_result.add_ask_result(player1, player2, card_rank)
+    new_result.add_drew_matched_result(player1, player2, card_rank, rank_drawn, suit_drawn)
+    round_results << new_result
+  end
+
+  def append_result_drew_not_matched(player1, player2, card_rank, rank_drawn:, suit_drawn:)
+    new_result = RoundResult.new
+    new_result.add_ask_result(player1, player2, card_rank)
+    new_result.add_drew_not_matched_result(player1, player2, card_rank, rank_drawn, suit_drawn)
+    round_results << new_result
+  end
+
+  def process_card_draw(player1, player2, card_rank, card)
+    if card.rank == card_rank
+      append_result_drew_matched(player1, player2, card_rank, rank_drawn: card.rank, suit_drawn: card.suit)
+    else
+      append_result_drew_not_matched(player1, player2, card_rank, rank_drawn: card.rank, suit_drawn: card.suit)
+    end
   end
 
   def move_cards_from_opponent_to_player(player, opponent, rank)

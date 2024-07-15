@@ -78,7 +78,7 @@ RSpec.describe 'Games', :js, type: :system do
     end
 
     it 'should display the round result' do
-      expect(game.go_fish.round_result).to nil
+      expect(game.go_fish.round_result).to be_nil
       ask_for_card
 
       expect(page).to have_content(game.go_fish.round_result.last)

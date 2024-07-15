@@ -93,8 +93,8 @@ RSpec.describe GoFish, type: :model do
       end
 
       def compare_books(loaded_go_fish)
-        expect(loaded_go_fish.players[0].books.map(&:cards_array)).to eq(go_fish.players[0].books.map(&:cards_array))
-        expect(loaded_go_fish.players[1].books.map(&:cards_array)).to eq(go_fish.players[1].books.map(&:cards_array))
+        expect(loaded_go_fish.players[0].books.map(&:cards)).to eq(go_fish.players[0].books.map(&:cards))
+        expect(loaded_go_fish.players[1].books.map(&:cards)).to eq(go_fish.players[1].books.map(&:cards))
       end
     end
   end
@@ -134,8 +134,10 @@ RSpec.describe GoFish, type: :model do
 
       it 'should update round_result to include the rank taken' do
         go_fish.play_round!(p1_id, p2_id, '2')
-        expect(go_fish.round_results.first.result).to include("#{player1.name} Asked #{player2.name} for any 2s")
-        expect(go_fish.round_results.first.result).to include("#{player1.name} took 2s from #{player2.name}")
+        expect(go_fish.round_results.first.result['player'].map(&:text)).to include("You asked #{player2.name} for any 2s")
+        expect(go_fish.round_results.first.result['player'].map(&:text)).to include("You took 2s from #{player2.name}")
+        expect(go_fish.round_results.first.result['opponent'].map(&:text)).to include("#{player1.name} took 2s from you")
+        expect(go_fish.round_results.first.result['others'].map(&:text)).to include("#{player1.name} took 2s from #{player2.name}")
       end
     end
 
@@ -167,14 +169,30 @@ RSpec.describe GoFish, type: :model do
         expect(go_fish.current_player).to eq(player1)
       end
 
-      it 'should update round_result to include the rank drawn' do
+      it 'should update round_result to include the rank drawn only to player' do
         deck = Deck.new
         deck.cards = [Card.new('5', 'Hearts')]
         go_fish.deck = deck
         go_fish.play_round!(p1_id, p2_id, '4')
-        expect(go_fish.round_results.first.result).to include("#{player1.name} Asked #{player2.name} for any 4s")
-        expect(go_fish.round_results.first.result).to include("Go Fish: #{player2.name} doesn't have any 4s")
-        expect(go_fish.round_results.first.result).to include("#{player1.name} drew a 5 of Hearts")
+        expect(go_fish.round_results.first.result['player'].map(&:text)).to include("You asked #{player2.name} for any 4s")
+        expect(go_fish.round_results.first.result['opponent'].map(&:text)).to include("Go Fish: you don't have any 4s")
+        expect(go_fish.round_results.first.result['others'].map(&:text)).to include("Go Fish: #{player2.name} doesn't have any 4s")
+        expect(go_fish.round_results.first.result['player'].map(&:text)).to include('You drew a 5 of Hearts')
+        expect(go_fish.round_results.first.result['opponent'].map(&:text)).to include("#{player1.name} drew a card")
+        expect(go_fish.round_results.first.result['others'].map(&:text)).to include("#{player1.name} drew a card")
+      end
+
+      it 'should update round_result to include the rank drawn to all of players' do
+        deck = Deck.new
+        deck.cards = [Card.new('5', 'Hearts')]
+        go_fish.deck = deck
+        go_fish.play_round!(p1_id, p2_id, '4')
+        expect(go_fish.round_results.first.result['player'].map(&:text)).to include("You Asked #{player2.name} for any 4s")
+        expect(go_fish.round_results.first.result['opponent'].map(&:text)).to include("Go Fish: you don't have any 4s")
+        expect(go_fish.round_results.first.result['others'].map(&:text)).to include("Go Fish: #{player2.name} doesn't have any 4s")
+        expect(go_fish.round_results.first.result['player'].map(&:text)).to include('You drew a 5 of Hearts')
+        expect(go_fish.round_results.first.result['opponent'].map(&:text)).to include("#{player1.name} drew a card")
+        expect(go_fish.round_results.first.result['others'].map(&:text)).to include("#{player1.name} drew a card")
       end
     end
 
@@ -182,9 +200,8 @@ RSpec.describe GoFish, type: :model do
       it 'should add a book to player1 if possible' do
         player1.add_to_hand([card2])
         go_fish.play_round!(p1_id, p2_id, '2')
-        binding.irb
         expect(player1.books.size).to eq(1)
-        expect(player1.books[0].cards_array).to match_array([card1, card2, card3, card4])
+        expect(player1.books[0].cards).to match_array([card1, card2, card3, card4])
       end
 
       describe 'checks for a winner' do
