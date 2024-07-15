@@ -1,5 +1,6 @@
 require_relative 'player'
 require_relative 'deck'
+require_relative 'round_result'
 require 'json'
 
 class GoFish
@@ -38,7 +39,8 @@ class GoFish
     deck = Deck.load(payload['deck'])
     current_player = Player.find_player(players, payload['current_player'])
     game_winner = Player.find_player(players, payload['game_winner'])
-    GoFish.new(players:, deck:, current_player:, game_winner:)
+    round_results = RoundResult.load(payload['round_results'])
+    GoFish.new(players:, deck:, current_player:, game_winner:, round_results:)
   end
 
   def play_round!(user_id, opponent_id, card_rank)

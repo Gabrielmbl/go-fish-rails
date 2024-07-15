@@ -8,6 +8,10 @@ class Message
     @text = text
   end
 
+  def self.load(data)
+    new(data['message_class'], data['text'])
+  end
+
   def self.generate_ask_messages(player1, player2, card_rank)
     messages = {}
     messages['player_message'] = "You asked #{player2.name} for any #{card_rank}s"

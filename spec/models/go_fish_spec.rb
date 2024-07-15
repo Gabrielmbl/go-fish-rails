@@ -79,6 +79,19 @@ RSpec.describe GoFish, type: :model do
         compare_books(loaded_go_fish)
       end
 
+      it 'returns a GoFish object with the correct round results' do
+        player1.add_to_hand([card1, card6, card11])
+        player2.add_to_hand([card3, card4, card5])
+        go_fish.play_round!(p1_id, p2_id, '2')
+        json = go_fish.as_json
+        loaded_go_fish = GoFish.load(json)
+        expect(loaded_go_fish.round_results.size).to eq(go_fish.round_results.size)
+        expect(loaded_go_fish.round_results.first.result[player1.name].map(&:text)).to include("You asked #{player2.name} for any 2s")
+        expect(loaded_go_fish.round_results.first.result[player1.name].map(&:text)).to include("You took 2s from #{player2.name}")
+        expect(loaded_go_fish.round_results.first.result[player2.name].map(&:text)).to include("#{player1.name} took 2s from you")
+        expect(loaded_go_fish.round_results.first.result['others'].map(&:text)).to include("#{player1.name} took 2s from #{player2.name}")
+      end
+
       def compare_hands(player, loaded_player)
         expect(loaded_player.hand.map { |card| [card.rank, card.suit] }).to match_array(player.hand.map do |card|
                                                                                           [card.rank, card.suit]

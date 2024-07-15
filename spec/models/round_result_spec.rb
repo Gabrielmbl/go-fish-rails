@@ -44,4 +44,23 @@ RSpec.describe RoundResult, type: :model do
     expect(other_results.map(&:message_class)).to eq(['game_feedback'])
     expect(other_results.map(&:text)).to eq(['Go Fish! Player drew a card'])
   end
+
+  it 'loads results from a hash' do
+    payload_example = [{ 'result' =>
+    { 'player' => [{ 'message_class' => 'player_action', 'text' => 'You asked User2 for any 2s' }, { 'message_class' => 'opponent_response', 'text' => 'You took 2s from User2' }],
+      'opponent' => [{ 'message_class' => 'player_action', 'text' => 'User1 asked you for any 2s' },
+{ 'message_class' => 'opponent_response', 'text' => 'User1 took 2s from you' }],
+      'others' => [{ 'message_class' => 'player_action', 'text' => 'User1 asked User2 for any 2s' },
+{ 'message_class' => 'opponent_response', 'text' => 'User1 took 2s from User2' }] } }]
+
+    loaded_round_result = RoundResult.load(payload_example)
+    expect(loaded_round_result.first.result['player'].first.message_class).to eq('player_action')
+    expect(loaded_round_result.first.result['player'].first.text).to eq('You asked User2 for any 2s')
+
+    expect(loaded_round_result.first.result['opponent'].first.message_class).to eq('player_action')
+    expect(loaded_round_result.first.result['opponent'].first.text).to eq('User1 asked you for any 2s')
+
+    expect(loaded_round_result.first.result['others'].first.message_class).to eq('player_action')
+    expect(loaded_round_result.first.result['others'].first.text).to eq('User1 asked User2 for any 2s')
+  end
 end
