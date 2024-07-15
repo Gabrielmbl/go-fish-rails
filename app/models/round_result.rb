@@ -1,31 +1,3 @@
-# TODO: Another class -> Round result message (contains types of messages)
-# Round result would pass parameters to round result message, and round result message
-# generates the messages. Round result stores it
-
-# result {player: Message{player_action: 'asked for', opponent_response: 'Go Fish!', game_feedback: 'You drew a 7 of Hearts'}}
-# result {opponent: Message{player_action: 'asked you for', opponent_response: 'Go Fish!', game_feedback: 'Player drew a card'}}
-# result {others: Message{player_action: 'asked opponent for', opponent_response: 'Go Fish!', game_feedback: 'Player drew a card'}}
-
-# result[player][player_action] = 'asked for'
-# result[player][opponent_response] = 'Go Fish!'
-# result[player][game_feedback] = 'You drew a 7 of Hearts'
-#
-#
-# result{player: [Message{player_action: 'asked for'}, Message{opponent_response: 'Go Fish!'}, Message{game_feedback: 'You drew a 7 of Hearts'}]}
-# result[player][0][player_action] = 'asked for'
-# result[player][1][opponent_response] = 'Go Fish!'
-# result[player][2][game_feedback] = 'You drew a 7 of Hearts'
-#
-#
-# result{
-#       player: [Message(class: 'player_action', text: 'asked for'), Message(class: 'opponent_response', text: 'Go Fish!'), Message(class: 'game_feedback', text: 'You drew a 7 of Hearts')]})]
-#       opponent: [Message(class: 'player_action', text: 'asked you for'), Message(class: 'opponent_response', text: 'Go Fish!'), Message(class: 'game_feedback', text: 'Player drew a card')]})]
-# }
-#
-# result[player][0].class = 'player_action'
-# result[player][0].text = 'asked for'
-#
-
 require_relative 'message'
 
 class RoundResult

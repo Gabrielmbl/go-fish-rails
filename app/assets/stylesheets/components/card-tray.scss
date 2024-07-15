@@ -1,0 +1,35 @@
+// Cards
+.card-tray {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  padding: var(--op-space-medium);
+  gap: var(--op-space-small);
+
+  overflow: auto;
+}
+
+.card-stack {
+  display: flex;
+  gap: var(--op-space-small);
+  overflow: auto;
+
+  height: calc(45 * var(--op-size-unit));
+
+  // Modifiers
+  &.card-stack--accordion-hand {
+    height: calc(34 * var(--op-size-unit));
+  }
+
+  &.card-stack--accordion-books {
+    height: calc(28 * var(--op-size-unit));
+    max-width: calc(60 * var(--op-size-unit));
+  }
+
+  &.card-stack--your-books {
+    height: calc(34 * var(--op-size-unit));
+  }
+
+  >*:not(:first-child) {
+    margin-left: calc(-1 * var(--op-space-3x-large));
+  }
+}

@@ -1,0 +1,46 @@
+// Notifications
+.notifications {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: var(--op-space-x-small);
+
+  overflow: auto;
+
+  .message {
+    padding: var(--op-space-small);
+    border-radius: var(--op-radius-x-large);
+
+    font-size: var(--op-font-x-small);
+    font-weight: var(--op-font-weight-semi-bold);
+    box-shadow: var(--op-shadow-x-large);
+
+    &.player_action {
+      background: var(--op-color-primary-plus-five);
+      color: var(--op-color-primary-on-plus-five);
+
+      font-size: var(--op-font-medium);
+      font-weight: var(--op-font-weight-normal);
+    }
+
+    &.opponent_response {
+      background: var(--op-color-alerts-warning-plus-seven);
+      color: var(--op-color-alerts-warning-on-plus-seven);
+
+      color: var(--op-color-alerts-warning-on-plus-seven-alt);
+    }
+
+    &.game_feedback {
+      background: var(--op-color-primary-plus-max);
+      color: var(--op-color-primary-on-plus-max);
+    }
+  }
+
+  .indented-message {
+    display: flex;
+    align-items: center;
+    gap: var(--op-space-x-small);
+    padding-left: var(--op-space-small);
+  }
+
+}

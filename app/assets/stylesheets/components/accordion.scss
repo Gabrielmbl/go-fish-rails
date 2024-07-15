@@ -1,0 +1,39 @@
+// Accordions
+.accordion {
+  border-radius: var(--op-radius-medium);
+  border: var(--op-border-width) solid var(--op-color-border);
+
+  box-shadow: var(--op-shadow-x-small);
+}
+
+.accordion[open] {
+  border: var(--op-border-width) solid var(--op-color-primary-plus-four);
+
+  box-shadow: var(--op-shadow-x-large);
+
+  summary {
+    border-bottom: var(--op-border-width) solid var(--op-color-primary-plus-four);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+
+    background-color: var(--op-color-primary-plus-eight);
+    color: var(--op-color-primary-on-plus-eight);
+
+    .accordion__marker {
+      border-radius: var(--op-radius-circle);
+
+      box-shadow: var(--op-border-all) var(--op-color-primary-plus-three);
+      background: var(--op-color-primary-plus-five);
+      color: var(--op-color-primary-on-plus-five);
+    }
+  }
+}
+
+.accordion summary {
+  padding: var(--op-space-x-small);
+  gap: var(--op-space-x-large);
+  border-radius: var(--op-radius-medium);
+  background-color: var(--op-color-primary-plus-max);
+
+  color: var(--op-color-primary-on-plus-max);
+}

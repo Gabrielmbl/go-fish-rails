@@ -1,0 +1,51 @@
+.go-fish-panel {
+
+  .go-fish-panel__header {
+    padding: var(--op-space-small) var(--op-space-medium) var(--op-space-x-small) var(--op-space-medium);
+
+    box-shadow: var(--go-fish-box-shadow);
+    font-size: var(--op-font-large);
+
+    // Modifiers
+
+    &.go-fish-panel__header--game-board {
+      display: flex;
+      align-items: center;
+      padding: var(--op-space-2x-small) var(--op-space-medium);
+      gap: var(--op-space-x-small);
+    }
+
+    &.go-fish-panel__header--game-feed {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: var(--op-navbar-height);
+    }
+
+    &.go-fish-panel__header-title {
+      align-content: center;
+
+      font-size: var(--op-font-small);
+    }
+
+  }
+
+  .go-fish-panel__body {
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+
+    // Modifiers
+    &.go-fish-panel__body--game-board {
+      padding: var(--op-space-2x-large) var(--op-space-3x-large) 0 var(--op-space-3x-large);
+      gap: var(--op-space-x-small);
+
+      background-color: var(--op-color-card-white);
+    }
+
+    &.go-fish-panel__body--game-feed {
+      justify-content: space-between;
+      padding: var(--op-space-medium);
+    }
+  }
+}

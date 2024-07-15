@@ -1,0 +1,59 @@
+// Layouts
+.game-view {
+  display: grid;
+  grid-template-columns: 1fr var(--go-fish-main-column-width);
+  grid-template-rows: 1fr var(--go-fish-main-row-height);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+  height: 100vh;
+  overflow: auto;
+}
+
+.go-fish-panel {
+  display: grid;
+  grid-template-rows: var(--go-fish-header-size) 1fr;
+  overflow: auto;
+
+  // Modifiers
+  &.go-fish-panel--bottom-row {
+    // grid-template-columns: 1fr auto;
+    grid-template-rows: auto 1fr;
+    background-color: var(--op-color-neutral-plus-seven);
+    color: var(--op-color-neutral-on-plus-seven);
+  }
+
+  &.go-fish-panel--game-board {
+    grid-area: 1 / 1 / 2 / 2;
+
+    box-shadow: var(--go-fish-box-shadow);
+    overflow: auto;
+  }
+
+  &.go-fish-panel--game-feed {
+    grid-area: 1 / 2 / 2 / 3;
+
+    box-shadow: var(--go-fish-box-shadow);
+    background-color: var(--op-color-primary-plus-eight);
+    color: var(--op-color-primary-on-plus-eight);
+  }
+
+  &.go-fish-panel--player-hand {
+    grid-area: 2 / 1 / 3 / 2;
+
+    box-shadow: var(--go-fish-box-shadow);
+    overflow: auto;
+  }
+
+  &.go-fish-panel--player-books {
+    grid-area: 2 / 2 / 3 / 3;
+    box-shadow: var(--go-fish-box-shadow);
+  }
+
+}
+
+.players-hands {
+  display: flex;
+  flex-direction: column;
+  gap: var(--op-space-x-small);
+  overflow: auto;
+}

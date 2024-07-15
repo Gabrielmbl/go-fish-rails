@@ -1,5 +1,3 @@
-# 3 types of message: player_action, opponent_response, game_feedback
-# RoundMessage {player_action: 'asked for', opponent_response: 'Go Fish!', game_feedback: 'You drew a 7 of Hearts'}
 class Message
   attr_accessor :message_class, :text
 

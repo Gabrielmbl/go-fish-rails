@@ -17,7 +17,6 @@ class GoFish
     @current_player = current_player
     @game_winner = game_winner
     @players_with_highest_number_of_books = nil
-    # example: go_fish.round_results.first.result['player'] = [Message(class: 'player_action', text: 'asked for')]
     @round_results = round_results
   end
 

@@ -1,0 +1,40 @@
+// Mixins for Variables
+@mixin space-varieties {
+  --op-space-3x-small: 4px;
+  --op-space-2x-small: 8px;
+  --op-space-x-small: 16px;
+  --op-space-small: 24px;
+  --op-space-medium: 32px;
+  --op-space-large: 40px;
+  --op-space-x-large: 48px;
+  --op-space-2x-large: 56px;
+  --op-space-3x-large: 80px;
+  --op-space-4x-large: 160px;
+}
+
+@mixin radius-varieties {
+  --op-radius-small: 0;
+  --op-radius-medium: 0;
+  --op-radius-large: 0;
+  --op-radius-x-large: 0;
+  --op-radius-2x-large: 0;
+}
+
+@mixin color-varieties {
+  --op-color-primary-h: 156deg;
+  --op-color-primary-s: 58;
+  --op-color-primary-l: 38;
+}
+
+// Theme
+:root[data-theme="dominic-dark"] {
+  @include space-varieties;
+  @include radius-varieties;
+  @include color-varieties;
+
+  select.form-control:not([multiple], [type=radio], [type=checkbox]) {
+    padding: var(--op-space-3x-small);
+    padding-right: var(--op-space-small);
+    background-position-x: calc(100% - (var(--op-space-small) / 2 - var(--op-encoded-images-dropdown-arrow-width) / 2));
+  }
+}

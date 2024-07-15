@@ -1,0 +1,19 @@
+// Actions
+.actions {
+  display: flex;
+  flex-direction: column;
+  padding: var(--op-space-small);
+  gap: var(--op-space-small);
+  border-radius: var(--op-radius-x-large);
+
+  box-shadow: var(--go-fish-box-shadow);
+  background: var(--op-color-primary-plus-seven);
+  color: var(--op-color-primary-on-plus-seven);
+
+  // Elements
+  .actions__input-collection {
+    display: flex;
+    gap: var(--op-space-small);
+  }
+
+}

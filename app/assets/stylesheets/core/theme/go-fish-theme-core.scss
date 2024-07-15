@@ -1,0 +1,8 @@
+// General Variables
+:root {
+  --go-fish-main-column-width: calc(84 * var(--op-size-unit));
+  --go-fish-main-row-height: calc(64 * var(--op-size-unit));
+  --go-fish-box-shadow: var(--op-border-all) var(--op-color-border);
+  --go-fish-header-size: calc(15 * var(--op-size-unit)); // 60px
+  --go-fish-playing-card-radius: calc(2 * var(--op-size-unit));
+}
