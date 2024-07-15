@@ -8,7 +8,8 @@ html
     = javascript_include_tag 'application', 'data-turbo-track': 'reload', defer: true
     meta content="width=device-width, initial-scale=1" name="viewport"
   body.app-body
-    = render "layouts/navbar"
+    .app__header
+      = render "layouts/navbar"
     .app__content
       = render "layouts/flash"
       = turbo_frame_tag 'modal'

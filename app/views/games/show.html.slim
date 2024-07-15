@@ -34,13 +34,17 @@ head
 
               .card-tray
                 .card-stack.card-stack--accordion-hand
-                  - player.hand.each do |card|
-                    / = image_tag "cards/#{card.rank.downcase}-#{card.suit.downcase}.svg", alt: "Playing Card"
-                    = image_tag "cards/2-clubs.svg", alt: "Playing Card"
+                  - if player.user_id == current_user.id
+                    - player.hand.each do |card|
+                      = image_tag "cards/#{card.rank.downcase}-#{card.suit.downcase}.svg", alt: "Playing Card"
+                  - else
+                    - player.hand.each do |card|
+                      = image_tag "cards/back-card.svg", alt: "Playing Card"
 
                 .card-stack.card-stack--accordion-books
                   - player.books.each do |book|
-                    img[src="cards/#{book.rank.downcase}-#{book.suit.downcase}.svg" alt="Playing Card"]
+                    img[src=asset_path("cards/#{book.rank.downcase}-#{book.suit.downcase}.svg") alt="Playing Card"]
+
                     
     .go-fish-panel.go-fish-panel--game-feed
       .go-fish-panel__header.go-fish-panel__header--game-feed
@@ -76,8 +80,8 @@ head
           - if player.user_id == current_user.id
             .card-stack.card-stack--player-hand
               - player.hand.each do |card|
-                / img[src="cards/#{card.rank.downcase}-#{card.suit.downcase}.svg" alt="Playing Card"]
-                = image_tag "cards/2-clubs.svg", alt: "Playing Card"
+                = image_tag "cards/#{card.rank.downcase}-#{card.suit.downcase}.svg", alt: "Playing Card"
+
     .go-fish-panel.go-fish-panel--player-books.go-fish-panel--bottom-row
       .go-fish-panel__header.go-fish-panel__header-title
         span Your Books
@@ -86,8 +90,7 @@ head
           - if player.user_id == current_user.id
             .card-stack.card-stack--player-books
               - player.books.each do |book|
-                / img[src="cards/#{book.rank.downcase}-#{book.suit.downcase}.svg" alt="Playing Card"]
-                = image_tag "cards/2-clubs.svg", alt: "Playing Card"
+                = image_tag "cards/#{card.rank.downcase}-#{card.suit.downcase}.svg", alt: "Playing Card"
 
 
 
