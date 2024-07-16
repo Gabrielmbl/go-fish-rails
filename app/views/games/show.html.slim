@@ -43,7 +43,8 @@ head
 
                 .card-stack.card-stack--accordion-books
                   - player.books.each do |book|
-                    img[src=asset_path("cards/#{book.rank.downcase}-#{book.suit.downcase}.svg") alt="Playing Card"]
+                    - book.cards.each do |card|
+                      = image_tag "cards/#{card.rank.downcase}-#{card.suit.downcase}.svg", alt: "Playing Card"
 
                     
     .go-fish-panel.go-fish-panel--game-feed
@@ -53,7 +54,7 @@ head
       .go-fish-panel__body.go-fish-panel__body--game-feed
         .notifications
           - @game.go_fish.round_results.each_with_index do |result, index|
-            - display_messages = result.generate_result_for(current_user.name)
+            - display_messages = result.messages_for(current_user.name)
             - display_messages.each_with_index do |display_message, message_index|
               - if message_index == 0
                 .message class=display_message.message_class = display_message.text
@@ -71,7 +72,10 @@ head
                 = label_tag :rank, "Card Rank"
                 = select_tag :rank, options_for_select(@game.go_fish.players.find { |player| player.user_id == current_user.id }.hand.map { |card| [card.rank, card.rank] }.uniq)
               .form-group
-                = f.submit "Ask", class: "btn btn--light"
+                - if @game.go_fish.current_player.user_id == current_user.id
+                  = f.submit "Ask", class: "btn btn--light"
+                - else
+                  = f.submit "Ask", class: "btn btn--light", disabled: true
     .go-fish-panel.go-fish-panel--player-hand.go-fish-panel--bottom-row
       .go-fish-panel__header.go-fish-panel__header-title
         span Your Hand

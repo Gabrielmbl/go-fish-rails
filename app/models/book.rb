@@ -8,7 +8,7 @@ class Book
   end
 
   def self.load(book)
-    cards = Card.load(book['cards'])
+    cards = book['cards'].map { |card_data| Card.load(card_data) }
     Book.new(cards)
   end
 

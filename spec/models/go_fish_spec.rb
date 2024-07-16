@@ -105,6 +105,15 @@ RSpec.describe GoFish, type: :model do
         expect(loaded_go_fish.deck.cards).to match_array(go_fish.deck.cards)
       end
 
+      it 'returns a GoFish object with the same books' do
+        player1.add_to_hand([card1, card2, card3, card4])
+        player2.add_to_hand([card5, card6, card7])
+        go_fish.play_round!(p1_id, p2_id, '2')
+        json = go_fish.as_json
+        loaded_go_fish = GoFish.load(json)
+        compare_books(loaded_go_fish)
+      end
+
       def compare_books(loaded_go_fish)
         expect(loaded_go_fish.players[0].books.map(&:cards)).to eq(go_fish.players[0].books.map(&:cards))
         expect(loaded_go_fish.players[1].books.map(&:cards)).to eq(go_fish.players[1].books.map(&:cards))

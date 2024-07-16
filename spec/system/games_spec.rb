@@ -80,7 +80,6 @@ RSpec.describe 'Games', :js, type: :system do
     it 'should display the round result' do
       expect(game.go_fish.round_results).to be_empty
       ask_for_card
-      binding.irb
       expect(page).to have_content(game.go_fish.round_results.last)
     end
 

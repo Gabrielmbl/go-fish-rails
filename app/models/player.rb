@@ -54,14 +54,19 @@ class Player
   end
 
   def add_to_books
+    new_book = nil
     rank_counts = hand.map(&:rank).group_by(&:itself).transform_values(&:count)
     rank_counts.each do |rank, count|
       next unless count == 4
 
       cards = hand.select { |card| card.rank == rank }
-      books << Book.new(cards)
+      new_book = Book.new(cards)
+      books << new_book
       remove_by_rank(rank)
     end
+    return nil unless new_book
+
+    new_book.first.rank
   end
 
   def score

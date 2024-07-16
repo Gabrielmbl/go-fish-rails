@@ -1,77 +1,41 @@
 require_relative 'message'
 
+# TODO: Store state of RoundResult
 class RoundResult
-  attr_accessor :result
+  attr_accessor :player_name, :opponent_name, :rank, :suit, :rank_drawn, :suit_drawn, :book_rank
 
-  def initialize
-    @result = Hash.new { |hash, key| hash[key] = [] }
-  end
-
-  def add_result(recipient, message_class, text)
-    message = Message.new(message_class, text)
-    result[recipient] << message
-  end
-
-  def generate_result_for(recipient)
-    if result[recipient].nil?
-      result['others']
-    else
-      result[recipient]
-    end
+  def initialize(player_name: nil, opponent_name: nil, rank: nil, suit: nil, rank_drawn: nil, suit_drawn: nil,
+                 book_rank: nil)
+    @player_name = player_name
+    @opponent_name = opponent_name
+    @rank = rank
+    @suit = suit
+    @rank_drawn = rank_drawn
+    @suit_drawn = suit_drawn
+    @book_rank = book_rank
   end
 
   def self.load(results)
     return [] unless results
 
-    results.map do |result_hash|
-      round_result = new
+    player_name = results['player_name']
+    opponent_name = results['opponent_name']
+    rank = results['rank']
+    suit = results['suit']
+    rank_drawn = results['rank_drawn']
+    suit_drawn = results['suit_drawn']
+    book_rank = results['book_rank']
+    RoundResult.new(player_name:, opponent_name:, rank:, suit:,
+                    rank_drawn:, suit_drawn:, book_rank:)
+  end
 
-      result_hash['result'].each do |recipient, messages|
-        messages.each do |message_data|
-          message = Message.load(message_data)
-          round_result.add_result(recipient, message.message_class, message.text)
-        end
-      end
-
-      round_result
+  def messages_for(recipient)
+    if recipient == player_name
+      Message.generate_player_messages(player_name, opponent_name, rank, suit, rank_drawn, suit_drawn, book_rank)
+    elsif recipient == opponent_name
+      Message.generate_opponent_messages(player_name, opponent_name, rank, suit, rank_drawn, suit_drawn, book_rank)
+    else
+      Message.generate_others_messages(player_name, opponent_name, rank, suit, rank_drawn, suit_drawn, book_rank)
     end
-  end
-
-  def add_ask_result(player1, player2, card_rank)
-    messages = Message.generate_ask_messages(player1, player2, card_rank)
-    add_result(player1.name, 'player_action', messages['player_message'])
-    add_result(player2.name, 'player_action', messages['opponent_message'])
-    add_result('others', 'player_action', messages['others_message'])
-  end
-
-  def add_took_result(player1, player2, card_rank)
-    messages = Message.generate_took_messages(player1, player2, card_rank)
-    add_result(player1.name, 'opponent_response', messages['player_message'])
-    add_result(player2.name, 'opponent_response', messages['opponent_message'])
-    add_result('others', 'opponent_response', messages['others_message'])
-  end
-
-  def add_drew_matched_result(player1, player2, card_rank, rank_drawn, suit_drawn)
-    messages = Message.generate_drew_matched_messages(player1, player2, card_rank, rank_drawn, suit_drawn)
-    add_result(player1.name, 'opponent_response', messages['player_message'])
-    add_result(player1.name, 'game_feedback', messages['player_feedback'])
-
-    add_result(player2.name, 'opponent_response', messages['opponent_message'])
-    add_result(player2.name, 'game_feedback', messages['opponent_feedback'])
-
-    add_result('others', 'opponent_response', messages['others_message'])
-    add_result('others', 'game_feedback', messages['others_feedback'])
-  end
-
-  def add_drew_not_matched_result(player1, player2, card_rank, rank_drawn, suit_drawn)
-    messages = Message.generate_drew_not_matched_messages(player1, player2, card_rank, rank_drawn, suit_drawn)
-    add_result(player1.name, 'opponent_response', messages['player_message'])
-    add_result(player1.name, 'game_feedback', messages['player_feedback'])
-
-    add_result(player2.name, 'opponent_response', messages['opponent_message'])
-    add_result(player2.name, 'game_feedback', messages['opponent_feedback'])
-
-    add_result('others', 'opponent_response', messages['others_message'])
-    add_result('others', 'game_feedback', messages['others_feedback'])
   end
 end
