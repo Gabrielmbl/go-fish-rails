@@ -4,4 +4,5 @@ main.container
   .header
     h1 New game
 
-  = render "form", editing: false
+  = turbo_frame_tag @game do
+    = render "form", game: @game, editing:false

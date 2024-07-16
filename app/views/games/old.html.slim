@@ -31,7 +31,7 @@
             - display_messages = result.generate_result_for(current_user.name)
             
             - display_messages.each do |message|
-              p.message.message_class=message.message_class = message.text
+              p.message.message_type=message.message_type = message.text
 
         - if @game.go_fish.current_player.user_id == current_user.id
           .game-actions

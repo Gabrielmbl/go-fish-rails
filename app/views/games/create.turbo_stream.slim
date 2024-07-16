@@ -1,0 +1,4 @@
+= turbo_stream.append "your_games", @game
+= turbo_stream.append "all_games", @game
+= turbo_stream.update Game.new, ""
+= render_turbo_stream_flash_messages

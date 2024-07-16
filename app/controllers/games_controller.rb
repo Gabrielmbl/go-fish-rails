@@ -1,8 +1,8 @@
 class GamesController < ApplicationController
   def index
-    @games = Game.all
+    @games = Game.ordered
     @user_games = current_user.games
-    @other_games = Game.where.not(id: @user_games.pluck(:id))
+    # @other_games = Game.where.not(id: @user_games.pluck(:id))
   end
 
   def show
@@ -28,6 +28,7 @@ class GamesController < ApplicationController
 
       respond_to do |format|
         format.html { redirect_to @game, notice: 'Game was successfully created.' }
+        format.turbo_stream { flash.now[:notice] = 'Game was successfully created.' }
       end
     else
       render :new, status: :unprocessable_entity
@@ -73,9 +74,17 @@ class GamesController < ApplicationController
     card_rank = params[:rank]
 
     if @game.play_round!(@user.id, opponent_id, card_rank)
-      redirect_to @game, notice: 'Round played.'
+      # redirect_to @game, notice: 'Round played.'
+      respond_to do |format|
+        format.html { redirect_to @game, notice: 'Round played successfully.' }
+        format.turbo_stream { flash.now[:notice] = 'Round played successfully.' }
+      end
     else
-      redirect_to @game, alert: 'Unable to play round.'
+      # redirect_to @game, alert: 'Unable to play round.'
+      respond_to do |format|
+        format.html { redirect_to @game, alert: 'Unable to play round.' }
+        format.turbo_stream { flash.now[:alert] = 'Unable to play round.' }
+      end
     end
   end
 
@@ -85,6 +94,7 @@ class GamesController < ApplicationController
 
     respond_to do |format|
       format.html { redirect_to games_path, notice: 'Game was successfully destroyed.' }
+      format.turbo_stream { flash.now[:notice] = 'Game was successfully destroyed.' }
     end
   end
 

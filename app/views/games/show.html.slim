@@ -57,25 +57,24 @@ head
             - display_messages = result.messages_for(current_user.name)
             - display_messages.each_with_index do |display_message, message_index|
               - if message_index == 0
-                .message class=display_message.message_class = display_message.text
+                .message class=display_message.message_type = display_message.text
               - else
                 .indented-message
                   span &#8627;
-                  .message class=display_message.message_class = display_message.text
-        .actions
-          .actions__input-collection
-            = form_for @game, url: game_rounds_path(@game), method: :create do |f|
+                  .message class=display_message.message_type = display_message.text
+        = form_for @game, url: game_rounds_path(@game), method: :create do |f|
+          .actions
+            .actions__input-collection
               .form-group.flex-grow-1
-                = label_tag :opponent_id, "Player"
-                = select_tag :opponent_id, options_for_select(@game.go_fish.players.reject { |player| player.user_id == current_user.id }.map { |player| [player.name, player.user_id] })
+                = label_tag :opponent_id, "Player", class: "form-label"
+                = select_tag :opponent_id, options_for_select(@game.go_fish.players.reject { |player| player.user_id == current_user.id }.map { |player| [player.name, player.user_id] }), class: "form-control form-control--small"
               .form-group.flex-grow-1
-                = label_tag :rank, "Card Rank"
-                = select_tag :rank, options_for_select(@game.go_fish.players.find { |player| player.user_id == current_user.id }.hand.map { |card| [card.rank, card.rank] }.uniq)
-              .form-group
-                - if @game.go_fish.current_player.user_id == current_user.id
-                  = f.submit "Ask", class: "btn btn--light"
-                - else
-                  = f.submit "Ask", class: "btn btn--light", disabled: true
+                = label_tag :rank, "Card Rank", class: "form-label"
+                = select_tag :rank, options_for_select(@game.go_fish.players.find { |player| player.user_id == current_user.id }.hand.map { |card| [card.rank, card.rank] }.uniq), class: "form-control form-control--small"
+            - if @game.go_fish.current_player.user_id == current_user.id
+              = f.submit "Ask", class: "btn-primary"
+            - else
+              = f.submit "Ask", class: "btn-primary", disabled: true
     .go-fish-panel.go-fish-panel--player-hand.go-fish-panel--bottom-row
       .go-fish-panel__header.go-fish-panel__header-title
         span Your Hand
@@ -95,9 +94,6 @@ head
             .card-stack.card-stack--player-books
               - player.books.each do |book|
                 = image_tag "cards/#{card.rank.downcase}-#{card.suit.downcase}.svg", alt: "Playing Card"
-
-
-
 
 
 

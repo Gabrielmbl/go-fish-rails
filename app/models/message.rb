@@ -1,14 +1,13 @@
 class Message
-  attr_accessor :message_class, :text
+  attr_accessor :message_type, :text
 
-  def initialize(message_class = nil, text = nil)
-    # TODO: Change this to message_type
-    @message_class = message_class
+  def initialize(message_type = nil, text = nil)
+    @message_type = message_type
     @text = text
   end
 
   def self.load(data)
-    new(data['message_class'], data['text'])
+    new(data['message_type'], data['text'])
   end
 
   def self.generate_player_messages(player_name, opponent_name, rank, suit, rank_drawn, suit_drawn, book_rank)
