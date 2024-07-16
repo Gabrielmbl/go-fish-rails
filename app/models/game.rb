@@ -1,5 +1,6 @@
 require_relative 'player'
 require_relative 'go_fish'
+require_relative 'go_fish_error'
 
 class Game < ApplicationRecord
   class InvalidTurn < StandardError; end
@@ -8,6 +9,7 @@ class Game < ApplicationRecord
   validates :required_number_players, presence: true, numericality: { only_integer: true, greater_than: 1 }
 
   scope :ordered, -> { order(id: :desc) }
+  after_update_commit :update_game
 
   has_many :game_users, dependent: :destroy
   has_many :users, through: :game_users
@@ -32,5 +34,12 @@ class Game < ApplicationRecord
 
   def enough_players?
     users.count == required_number_players
+  end
+
+  def update_game
+    users.each do |user|
+      broadcast_update_to "game_#{id}_#{user.id}", partial: 'games/game_view',
+                                                   locals: { game: self, current_user: user }
+    end
   end
 end

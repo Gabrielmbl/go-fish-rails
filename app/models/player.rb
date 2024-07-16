@@ -66,7 +66,7 @@ class Player
     end
     return nil unless new_book
 
-    new_book.first.rank
+    new_book.cards.first.rank
   end
 
   def score

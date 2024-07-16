@@ -1,6 +1,5 @@
 require_relative 'message'
 
-# TODO: Store state of RoundResult
 class RoundResult
   attr_accessor :player_name, :opponent_name, :rank, :suit, :rank_drawn, :suit_drawn, :book_rank
 

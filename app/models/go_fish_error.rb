@@ -1,0 +1,2 @@
+class GoFishError < StandardError
+end

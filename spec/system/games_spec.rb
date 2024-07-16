@@ -3,7 +3,6 @@ require 'rails_helper'
 RSpec.describe 'Games', :js, type: :system do
   include Warden::Test::Helpers
 
-  # let!(:game) { create(:game) }
   let!(:game) { create(:game, name: 'Capybara game') }
   let(:user) { create(:user) }
   let(:opponent) { create(:user) }
