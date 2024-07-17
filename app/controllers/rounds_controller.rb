@@ -9,12 +9,10 @@ class RoundsController < ApplicationController
     if @game.play_round!(@user.id, @opponent_id, @card_rank)
       respond_to do |format|
         format.html { redirect_to @game, notice: 'Round played successfully.' }
-        format.turbo_stream { flash.now[:notice] = 'Round played successfully.' }
       end
     else
       respond_to do |format|
         format.html { redirect_to @game, alert: 'Unable to play round.' }
-        format.turbo_stream { flash.now[:alert] = 'Unable to play round.' }
       end
     end
   end

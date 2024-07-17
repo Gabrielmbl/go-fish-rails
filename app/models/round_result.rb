@@ -1,7 +1,10 @@
+# TODO: Add morphing to view transactions for notifications
 require_relative 'message'
 
 class RoundResult
   attr_accessor :player_name, :opponent_name, :rank, :suit, :rank_drawn, :suit_drawn, :book_rank, :game_winner
+
+  LOG_SWITCH = false
 
   def initialize(player_name: nil, opponent_name: nil, rank: nil, suit: nil, rank_drawn: nil, suit_drawn: nil,
                  book_rank: nil, game_winner: nil)
@@ -44,6 +47,8 @@ class RoundResult
   end
 
   def round_result_log
+    return unless LOG_SWITCH
+
     puts "\n-------------------------------"
     asking_log
     transaction_log

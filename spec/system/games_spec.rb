@@ -1,7 +1,5 @@
 require 'rails_helper'
 
-# TODO: Implement playing round with turbo
-
 RSpec.describe 'Games', :js, type: :system do
   include Warden::Test::Helpers
 
@@ -69,6 +67,7 @@ RSpec.describe 'Games', :js, type: :system do
 
     it 'increases the number of cards in the hand of the user', :chrome do
       ask_for_card
+      sleep 0.1
       expect(page).to have_text('You asked')
 
       expect(game.reload.go_fish.players.first.hand.count).to be > GoFish::INITIAL_HAND_SIZE

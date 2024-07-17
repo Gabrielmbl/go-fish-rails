@@ -9,7 +9,11 @@ class Game < ApplicationRecord
   validates :required_number_players, presence: true, numericality: { only_integer: true, greater_than: 1 }
 
   scope :ordered, -> { order(id: :desc) }
-  after_update_commit :update_game
+  after_update_commit lambda {
+                        users.each do |user|
+                          broadcast_refresh_to "games:#{id}:users:#{user.id}"
+                        end
+                      }
 
   has_many :game_users, dependent: :destroy
   has_many :users, through: :game_users
@@ -36,10 +40,9 @@ class Game < ApplicationRecord
     users.count == required_number_players
   end
 
-  def update_game
-    users.each do |user|
-      broadcast_update_to "games:#{id}:users:#{user.id}", partial: 'games/game_view',
-                                                          locals: { game: self, current_user: user }
-    end
-  end
+  # def update_game
+  #   users.each do |user|
+  #     broadcast_refresh_to "games:#{id}:users:#{user.id}"
+  #   end
+  # end
 end
