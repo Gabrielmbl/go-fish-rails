@@ -3,5 +3,6 @@ main.container
   .header
     h1 Edit Game
 
-  = render "form", editing: true
+  = turbo_frame_tag @game do
+    = render "form", editing: true
 

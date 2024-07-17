@@ -2,7 +2,6 @@ class GamesController < ApplicationController
   def index
     @games = Game.ordered
     @user_games = current_user.games
-    # @other_games = Game.where.not(id: @user_games.pluck(:id))
   end
 
   def show
@@ -35,58 +34,16 @@ class GamesController < ApplicationController
     end
   end
 
-  # def update
-  #   if turn_params.present?
-  #     update_turn
-  #   else
-  #     update_name
-  #   end
-  # end
-
-  # def update_name
-  #   @game = Game.find(params[:id])
-
-  #   if @game.update(game_params)
-  #     respond_to do |format|
-  #       format.html { redirect_to @game, notice: 'Game was successfully updated.' }
-  #     end
-  #   else
-  #     render :edit, status: :unprocessable_entity
-  #   end
-  # end
-
-  # def update_turn
-  #   @game = Game.find(params[:game_id])
-  #   @user = User.find(params[:id])
-  #   opponent_id = params[:opponent_id]
-  #   card_rank = params[:rank]
-  #   @game.play_round!(@user.id, opponent_id, card_rank)
-  #   if @game.save
-  #     redirect_to @game, notice: 'Round played.'
-  #   else
-  #     redirect_to @game, alert: 'Unable to play round.'
-  #   end
-  # end
-
-  # TODO: This should go into roundscontroller
   def update
     @game = Game.find(params[:id])
-    @user = current_user
-    opponent_id = params[:opponent_id]
-    card_rank = params[:rank]
 
-    if @game.play_round!(@user.id, opponent_id, card_rank)
-      # redirect_to @game, notice: 'Round played.'
+    if @game.update(game_params)
       respond_to do |format|
-        format.html { redirect_to @game, notice: 'Round played successfully.' }
-        format.turbo_stream { flash.now[:notice] = 'Round played successfully.' }
+        format.html { redirect_to @game, notice: 'Game was successfully updated.' }
+        format.turbo_stream { flash.now[:notice] = 'Game was successfully updated.' }
       end
     else
-      # redirect_to @game, alert: 'Unable to play round.'
-      respond_to do |format|
-        format.html { redirect_to @game, alert: 'Unable to play round.' }
-        format.turbo_stream { flash.now[:alert] = 'Unable to play round.' }
-      end
+      render :edit, status: :unprocessable_entity
     end
   end
 
@@ -103,10 +60,6 @@ class GamesController < ApplicationController
   private
 
   def game_params
-    params.require(:game).permit(:name, :required_number_players)
+    params.require(:game).permit(:name)
   end
-
-  # def turn_params
-  #   params.require(:game).permit(:user_id, :opponent_id, :rank)
-  # end
 end

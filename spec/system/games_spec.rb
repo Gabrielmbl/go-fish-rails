@@ -32,11 +32,19 @@ RSpec.describe 'Games', :js, type: :system do
     expect(page).to have_text 'Capybara game'
   end
 
+  it 'edits a game' do
+    join_game
+    click_on 'Edit', match: :first
+
+    fill_in 'Name', with: 'Capybara game edited'
+    click_on 'Update Game'
+
+    expect(page).to have_text 'Game was successfully updated.'
+    expect(page).to have_text 'Capybara game edited'
+  end
+
   it 'destroys a game' do
-    visit games_path
-    click_on 'Join', match: :first
-    expect(page).to have_text 'You have joined the game'
-    visit games_path
+    join_game
     click_on 'Delete', match: :first
     visit games_path
     expect(page).not_to have_text game.name
@@ -89,5 +97,12 @@ RSpec.describe 'Games', :js, type: :system do
     click_on 'Join', match: :first
     expect(page).to have_text 'You have joined the game.'
     expect(page).to have_text 'Waiting for game to start...'
+  end
+
+  def join_game
+    visit games_path
+    click_on 'Join', match: :first
+    expect(page).to have_text 'You have joined the game'
+    visit games_path
   end
 end

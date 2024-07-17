@@ -1,3 +1,4 @@
+# TODO: All of this file needs to get refactored
 class Message
   attr_accessor :message_type, :text
 
