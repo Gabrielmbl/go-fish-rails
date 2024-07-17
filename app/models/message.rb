@@ -10,7 +10,7 @@ class Message
     new(data['message_type'], data['text'])
   end
 
-  def self.generate_player_messages(player_name, opponent_name, rank, suit, rank_drawn, suit_drawn, book_rank)
+  def self.generate_player_messages(player_name, opponent_name, rank, suit, rank_drawn, suit_drawn, book_rank, game_winner)
     messages = []
     messages << generate_ask_messages(player_name, opponent_name, rank)['player_message']
 
@@ -26,10 +26,13 @@ class Message
       messages << generate_took_messages(player_name, opponent_name, rank)['player_message']
     end
 
+    messages << generate_book_messages(player_name, book_rank)['player_message'] if book_rank
+    messages << generate_winner_messages(game_winner)['player_message'] if game_winner
+
     messages
   end
 
-  def self.generate_opponent_messages(player_name, opponent_name, rank, suit, rank_drawn, suit_drawn, book_rank)
+  def self.generate_opponent_messages(player_name, opponent_name, rank, suit, rank_drawn, suit_drawn, book_rank, game_winner)
     messages = []
     messages << generate_ask_messages(player_name, opponent_name, rank)['opponent_message']
 
@@ -45,10 +48,13 @@ class Message
       messages << generate_took_messages(player_name, opponent_name, rank)['opponent_message']
     end
 
+    messages << generate_book_messages(player_name, book_rank)['opponent_message'] if book_rank
+    messages << generate_winner_messages(game_winner)['opponent_message'] if game_winner
+
     messages
   end
 
-  def self.generate_others_messages(player_name, opponent_name, rank, suit, rank_drawn, suit_drawn, book_rank)
+  def self.generate_others_messages(player_name, opponent_name, rank, suit, rank_drawn, suit_drawn, book_rank, game_winner)
     messages = []
     messages << generate_ask_messages(player_name, opponent_name, rank)['others_message']
 
@@ -63,6 +69,9 @@ class Message
     else
       messages << generate_took_messages(player_name, opponent_name, rank)['others_message']
     end
+
+    messages << generate_book_messages(player_name, book_rank)['others_message'] if book_rank
+    messages << generate_winner_messages(game_winner)['others_message'] if game_winner
 
     messages
   end
@@ -102,6 +111,22 @@ class Message
     messages['opponent_feedback'] = Message.new('game_feedback', "#{player1} drew a card")
     messages['others_message'] = Message.new('opponent_response', "Go Fish: #{player2} doesn't have any #{card_rank}s")
     messages['others_feedback'] = Message.new('game_feedback', "#{player1} drew a card")
+    messages
+  end
+
+  def self.generate_book_messages(player, book_rank)
+    messages = {}
+    messages['player_message'] = Message.new('game_feedback', "You made a book of #{book_rank}s")
+    messages['opponent_message'] = Message.new('game_feedback', "#{player} made a book of #{book_rank}s")
+    messages['others_message'] = Message.new('game_feedback', "#{player} made a book of #{book_rank}s")
+    messages
+  end
+
+  def self.generate_winner_messages(game_winner)
+    messages = {}
+    messages['player_message'] = Message.new('game_feedback', 'You won the game!')
+    messages['opponent_message'] = Message.new('game_feedback', "#{game_winner} won the game!")
+    messages['others_message'] = Message.new('game_feedback', "#{game_winner} won the game!")
     messages
   end
 end

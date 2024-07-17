@@ -14,10 +14,11 @@
   = turbo_frame_tag "your_games" do
     - if @user_games.any?
       - @user_games.each do |game|
-        = render game
+        = render 'game', game: game
     - else
       p You are not in any games
 .all-games
   h2 All Games
   = turbo_frame_tag "all_games" do
-    = render @games
+    - @games.each do |game|
+      = render 'game', game: game

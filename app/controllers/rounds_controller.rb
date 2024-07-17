@@ -7,9 +7,15 @@ class RoundsController < ApplicationController
     @card_rank = round_params[:rank]
 
     if @game.play_round!(@user.id, @opponent_id, @card_rank)
-      redirect_to @game, notice: 'Round played successfully.'
+      respond_to do |format|
+        format.html { redirect_to @game, notice: 'Round played successfully.' }
+        format.turbo_stream { flash.now[:notice] = 'Round played successfully.' }
+      end
     else
-      redirect_to @game, alert: 'Unable to play round.'
+      respond_to do |format|
+        format.html { redirect_to @game, alert: 'Unable to play round.' }
+        format.turbo_stream { flash.now[:alert] = 'Unable to play round.' }
+      end
     end
   end
 

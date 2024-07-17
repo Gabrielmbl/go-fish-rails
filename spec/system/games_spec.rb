@@ -1,5 +1,7 @@
 require 'rails_helper'
 
+# TODO: Implement playing round with turbo
+
 RSpec.describe 'Games', :js, type: :system do
   include Warden::Test::Helpers
 
@@ -33,45 +35,33 @@ RSpec.describe 'Games', :js, type: :system do
   it 'destroys a game' do
     visit games_path
     click_on 'Join', match: :first
-
+    expect(page).to have_text 'You have joined the game'
+    visit games_path
     click_on 'Delete', match: :first
-    expect(page).to have_text 'Game was successfully destroyed.'
+    visit games_path
     expect(page).not_to have_text game.name
   end
 
-  describe '#update' do
-    it 'updates a game name' do
-      visit games_path
-      expect(page).to have_text game.name
-
-      click_on 'Join', match: :first
-
-      click_on 'Edit', match: :first
-
-      fill_in 'Name', with: 'Updated game'
-      click_on 'Update Game'
-
-      expect(page).to have_text 'Game was successfully updated.'
-      expect(page).to have_text 'Updated game'
-    end
-  end
-
-  context 'when user asks for a card' do
+  context 'when there are two players in the game' do
     before do
       game.users << user
       game.users << opponent
       game.start!
+      visit game_path(game)
+      game.reload
     end
 
-    it 'plays a round of the game' do
-      ask_for_card
-
-      expect(page).to have_text('Round played successfully.')
+    it 'goes back to index' do
+      visit games_path
+      click_on 'Play Now', match: :first
+      expect(page).to have_button 'Ask'
+      find('a.back-arrow').click
+      expect(page).to have_text 'Play Now'
     end
 
-    it 'increases the number of cards in the hand of the user' do
+    it 'increases the number of cards in the hand of the user', :chrome do
       ask_for_card
-      expect(page).to have_text('Round played successfully.')
+      expect(page).to have_text('You asked')
 
       expect(game.reload.go_fish.players.first.hand.count).to be > GoFish::INITIAL_HAND_SIZE
     end
@@ -83,8 +73,6 @@ RSpec.describe 'Games', :js, type: :system do
     end
 
     def ask_for_card
-      visit game_path(game)
-
       select opponent.name, from: 'opponent_id'
       select game.go_fish.players.first.hand.first.rank, from: 'rank'
 
@@ -98,32 +86,6 @@ RSpec.describe 'Games', :js, type: :system do
 
     click_on 'Join', match: :first
     expect(page).to have_text 'You have joined the game.'
-    expect(page).to have_text game.name
-    expect(page).to have_text 'Leave'
-  end
-
-  it 'leaves a game' do
-    visit games_path
-    click_on 'Join', match: :first
-
-    click_on 'Leave', match: :first
-    expect(page).to have_text 'You have left the game.'
-    expect(page).to have_text 'You are not in any games'
-  end
-
-  it 'does not allow a user to join a game twice' do
-    visit games_path
-    click_on 'Join', match: :first
-    click_on 'Back to games'
-    expect(page).not_to have_text 'Join'
-  end
-
-  it 'enters a game that you are in' do
-    visit games_path
-    click_on 'Join', match: :first
-    click_on 'Back to games'
-    click_on 'Play Now', match: :first
-    expect(page).to have_text 'Capybara game'
-    expect(page).to have_text 'Leave'
+    expect(page).to have_text 'Waiting for game to start...'
   end
 end

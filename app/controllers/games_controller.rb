@@ -67,6 +67,8 @@ class GamesController < ApplicationController
   #     redirect_to @game, alert: 'Unable to play round.'
   #   end
   # end
+
+  # TODO: This should go into roundscontroller
   def update
     @game = Game.find(params[:id])
     @user = current_user

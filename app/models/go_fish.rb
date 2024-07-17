@@ -72,14 +72,15 @@ class GoFish
 
   def finalize_turn(round_player, opponent, card_rank, card)
     book_rank = round_player.add_to_books
+    check_for_winner
+    check_empty_hand_or_draw
     round_results << if card.nil?
                        RoundResult.new(player_name: round_player.name, opponent_name: opponent.name, rank: card_rank,
-                                       book_rank:)
+                                       book_rank:, game_winner: game_winner&.name)
                      else
                        RoundResult.new(player_name: round_player.name, opponent_name: opponent.name, rank: card_rank,
-                                       rank_drawn: card.rank, suit_drawn: card.suit, book_rank:)
+                                       rank_drawn: card.rank, suit_drawn: card.suit, book_rank:, game_winner: game_winner&.name)
                      end
-    check_for_winner
   end
 
   def check_for_winner
@@ -104,6 +105,12 @@ class GoFish
     current_player_index = players.index(current_player)
     next_player_index = (current_player_index + 1) % players.size
     self.current_player = players[next_player_index]
+  end
+
+  def check_empty_hand_or_draw(current_player = self.current_player)
+    return unless current_player.hand.empty?
+
+    current_player.add_to_hand([deck.pop_card]) until deck.cards.empty? || current_player.hand.count == INITIAL_HAND_SIZE
   end
 
   def attributes=(hash)

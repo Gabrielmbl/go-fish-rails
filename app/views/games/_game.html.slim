@@ -21,5 +21,6 @@
       = button_to "Join",
                   game_game_users_path(game),
                   method: :post,
-                  class: "btn btn-primary"
+                  class: "btn btn-primary",
+                  data: { turbo_frame: "_top" }
 

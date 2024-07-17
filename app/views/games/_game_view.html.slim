@@ -1,5 +1,6 @@
 = turbo_frame_tag game
-  .game-view
+  - if game.go_fish
+    .game-view
       .go-fish-panel.go-fish-panel--game-board
         .go-fish-panel__header.go-fish-panel__header--game-board
           = link_to games_path('/index'), class: "btn btn--pill btn--icon btn--no-border btn--small back-arrow" do
@@ -63,7 +64,7 @@
                 .form-group.flex-grow-1
                   = label_tag :rank, "Card Rank", class: "form-label"
                   = select_tag :rank, options_for_select(game.go_fish.players.find { |player| player.user_id == current_user.id }.hand.map { |card| [card.rank, card.rank] }.uniq), class: "form-control form-control--small"
-              - if game.go_fish.current_player.user_id == current_user.id
+              - if game.go_fish.current_player.user_id == current_user.id && game.go_fish.current_player.hand.size > 0 && !game.go_fish.game_winner
                 = f.submit "Ask", class: "btn-primary"
               - else
                 = f.submit "Ask", class: "btn-primary", disabled: true
@@ -87,3 +88,5 @@
                 - player.books.each do |book|
                   - book.cards.each do |card|
                     = image_tag "cards/#{card.rank.downcase}-#{card.suit.downcase}.svg", alt: "Playing Card"
+  - else
+    p Waiting for game to start...

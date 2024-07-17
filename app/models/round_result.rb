@@ -1,10 +1,10 @@
 require_relative 'message'
 
 class RoundResult
-  attr_accessor :player_name, :opponent_name, :rank, :suit, :rank_drawn, :suit_drawn, :book_rank
+  attr_accessor :player_name, :opponent_name, :rank, :suit, :rank_drawn, :suit_drawn, :book_rank, :game_winner
 
   def initialize(player_name: nil, opponent_name: nil, rank: nil, suit: nil, rank_drawn: nil, suit_drawn: nil,
-                 book_rank: nil)
+                 book_rank: nil, game_winner: nil)
     @player_name = player_name
     @opponent_name = opponent_name
     @rank = rank
@@ -12,6 +12,7 @@ class RoundResult
     @rank_drawn = rank_drawn
     @suit_drawn = suit_drawn
     @book_rank = book_rank
+    @game_winner = game_winner
   end
 
   def self.load(results)
@@ -24,17 +25,21 @@ class RoundResult
     rank_drawn = results['rank_drawn']
     suit_drawn = results['suit_drawn']
     book_rank = results['book_rank']
+    game_winner = results['game_winner']
     RoundResult.new(player_name:, opponent_name:, rank:, suit:,
-                    rank_drawn:, suit_drawn:, book_rank:)
+                    rank_drawn:, suit_drawn:, book_rank:, game_winner:)
   end
 
   def messages_for(recipient)
     if recipient == player_name
-      Message.generate_player_messages(player_name, opponent_name, rank, suit, rank_drawn, suit_drawn, book_rank)
+      Message.generate_player_messages(player_name, opponent_name, rank, suit, rank_drawn, suit_drawn, book_rank,
+                                       game_winner)
     elsif recipient == opponent_name
-      Message.generate_opponent_messages(player_name, opponent_name, rank, suit, rank_drawn, suit_drawn, book_rank)
+      Message.generate_opponent_messages(player_name, opponent_name, rank, suit, rank_drawn, suit_drawn, book_rank,
+                                         game_winner)
     else
-      Message.generate_others_messages(player_name, opponent_name, rank, suit, rank_drawn, suit_drawn, book_rank)
+      Message.generate_others_messages(player_name, opponent_name, rank, suit, rank_drawn, suit_drawn, book_rank,
+                                       game_winner)
     end
   end
 end
