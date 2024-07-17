@@ -80,7 +80,12 @@ RSpec.describe 'Games', :js, type: :system do
       expect(page).to have_content(game.go_fish.round_results.last)
     end
 
-    # TODO: Implement playing round with turbo
+    it 'should display message for there is a winner', :chrome do
+      winning_scenario
+      ask_for_card
+      expect(page).to have_text 'You made a book of 4s'
+      expect(page).to have_text 'You won the game!'
+    end
 
     def ask_for_card
       select opponent.name, from: 'opponent_id'
@@ -104,5 +109,15 @@ RSpec.describe 'Games', :js, type: :system do
     click_on 'Join', match: :first
     expect(page).to have_text 'You have joined the game'
     visit games_path
+  end
+
+  def winning_scenario
+    game.go_fish.deck.cards = []
+    game.go_fish.players.first.hand = [Card.new('4', 'Hearts'), Card.new('4', 'Diamonds'), Card.new('4', 'Clubs')]
+    game.go_fish.players.last.hand = [Card.new('4', 'Spades')]
+    game.go_fish.players.first.books = [Book.new([Card.new('2', 'Hearts')])]
+    game.go_fish.players.last.books = [Book.new([Card.new('3', 'Hearts')])]
+    game.go_fish.current_player = game.go_fish.players.first
+    game.save
   end
 end

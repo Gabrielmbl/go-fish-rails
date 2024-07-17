@@ -236,4 +236,26 @@ RSpec.describe GoFish, type: :model do
       expect(player1.hand.size).to eq(GoFish::INITIAL_HAND_SIZE)
     end
   end
+
+  context 'smoke test' do
+    it 'should play a game of Go Fish' do
+      go_fish.deal!
+      until go_fish.game_winner
+        current_player = go_fish.current_player
+        other_player = go_fish.players.select { |player| player != current_player }.first
+        rank = current_player.hand.sample.rank
+        go_fish.play_round!(current_player.user_id, other_player.user_id, rank)
+      end
+    end
+  end
+
+  describe '#move_cards_from_opponent_to_player' do
+    it 'should move all cards of a rank from opponent to player' do
+      player1.add_to_hand([card1])
+      player2.add_to_hand([card2, card3, card4])
+      go_fish.move_cards_from_opponent_to_player(player1, player2, '2')
+      expect(player1.hand).to match_array([card1, card2, card3, card4])
+      expect(player2.hand).to be_empty
+    end
+  end
 end

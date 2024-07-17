@@ -75,12 +75,13 @@ class GoFish
     check_for_winner
     check_empty_hand_or_draw
     round_results << if card.nil?
-                       RoundResult.new(player_name: round_player.name, opponent_name: opponent.name, rank: card_rank,
-                                       book_rank:, game_winner: game_winner&.name)
+                       round_result = RoundResult.new(player_name: round_player.name, opponent_name: opponent.name, rank: card_rank,
+                                                      book_rank:, game_winner: game_winner&.name)
                      else
-                       RoundResult.new(player_name: round_player.name, opponent_name: opponent.name, rank: card_rank,
-                                       rank_drawn: card.rank, suit_drawn: card.suit, book_rank:, game_winner: game_winner&.name)
+                       round_result = RoundResult.new(player_name: round_player.name, opponent_name: opponent.name, rank: card_rank,
+                                                      rank_drawn: card.rank, suit_drawn: card.suit, book_rank:, game_winner: game_winner&.name)
                      end
+    round_result.round_result_log
   end
 
   def check_for_winner

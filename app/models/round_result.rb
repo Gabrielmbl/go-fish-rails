@@ -42,4 +42,44 @@ class RoundResult
                                        game_winner)
     end
   end
+
+  def round_result_log
+    puts "\n-------------------------------"
+    asking_log
+    transaction_log
+    book_log if book_rank
+    puts "-------------------------------\n"
+    return unless game_winner
+
+    winning_log
+  end
+
+  def asking_log
+    puts "#{player_name} asked #{opponent_name} for any #{rank}s"
+  end
+
+  def winning_log
+    puts "#{game_winner} won the game"
+  end
+
+  def book_log
+    puts "#{player_name} made a book of #{book_rank}s"
+  end
+
+  def transaction_log
+    if rank_drawn
+      rank_drawn_log
+    else
+      puts "#{player_name} took #{rank}s from #{opponent_name}"
+    end
+  end
+
+  def rank_drawn_log
+    if rank == rank_drawn
+      puts "#{player_name} drew a #{rank} of #{suit}"
+      puts "Go Fish: #{opponent_name} doesn't have any #{rank}s"
+    else
+      puts "#{player_name} drew a #{rank_drawn} of #{suit_drawn}"
+    end
+  end
 end

@@ -46,7 +46,7 @@
           button.btn.btn-primary.btn--small = "#{game.go_fish.current_player.name}'s Turn"
         .go-fish-panel__body.go-fish-panel__body--game-feed
           .notifications
-            - game.go_fish.round_results.each_with_index do |result, index|
+            - game.go_fish.round_results&.reverse.each_with_index do |result, index|
               - display_messages = result.messages_for(current_user.name)
               - display_messages.each_with_index do |display_message, message_index|
                 - if message_index == 0
