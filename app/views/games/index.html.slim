@@ -20,5 +20,8 @@
 .all-games
   h2 All Games
   = turbo_frame_tag "all_games" do
-    - @games.each do |game|
-      = render 'game', game: game
+    - if @games.any?
+      - @games.each do |game|
+        = render 'game', game: game
+    - else
+      p There are no games available
