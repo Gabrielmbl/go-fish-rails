@@ -72,6 +72,8 @@ RSpec.describe 'Games', :js, type: :system do
       expect(page).to have_content(game.go_fish.round_results.last)
     end
 
+    # TODO: Implement playing round with turbo
+
     def ask_for_card
       select opponent.name, from: 'opponent_id'
       select game.go_fish.players.first.hand.first.rank, from: 'rank'

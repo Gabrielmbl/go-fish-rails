@@ -38,9 +38,8 @@ class Game < ApplicationRecord
 
   def update_game
     users.each do |user|
-      # TODO: change channel name to games:123:users:456
-      broadcast_update_to "game_#{id}_#{user.id}", partial: 'games/game_view',
-                                                   locals: { game: self, current_user: user }
+      broadcast_update_to "games:#{id}:users:#{user.id}", partial: 'games/game_view',
+                                                          locals: { game: self, current_user: user }
     end
   end
 end
