@@ -12,7 +12,8 @@
 
   // Elements
   .actions__input-collection {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
     gap: var(--op-space-small);
   }
 
