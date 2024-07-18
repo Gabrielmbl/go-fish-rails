@@ -1,13 +1,13 @@
-# TODO: Add morphing to view transactions for notifications
 require_relative 'message'
 
 class RoundResult
-  attr_accessor :player_name, :opponent_name, :rank, :suit, :rank_drawn, :suit_drawn, :book_rank, :game_winner
+  attr_accessor :player_name, :opponent_name, :rank, :suit, :rank_drawn, :suit_drawn, :book_rank, :game_winner, :id
 
   LOG_SWITCH = false
 
-  def initialize(player_name: nil, opponent_name: nil, rank: nil, suit: nil, rank_drawn: nil, suit_drawn: nil,
+  def initialize(id: nil, player_name: nil, opponent_name: nil, rank: nil, suit: nil, rank_drawn: nil, suit_drawn: nil,
                  book_rank: nil, game_winner: nil)
+    @id = id
     @player_name = player_name
     @opponent_name = opponent_name
     @rank = rank
@@ -21,6 +21,7 @@ class RoundResult
   def self.load(results)
     return [] unless results
 
+    id = results['id']
     player_name = results['player_name']
     opponent_name = results['opponent_name']
     rank = results['rank']
@@ -29,7 +30,7 @@ class RoundResult
     suit_drawn = results['suit_drawn']
     book_rank = results['book_rank']
     game_winner = results['game_winner']
-    RoundResult.new(player_name:, opponent_name:, rank:, suit:,
+    RoundResult.new(id:, player_name:, opponent_name:, rank:, suit:,
                     rank_drawn:, suit_drawn:, book_rank:, game_winner:)
   end
 

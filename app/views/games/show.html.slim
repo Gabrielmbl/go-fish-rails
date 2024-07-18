@@ -46,16 +46,17 @@
         span Game Feed
         button.btn.btn-primary.btn--small = "#{@game.go_fish.current_player.name}'s Turn"
       .go-fish-panel__body.go-fish-panel__body--game-feed
-        .notifications
-          - @game.go_fish.round_results&.reverse.each_with_index do |result, index|
+        .notifications data-controller="notifications"
+          - @game.go_fish.round_results&.each_with_index do |result, index|
             - display_messages = result.messages_for(current_user.name)
             - display_messages.each_with_index do |display_message, message_index|
-              - if message_index == 0
-                .message class=display_message.message_type = display_message.text
-              - else
-                .indented-message
-                  span &#8627;
+              .notifications__round_result id="#{result.id}" data-notifications-target="item"
+                - if message_index == 0
                   .message class=display_message.message_type = display_message.text
+                - else
+                  .indented-message
+                    span &#8627;
+                    .message class=display_message.message_type = display_message.text
         = form_for @game, url: game_rounds_path(@game), method: :create do |f|
           .actions
             .actions__input-collection

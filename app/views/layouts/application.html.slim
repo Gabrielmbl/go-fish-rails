@@ -12,10 +12,9 @@ html
   body.app-body
     .app__header
       = render "layouts/navbar"
-    .app__content
-      #flash
-        = render "layouts/flash"
-      = turbo_frame_tag 'modal'
-      = turbo_frame_tag 'panel'
-      = render 'confirm'
-      = yield
+    #flash
+      = render "layouts/flash"
+    = turbo_frame_tag 'modal'
+    = turbo_frame_tag 'panel'
+    = render 'confirm'
+    = yield

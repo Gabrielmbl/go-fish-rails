@@ -14,3 +14,16 @@
 @view-transition {
   navigation: auto;
 }
+
+.animate {
+  height: 100%;
+  opacity: var(--op-opacity-full);
+
+  transition-property: opacity, height;
+  transition-duration: 1s;
+
+  @starting-style {
+    height: 0;
+    opacity: var(--op-opacity-none);
+  }
+}

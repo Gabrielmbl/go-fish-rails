@@ -82,13 +82,13 @@ class GoFish
     book_rank = round_player.add_to_books
     check_for_winner
     check_empty_hand_or_draw
-    round_results << if card.nil?
-                       round_result = RoundResult.new(player_name: round_player.name, opponent_name: opponent.name, rank: card_rank,
-                                                      book_rank:, game_winner: game_winner&.name)
-                     else
-                       round_result = RoundResult.new(player_name: round_player.name, opponent_name: opponent.name, rank: card_rank,
-                                                      rank_drawn: card.rank, suit_drawn: card.suit, book_rank:, game_winner: game_winner&.name)
-                     end
+    round_results.unshift(if card.nil?
+                            round_result = RoundResult.new(id: (round_results.length + 1), player_name: round_player.name, opponent_name: opponent.name, rank: card_rank,
+                                                           book_rank:, game_winner: game_winner&.name)
+                          else
+                            round_result = RoundResult.new(id: (round_results.length + 1), player_name: round_player.name, opponent_name: opponent.name, rank: card_rank,
+                                                           rank_drawn: card.rank, suit_drawn: card.suit, book_rank:, game_winner: game_winner&.name)
+                          end)
     round_result.round_result_log
   end
 
