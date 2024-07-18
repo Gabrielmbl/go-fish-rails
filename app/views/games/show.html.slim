@@ -64,11 +64,17 @@
                 = select_tag :opponent_id, options_for_select(@game.go_fish.players.reject { |player| player.user_id == current_user.id }.map { |player| [player.name, player.user_id] }), class: "form-control form-control--small"
               .form-group.flex-grow-1
                 = label_tag :rank, "Card Rank", class: "form-label"
-                = select_tag :rank, options_for_select(@game.go_fish.players.find { |player| player.user_id == current_user.id }.hand.map { |card| [card.rank, card.rank] }.uniq), class: "form-control form-control--small"
+                .rank-buttons(data-controller="rank")
+                  = hidden_field_tag :rank, '', data: { "rank-target": 'input' }
+                  - @game.go_fish.players.find { |player| player.user_id == current_user.id }.hand.map { |card| card.rank }.uniq.each do |rank|
+                    = button_tag rank, class: "btn rank-button", data: { action: 'click->rank#select', "rank-target": 'button', rank: rank }
+
             - if @game.go_fish.current_player.user_id == current_user.id && @game.go_fish.current_player.hand.size > 0 && !@game.go_fish.game_winner
               = f.submit "Ask", class: "btn-primary"
             - else
               = f.submit "Ask", class: "btn-primary", disabled: true
+
+
     .go-fish-panel.go-fish-panel--player-hand.go-fish-panel--bottom-row
       .go-fish-panel__header.go-fish-panel__header-title
         span Your Hand
@@ -91,21 +97,24 @@
                   = image_tag "cards/#{card.rank.downcase}-#{card.suit.downcase}.svg", alt: "Playing Card"
   - if @game.go_fish.game_winner
     .modal-wrapper.modal-wrapper--active.modal-wrapper--demo
-      .modal-wrapper__backdrop
+      .modal-wrapper__backdrop data-action="click->toggle#off"
       .modal
         .modal__header
           span There is a winner!
-          button.btn.btn--no-border.btn--icon.btn--pill
-            span.material-symbols-outlined.icon--x-large close
+          = button_tag( material_icon('close', size: 'x-large'), class: 'btn btn--no-border btn--icon btn--pill', data: { action: "toggle#off" })
 
         .modal__body
           span = "#{@game.go_fish.game_winner.name} wins!"
         .modal__footer
-          button.btn Cancel
+          = button_tag( 'Cancel', class: 'btn', data: { action: "toggle#off" })
           button.btn = link_to games_path('/index'), class: "btn btn--no-border btn--icon btn--pill" do
               span Home
 
 - else
   p Waiting for game to start...
+
+
+
+
 
 

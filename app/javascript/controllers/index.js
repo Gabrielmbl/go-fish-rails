@@ -4,5 +4,11 @@
 
 import { application } from "./application"
 
+import RankController from "./rank_controller"
+application.register("rank", RankController)
+
 import RemovalsController from "./removals_controller"
 application.register("removals", RemovalsController)
+
+import ToggleController from "./toggle_controller"
+application.register("toggle", ToggleController)

@@ -86,7 +86,7 @@ RSpec.describe 'Games', :js, type: :system do
       expect(page).to have_text 'You won the game!'
     end
 
-    it 'should display modal for there is a winner and allow user to go the home page' do
+    it 'should display modal for there is a winner and allow user to go the home page', :chrome do
       winning_scenario
       ask_for_card
       expect(page).to have_text 'There is a winner!'
