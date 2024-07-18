@@ -86,6 +86,14 @@ RSpec.describe 'Games', :js, type: :system do
       expect(page).to have_text 'You won the game!'
     end
 
+    it 'should display modal for there is a winner and allow user to go the home page' do
+      winning_scenario
+      ask_for_card
+      expect(page).to have_text 'There is a winner!'
+      all(:link_or_button, 'Home').last.click
+      expect(page).to have_text 'New game'
+    end
+
     def ask_for_card
       select opponent.name, from: 'opponent_id'
       select game.go_fish.players.first.hand.first.rank, from: 'rank'

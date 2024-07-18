@@ -89,6 +89,22 @@
               - player.books.each do |book|
                 - book.cards.each do |card|
                   = image_tag "cards/#{card.rank.downcase}-#{card.suit.downcase}.svg", alt: "Playing Card"
+  - if @game.go_fish.game_winner
+    .modal-wrapper.modal-wrapper--active.modal-wrapper--demo
+      .modal-wrapper__backdrop
+      .modal
+        .modal__header
+          span There is a winner!
+          button.btn.btn--no-border.btn--icon.btn--pill
+            span.material-symbols-outlined.icon--x-large close
+
+        .modal__body
+          span = "#{@game.go_fish.game_winner.name} wins!"
+        .modal__footer
+          button.btn Cancel
+          button.btn = link_to games_path('/index'), class: "btn btn--no-border btn--icon btn--pill" do
+              span Home
+
 - else
   p Waiting for game to start...
 
