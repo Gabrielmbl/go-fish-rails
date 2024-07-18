@@ -8,7 +8,7 @@ class RoundsController < ApplicationController
     @game.play_round!(@user.id, @opponent_id, @card_rank)
     redirect_to @game
   rescue GoFish::InvalidRank
-    flash[:alert] = 'You must ask for a rank that you have.'
+    flash[:alert] = 'You must ask for a rank that you have in your hand.'
     redirect_to @game
   end
 

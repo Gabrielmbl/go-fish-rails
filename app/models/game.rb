@@ -1,6 +1,5 @@
 require_relative 'player'
 require_relative 'go_fish'
-require_relative 'go_fish_error'
 
 class Game < ApplicationRecord
   class InvalidTurn < StandardError; end

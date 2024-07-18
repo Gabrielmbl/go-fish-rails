@@ -79,14 +79,14 @@ RSpec.describe 'Games', :js, type: :system do
       expect(page).to have_content(game.go_fish.round_results.last)
     end
 
-    it 'should display message for there is a winner', :chrome do
+    it 'should display message for there is a winner' do
       winning_scenario
       ask_for_card
       expect(page).to have_text 'You made a book of 4s'
       expect(page).to have_text 'You won the game!'
     end
 
-    it 'should display modal for there is a winner and allow user to go the home page', :chrome do
+    it 'should display modal for there is a winner and allow user to go the home page' do
       winning_scenario
       ask_for_card
       expect(page).to have_text 'There is a winner!'
@@ -96,7 +96,8 @@ RSpec.describe 'Games', :js, type: :system do
 
     def ask_for_card
       select opponent.name, from: 'opponent_id'
-      select game.go_fish.players.first.hand.first.rank, from: 'rank'
+
+      click_button game.go_fish.players.first.hand.first.rank
 
       click_button 'Ask'
     end
