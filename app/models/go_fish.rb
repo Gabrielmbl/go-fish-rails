@@ -43,19 +43,28 @@ class GoFish
   end
 
   def play_round!(user_id, opponent_id, card_rank)
-    user = Player.find_player(players, user_id.to_i)
-    opponent = Player.find_player(players, opponent_id.to_i)
-    card = nil
-
+    user, opponent, card = set_user_and_opponent(user_id, opponent_id)
     raise InvalidRank, 'You must ask for a rank you have in your hand' unless user.hand_has_ranks?(card_rank)
 
     if opponent.hand_has_ranks?(card_rank)
       move_cards_from_opponent_to_player(user, opponent, card_rank)
     else
-      card = fish_for_card
-      switch_players if card.rank != card_rank
+      card = handle_go_fish(card_rank)
     end
     finalize_turn(user, opponent, card_rank, card)
+  end
+
+  def handle_go_fish(card_rank)
+    card = fish_for_card
+    switch_players if card.rank != card_rank
+    card
+  end
+
+  def set_user_and_opponent(user_id, opponent_id)
+    user = Player.find_player(players, user_id.to_i)
+    opponent = Player.find_player(players, opponent_id.to_i)
+    card = nil
+    [user, opponent, card]
   end
 
   def move_cards_from_opponent_to_player(player, opponent, rank)
