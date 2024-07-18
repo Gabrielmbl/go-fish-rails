@@ -6,7 +6,7 @@ export default class extends Controller {
     this.selectedRank = null
   }
 
-  static targets = ["input"]
+  static targets = ["input", "button"]
 
   select(event) {
     event.preventDefault()
@@ -15,7 +15,7 @@ export default class extends Controller {
 
     this.inputTarget.value = this.selectedRank
 
-    // this.buttonTargets.forEach(btn => btn.classList.remove("selected"))
-    // button.classList.add("selected")
+    this.buttonTargets.forEach(btn => btn.classList.remove("btn--active"))
+    button.classList.add("btn--active")
   }
 }

@@ -33,16 +33,11 @@ class Game < ApplicationRecord
     go_fish.play_round!(user_id, opponent_id, card_rank)
     save!
   rescue GoFishError => e
-    raise InvalidTurn
+    flash[:alert] = 'You must ask for a rank that you have.'
+    raise
   end
 
   def enough_players?
     users.count == required_number_players
   end
-
-  # def update_game
-  #   users.each do |user|
-  #     broadcast_refresh_to "games:#{id}:users:#{user.id}"
-  #   end
-  # end
 end
