@@ -12,7 +12,7 @@
                     game_path(game),
                     method: :delete,
                     class: "btn btn-light"
-        = link_to "Edit",
+        = modal_link_to "Edit",
                   edit_game_path(game),
                   class: "btn btn-light"
     - else

@@ -63,7 +63,7 @@
                 = label_tag :opponent_id, "Player", class: "form-label"
                 = select_tag :opponent_id, options_for_select(@game.go_fish.players.reject { |player| player.user_id == current_user.id }.map { |player| [player.name, player.user_id] }), class: "form-control form-control--small"
               .form-group.flex-grow-1
-                = label_tag :rank, "Card Rank", class: "form-label"
+                span.form-label Card Rank
                 .rank-buttons(data-controller="rank")
                   = hidden_field_tag :rank, '', data: { "rank-target": 'input' }
                   - @game.go_fish.players.find { |player| player.user_id == current_user.id }.hand.map { |card| card.rank }.uniq.each do |rank|
@@ -96,20 +96,25 @@
                 - book.cards.each do |card|
                   = image_tag "cards/#{card.rank.downcase}-#{card.suit.downcase}.svg", alt: "Playing Card"
   - if @game.go_fish.game_winner
-    .modal-wrapper.modal-wrapper--active.modal-wrapper--demo
-      .modal-wrapper__backdrop data-action="click->toggle#off"
-      .modal
-        .modal__header
-          span There is a winner!
-          = button_tag( material_icon('close', size: 'x-large'), class: 'btn btn--no-border btn--icon btn--pill', data: { action: "toggle#off" })
+    = turbo_frame_tag 'modal' do
+      .modal-wrapper(
+        data-controller="toggle"
+        data-toggle-perform-on-connect-value=true
+        data-toggle-active-class="modal-wrapper--active"
+        data-turbo-cache="false"
+        data-action="keydown.esc@window->toggle#off"
+      )
+        .modal-wrapper__backdrop data-action="click->toggle#off"
+        .modal data-testid="modal-content"
+          .modal__header
+            span There is a winner!
+            = button_tag( material_icon('close', size: 'x-large'), class: 'btn btn--no-border btn--icon btn--pill', data: { action: "toggle#off" })
 
-        .modal__body
-          span = "#{@game.go_fish.game_winner.name} wins!"
-        .modal__footer
-          = button_tag( 'Cancel', class: 'btn', data: { action: "toggle#off" })
-          button.btn = link_to games_path('/index'), class: "btn btn--no-border btn--icon btn--pill" do
-              span Home
+          .modal__body
+            span = "#{@game.go_fish.game_winner.name} wins!"
 
+          .modal__footer
+            = link_to 'Home', games_path, class: "btn-primary"
 - else
   p Waiting for game to start...
 

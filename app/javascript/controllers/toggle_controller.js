@@ -40,6 +40,6 @@ export default class extends Controller {
 
   _toggleActiveClass(element, direction = !element.classList.contains(this.activeClass)) {
     // next-tick to allow animation-in after connect
-    setTimeout(()=>{element.classList.toggle(this.activeClass, direction)}, 0)
+    setTimeout(() => { element.classList.toggle(this.activeClass, direction) }, 0)
   }
 }

@@ -43,7 +43,7 @@ class GoFish
   end
 
   def play_round!(user_id, opponent_id, card_rank)
-    user, opponent, card = set_user_and_opponent(user_id, opponent_id)
+    user, opponent = set_user_and_opponent(user_id, opponent_id)
     raise InvalidRank, 'You must ask for a rank you have in your hand' unless user.hand_has_ranks?(card_rank)
 
     if opponent.hand_has_ranks?(card_rank)
@@ -63,8 +63,7 @@ class GoFish
   def set_user_and_opponent(user_id, opponent_id)
     user = Player.find_player(players, user_id.to_i)
     opponent = Player.find_player(players, opponent_id.to_i)
-    card = nil
-    [user, opponent, card]
+    [user, opponent]
   end
 
   def move_cards_from_opponent_to_player(player, opponent, rank)
@@ -79,7 +78,7 @@ class GoFish
     card
   end
 
-  def finalize_turn(round_player, opponent, card_rank, card)
+  def finalize_turn(round_player, opponent, card_rank, card = nil)
     book_rank = round_player.add_to_books
     check_for_winner
     check_empty_hand_or_draw

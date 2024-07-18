@@ -1,8 +1,4 @@
-main.container
+= content_for :modal_title
+  h1 Edit Game
 
-  .header
-    h1 Edit Game
-
-  = turbo_frame_tag @game do
-    = render "form", editing: true
-
+= render "form", editing: true

@@ -1,7 +1,6 @@
 = simple_form_for @game do |f|
-  = form_error_notification(@game)
-
   = f.input :name, input_html: { autofocus: true }, required: true
   = f.input :required_number_players, required: true unless editing
-  = link_to "Cancel", games_path, class: "btn btn-light"
-  = f.submit class: "btn btn--secondary"
+
+  = content_for :modal_actions
+    = f.submit class: "btn-primary", form: f.id
