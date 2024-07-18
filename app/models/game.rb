@@ -32,9 +32,6 @@ class Game < ApplicationRecord
   def play_round!(user_id, opponent_id, card_rank)
     go_fish.play_round!(user_id, opponent_id, card_rank)
     save!
-  rescue GoFishError => e
-    flash[:alert] = 'You must ask for a rank that you have.'
-    raise
   end
 
   def enough_players?

@@ -1,2 +1,0 @@
-class GoFishError < StandardError
-end
