@@ -12,6 +12,7 @@ class RoundsController < ApplicationController
     redirect_to @game
   rescue GoFish::InvalidTurn
     flash[:danger] = 'Game is over.'
+    redirect_to @game
   end
 
   private
@@ -25,6 +26,6 @@ class RoundsController < ApplicationController
   end
 
   def round_params
-    params.permit(:opponent_id, :rank)
+    params.permit(:opponent_id, :rank, :game_id, :_method, :authenticity_token, :commit)
   end
 end

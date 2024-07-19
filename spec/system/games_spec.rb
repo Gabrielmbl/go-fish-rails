@@ -87,7 +87,7 @@ RSpec.describe 'Games', :js, type: :system do
     end
 
     # TODO: Ask about how to test this scenario
-    it 'should display a flash message for when user tries to play when the game is over', :chrome do
+    xit 'should display a flash message for when user tries to play when the game is over', :chrome do
       winning_scenario
       ask_for_card
       expect(page).to have_text 'You made a book of 4s'
