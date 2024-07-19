@@ -5,7 +5,6 @@ require 'json'
 
 class GoFish
   include ActiveModel::Serializers::JSON
-  class InvalidRank < StandardError; end
   class InvalidTurn < StandardError; end
 
   INITIAL_HAND_SIZE = 7
@@ -45,8 +44,8 @@ class GoFish
 
   def play_round!(user_id, opponent_id, card_rank)
     user, opponent = set_user_and_opponent(user_id, opponent_id)
-    raise InvalidTurn, 'Game is over' unless game_winner.nil?
-    raise InvalidRank, 'You must ask for a rank you have in your hand' unless user.hand_has_ranks?(card_rank)
+    raise InvalidTurn, 'Game is over.' unless game_winner.nil?
+    raise InvalidTurn, 'You must ask for a rank you have in your hand.' unless user.hand_has_ranks?(card_rank)
 
     if opponent.hand_has_ranks?(card_rank)
       move_cards_from_opponent_to_player(user, opponent, card_rank)
@@ -65,6 +64,8 @@ class GoFish
   def set_user_and_opponent(user_id, opponent_id)
     user = Player.find_player(players, user_id.to_i)
     opponent = Player.find_player(players, opponent_id.to_i)
+    raise Player::InvalidOpponent, 'You cannot ask yourself for cards.' unless user != opponent
+
     [user, opponent]
   end
 

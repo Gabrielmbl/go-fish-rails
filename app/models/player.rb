@@ -2,6 +2,7 @@ require_relative 'deck'
 require_relative 'book'
 
 class Player
+  class InvalidOpponent < StandardError; end
   attr_reader :user_id
   attr_accessor :hand, :books
 
@@ -18,9 +19,15 @@ class Player
   def self.find_player(players, player_data)
     return nil unless player_data
 
-    return players.find { |player| player.user_id.to_i == player_data } if player_data.is_a?(Integer)
+    player = if player_data.is_a?(Integer)
+               players.find { |player| player.user_id.to_i == player_data }
+             else
+               players.find { |player| player.user_id == player_data['user_id'] }
+             end
 
-    players.find { |player| player.user_id == player_data['user_id'] }
+    raise InvalidOpponent, 'Player not found.' if player.nil?
+
+    player
   end
 
   def self.load(players)

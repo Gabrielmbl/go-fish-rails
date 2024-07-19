@@ -67,7 +67,6 @@ RSpec.describe 'Games', :js, type: :system do
 
     it 'increases the number of cards in the hand of the user', :chrome do
       ask_for_card
-      sleep 0.1
       expect(page).to have_text('You asked')
 
       expect(game.reload.go_fish.players.first.hand.count).to be > GoFish::INITIAL_HAND_SIZE
@@ -81,6 +80,7 @@ RSpec.describe 'Games', :js, type: :system do
 
     it 'should display message for there is a winner' do
       winning_scenario
+      sleep 0.2
       ask_for_card
       expect(page).to have_text 'You made a book of 4s'
       expect(page).to have_text 'You won the game!'
@@ -98,8 +98,10 @@ RSpec.describe 'Games', :js, type: :system do
       expect(page).to have_text 'Game is over'
     end
 
-    it 'should display modal for there is a winner and allow user to go the home page' do
+    it 'should display modal for there is a winner and allow user to go the home page', :chrome do
       winning_scenario
+      sleep 0.2
+      binding.irb
       ask_for_card
       expect(page).to have_text 'You won the game!'
       expect(page).to have_text 'There is a winner!'
@@ -110,9 +112,12 @@ RSpec.describe 'Games', :js, type: :system do
     def ask_for_card
       select opponent.name, from: 'opponent_id'
 
+      expect(page).to have_button game.reload.go_fish.players.first.hand.first.rank
+
       click_button game.go_fish.players.first.hand.first.rank
 
       click_button 'Ask'
+      sleep 0.4
     end
   end
 
@@ -140,5 +145,6 @@ RSpec.describe 'Games', :js, type: :system do
     game.go_fish.players.last.books = [Book.new([Card.new('3', 'Hearts')])]
     game.go_fish.current_player = game.go_fish.players.first
     game.save
+    game.reload
   end
 end

@@ -124,6 +124,23 @@ RSpec.describe GoFish, type: :model do
       player2.add_to_hand([card3, card4, card5])
     end
 
+    it 'should raise error for when opponent does not exist' do
+      expect { go_fish.play_round!(p1_id, '0', '2') }.to raise_error(Player::InvalidOpponent, 'Player not found.')
+    end
+
+    it 'should raise error for when opponent is yourself' do
+      expect do
+        go_fish.play_round!(p1_id, p1_id, '2')
+      end.to raise_error(Player::InvalidOpponent, 'You cannot ask yourself for cards.')
+    end
+
+    it 'should raise error for when player does not have the rank they asked for' do
+      expect do
+        go_fish.play_round!(p1_id, p2_id,
+                            'J')
+      end.to raise_error(GoFish::InvalidTurn, 'You must ask for a rank you have in your hand.')
+    end
+
     context 'taking cards from opponent' do
       it "should have player1's hand include 2 of C, 2 of S, not 3 of H" do
         go_fish.play_round!(p1_id, p2_id, '2')
@@ -240,8 +257,7 @@ RSpec.describe GoFish, type: :model do
           player2.books = []
           go_fish.play_round!(p1_id, p2_id, '3')
           expect(go_fish.game_winner).to eq(player1)
-          player1.hand = [card5]
-          expect { go_fish.play_round!(p1_id, p2_id, '3') }.to raise_error(GoFish::InvalidTurn, 'Game is over')
+          expect { go_fish.play_round!(p1_id, p2_id, '3') }.to raise_error(GoFish::InvalidTurn, 'Game is over.')
         end
       end
     end

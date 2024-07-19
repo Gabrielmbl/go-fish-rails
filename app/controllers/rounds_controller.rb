@@ -7,11 +7,8 @@ class RoundsController < ApplicationController
     @card_rank = round_params[:rank]
     @game.play_round!(@user.id, @opponent_id, @card_rank)
     redirect_to @game
-  rescue GoFish::InvalidRank
-    flash[:danger] = 'You must ask for a rank that you have in your hand.'
-    redirect_to @game
-  rescue GoFish::InvalidTurn
-    flash[:danger] = 'Game is over.'
+  rescue GoFish::InvalidTurn, Player::InvalidOpponent => e
+    flash[:danger] = e
     redirect_to @game
   end
 
