@@ -10,6 +10,8 @@ class RoundsController < ApplicationController
   rescue GoFish::InvalidRank
     flash[:danger] = 'You must ask for a rank that you have in your hand.'
     redirect_to @game
+  rescue GoFish::InvalidTurn
+    flash[:danger] = 'Game is over.'
   end
 
   private

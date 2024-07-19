@@ -202,6 +202,14 @@ RSpec.describe GoFish, type: :model do
         expect(player1.books[0].cards).to match_array([card1, card2, card3, card4])
       end
 
+      it 'should add cards to all players if their hand is empty' do
+        player1.hand = [card1, card2, card3]
+        player2.hand = [card4]
+        go_fish.play_round!(p1_id, p2_id, '2')
+        expect(player1.hand.size).to be > 0
+        expect(player2.hand.size).to be > 0
+      end
+
       describe 'checks for a winner' do
         before do
           deck = Deck.new
@@ -223,6 +231,17 @@ RSpec.describe GoFish, type: :model do
           player2.books = [Book.new([card9, card10, card11, card12])]
           go_fish.play_round!(p1_id, p2_id, '3')
           expect(go_fish.game_winner).to eq(player2)
+        end
+
+        it 'should raise an error when there is a winner and user tries to play' do
+          player1.hand = [card5, card6, card7]
+          player2.hand = [card8]
+          player1.books = [Book.new([card1, card2, card3, card4])]
+          player2.books = []
+          go_fish.play_round!(p1_id, p2_id, '3')
+          expect(go_fish.game_winner).to eq(player1)
+          player1.hand = [card5]
+          expect { go_fish.play_round!(p1_id, p2_id, '3') }.to raise_error(GoFish::InvalidTurn, 'Game is over')
         end
       end
     end

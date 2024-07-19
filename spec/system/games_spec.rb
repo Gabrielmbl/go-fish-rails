@@ -86,7 +86,19 @@ RSpec.describe 'Games', :js, type: :system do
       expect(page).to have_text 'You won the game!'
     end
 
-    it 'should display modal for there is a winner and allow user to go the home page', :chrome do
+    # TODO: Ask about how to test this scenario
+    it 'should display a flash message for when user tries to play when the game is over', :chrome do
+      winning_scenario
+      ask_for_card
+      expect(page).to have_text 'You made a book of 4s'
+      expect(page).to have_text 'You won the game!'
+      game.go_fish.players.first.hand = [Card.new('6', 'Hearts')]
+      refresh
+      ask_for_card
+      expect(page).to have_text 'Game is over'
+    end
+
+    it 'should display modal for there is a winner and allow user to go the home page' do
       winning_scenario
       ask_for_card
       expect(page).to have_text 'You won the game!'

@@ -6,6 +6,7 @@ require 'json'
 class GoFish
   include ActiveModel::Serializers::JSON
   class InvalidRank < StandardError; end
+  class InvalidTurn < StandardError; end
 
   INITIAL_HAND_SIZE = 7
   attr_accessor :players, :deck, :current_player, :game_winner, :players_with_highest_number_of_books, :round_results
@@ -44,6 +45,7 @@ class GoFish
 
   def play_round!(user_id, opponent_id, card_rank)
     user, opponent = set_user_and_opponent(user_id, opponent_id)
+    raise InvalidTurn, 'Game is over' unless game_winner.nil?
     raise InvalidRank, 'You must ask for a rank you have in your hand' unless user.hand_has_ranks?(card_rank)
 
     if opponent.hand_has_ranks?(card_rank)
@@ -117,9 +119,13 @@ class GoFish
   end
 
   def check_empty_hand_or_draw(current_player = self.current_player)
-    return unless current_player.hand.empty?
+    nil if players.all? { |player| player.hand.count > 0 }
 
-    current_player.add_to_hand([deck.pop_card]) until deck.cards.empty? || current_player.hand.count == INITIAL_HAND_SIZE
+    players.each do |player|
+      if player.hand.empty?
+        player.add_to_hand([deck.pop_card]) until deck.cards.empty? || player.hand.count == INITIAL_HAND_SIZE
+      end
+    end
   end
 
   def attributes=(hash)
