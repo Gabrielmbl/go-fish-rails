@@ -21,6 +21,7 @@
 @import 'core/utilities';
 
 // components
+@import '@rolemodel/optics/dist/scss/components/sidebar';
 @import 'components/go-fish-panel';
 @import 'components/accordion';
 @import 'components/notifications';
@@ -29,3 +30,4 @@
 @import 'components/optics_overrides/navbar';
 @import 'components/optics_overrides/app__content';
 @import 'components/rank_selector';
+@import 'components/sidebar';

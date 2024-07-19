@@ -1,4 +1,9 @@
 // Layouts
+.games-list {
+  padding: var(--op-space-2x-large) var(--op-space-3x-large) var(--op-space-2x-large) var(--op-space-3x-large);
+  gap: op-space/x-large;
+}
+
 .game-view {
   display: grid;
   grid-template-columns: 1fr var(--go-fish-main-column-width);
@@ -16,7 +21,6 @@
 
   // Modifiers
   &.go-fish-panel--bottom-row {
-    // grid-template-columns: 1fr auto;
     grid-template-rows: auto 1fr;
     background-color: var(--op-color-neutral-plus-seven);
     color: var(--op-color-neutral-on-plus-seven);

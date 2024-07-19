@@ -15,7 +15,9 @@
 # it.
 #
 require 'json_matchers/rspec'
+require 'capybara'
 JsonMatchers.schema_root = 'spec/support/api/schemas'
+Capybara.default_max_wait_time = 5
 #
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|

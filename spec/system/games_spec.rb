@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'Games', :js, type: :system do
+RSpec.describe 'Games', type: :system do
   include Warden::Test::Helpers
 
   let!(:game) { create(:game, name: 'Capybara game') }
@@ -8,7 +8,7 @@ RSpec.describe 'Games', :js, type: :system do
   let(:opponent) { create(:user) }
 
   before do
-    # driven_by(:selenium_chrome_headless)
+    driven_by(:selenium_chrome_headless)
     login_as user
   end
 
@@ -65,48 +65,39 @@ RSpec.describe 'Games', :js, type: :system do
       expect(page).to have_text 'Play Now'
     end
 
-    it 'increases the number of cards in the hand of the user', :chrome do
+    it 'increases the number of cards in the hand of the user' do
       ask_for_card
       expect(page).to have_text('You asked')
 
       expect(game.reload.go_fish.players.first.hand.count).to be > GoFish::INITIAL_HAND_SIZE
     end
 
-    it 'should display the round result' do
-      expect(game.go_fish.round_results).to be_empty
-      ask_for_card
-      expect(page).to have_content(game.go_fish.round_results.last)
-    end
+    describe 'Displaying results' do
+      it 'should display the round result' do
+        expect(game.go_fish.round_results).to be_empty
+        ask_for_card
+        expect(page).to have_content(game.go_fish.round_results.last)
+      end
 
-    it 'should display message for there is a winner' do
-      winning_scenario
-      sleep 0.2
-      ask_for_card
-      expect(page).to have_text 'You made a book of 4s'
-      expect(page).to have_text 'You won the game!'
-    end
+      it 'should display message for there is a winner' do
+        winning_scenario
+        visit game_path(game)
+        sleep 0.2
+        ask_for_card
+        expect(page).to have_text 'You made a book of 4s'
+        expect(page).to have_text 'You won the game!'
+      end
 
-    # TODO: Ask about how to test this scenario
-    xit 'should display a flash message for when user tries to play when the game is over', :chrome do
-      winning_scenario
-      ask_for_card
-      expect(page).to have_text 'You made a book of 4s'
-      expect(page).to have_text 'You won the game!'
-      game.go_fish.players.first.hand = [Card.new('6', 'Hearts')]
-      refresh
-      ask_for_card
-      expect(page).to have_text 'Game is over'
-    end
-
-    it 'should display modal for there is a winner and allow user to go the home page', :chrome do
-      winning_scenario
-      sleep 0.2
-      binding.irb
-      ask_for_card
-      expect(page).to have_text 'You won the game!'
-      expect(page).to have_text 'There is a winner!'
-      all(:link_or_button, 'Home').last.click
-      expect(page).to have_text 'New game'
+      it 'should display modal for there is a winner and allow user to go the home page', :chrome do
+        winning_scenario
+        visit game_path(game)
+        sleep 0.2
+        ask_for_card
+        expect(page).to have_text 'You won the game!'
+        expect(page).to have_text 'There is a winner!'
+        all(:link_or_button, 'Home').last.click
+        expect(page).to have_text 'New game'
+      end
     end
 
     def ask_for_card

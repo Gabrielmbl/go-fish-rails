@@ -27,6 +27,12 @@ class GoFish
     end
   end
 
+  def can_take_turn?(user_id)
+    return true if current_player.user_id == user_id && current_player.hand.size.positive? && game_winner.nil?
+
+    false
+  end
+
   def self.dump(object)
     object.as_json
   end

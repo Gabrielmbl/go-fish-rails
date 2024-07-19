@@ -70,11 +70,7 @@
                   - @game.go_fish.players.find { |player| player.user_id == current_user.id }.hand.map { |card| card.rank }.uniq.each do |rank|
                     = button_tag rank, class: "btn btn--small", data: { action: 'click->rank#select', "rank-target": 'button', rank: rank }
 
-            - if @game.go_fish.current_player.user_id == current_user.id && @game.go_fish.current_player.hand.size > 0 && !@game.go_fish.game_winner
-              = f.submit "Ask", class: "btn-primary"
-            - else
-              = f.submit "Ask", class: "btn-primary", disabled: true
-
+            = f.submit "Ask", class: "btn-primary", disabled: !@game.go_fish.can_take_turn?(current_user.id)
 
     .go-fish-panel.go-fish-panel--player-hand.go-fish-panel--bottom-row
       .go-fish-panel__header.go-fish-panel__header-title

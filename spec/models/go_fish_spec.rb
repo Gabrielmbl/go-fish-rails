@@ -293,4 +293,17 @@ RSpec.describe GoFish, type: :model do
       expect(player2.hand).to be_empty
     end
   end
+
+  describe '#can_take_turn?' do
+    it 'should return true if user is the current player, have cards, and the game is not over' do
+      go_fish.current_player = player1
+      player1.add_to_hand([card1])
+      expect(go_fish.can_take_turn?(p1_id)).to be true
+    end
+
+    it 'should return false if user is not current player' do
+      go_fish.current_player = player2
+      expect(go_fish.can_take_turn?(p1_id)).to be false
+    end
+  end
 end
