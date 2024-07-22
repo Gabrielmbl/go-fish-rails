@@ -1,0 +1,6 @@
+.stats-body {
+  display: flex;
+  flex-direction: column;
+  padding: var(--op-space-2x-large) var(--op-space-3x-large) var(--op-space-2x-large) var(--op-space-3x-large);
+  gap: var(--op-space-x-large);
+}
