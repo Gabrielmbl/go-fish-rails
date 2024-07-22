@@ -1,13 +1,13 @@
 = turbo_frame_tag game do
-  .game
+  .game-row
     - if game.users.include?(current_user)
       = game.name
-      span< #{game.users.count}/#{game.required_number_players} Players</span>
-      = link_to "Play Now",
-                game_path(game),
-                class: "btn btn-primary",
-                data: { turbo_frame: "_top" }
-      .game__actions
+      
+      .game-actions
+        - if game.enough_players?
+          span The Game is Full
+        - else
+          span< #{game.users.count}/#{game.required_number_players} Players</span>
         = button_to "Delete",
                     game_path(game),
                     method: :delete,
@@ -15,12 +15,19 @@
         = modal_link_to "Edit",
                   edit_game_path(game),
                   class: "btn btn-light"
+        = link_to game_path(game), class: "btn btn--medium", data: { turbo_frame: "_top" } do
+          |  Play Now
+          .material-symbols-outlined.accordion__marker arrow_right
+                
+                
     - else
       span> #{game.name}
-      span> #{game.users.count}/#{game.required_number_players} Players
-      = button_to "Join",
-                  game_game_users_path(game),
-                  method: :post,
-                  class: "btn btn-primary",
-                  data: { turbo_frame: "_top" }
+
+      .game-actions
+        span> #{game.users.count}/#{game.required_number_players} Players
+        = button_to "Join",
+                    game_game_users_path(game),
+                    method: :post,
+                    class: "btn btn--medium",
+                    data: { turbo_frame: "_top" }
 

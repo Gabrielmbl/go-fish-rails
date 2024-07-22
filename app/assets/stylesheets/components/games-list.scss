@@ -1,0 +1,51 @@
+.games-list {
+  display: flex;
+  flex-direction: column;
+  padding: var(--op-space-2x-large) var(--op-space-3x-large) var(--op-space-2x-large) var(--op-space-3x-large);
+  gap: var(--op-space-x-large);
+}
+
+.games-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 0 0 var(--op-space-x-small) 0;
+  border: 0, 0, 1px, 0;
+}
+
+.your-games {
+  display: flex;
+  flex-direction: column;
+  gap: var(--op-space-x-small);
+}
+
+.all-games {
+  display: flex;
+  flex-direction: column;
+  gap: var(--op-space-x-small);
+}
+
+.turbo-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--op-space-x-small);
+}
+
+.game-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--op-space-x-small) var(--op-space-medium) var(--op-space-x-small) var(--op-space-medium);
+
+  border-radius: var(--op-radius-medium);
+  border: var(--op-border-width) solid var(--op-color-neutral-plus-four);
+  background-color: var(--op-color-neutral-plus-seven);
+}
+
+.game-actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--op-space-x-large);
+}

@@ -5,7 +5,7 @@
     .sidebar__content.sidebar__content--start
       .sidebar-header
         span Go Fish
-      button.btn.btn--no-border
+      = link_to games_path('/index'), class: "btn btn--no-border" do
         span.material-symbols-outlined circle
         | Games
       button.btn.btn--no-border
@@ -19,28 +19,29 @@
         | Profile
       button.btn.btn--no-border
         span.material-symbols-outlined logout
-        | Logout
+        | Log Out
 
   .games-list
-    .header
-      h1 Games
-      = modal_link_to "New game",
-                  new_game_path,
-                  class: "btn btn-primary"
-
     .your-games
-      h2 Your Games
+      .games-list-header
+        span Your Games
+        = modal_link_to new_game_path, class: "btn btn-primary btn--medium" do
+          = image_tag "add_button.svg"
+          |  New game
       = turbo_frame_tag "your_games" do
-        - if @user_games.any?
-          - @user_games.each do |game|
-            = render 'game', game: game
-        - else
-          p You are not in any games
+        .turbo-row
+          - if @user_games.any?
+            - @user_games.each do |game|
+              = render 'game', game: game
+          - else
+            p You are not in any games
     .all-games
-      h2 All Games
+      .games-list-header
+        span All Games
       = turbo_frame_tag "all_games" do
-        - if @games.any?
-          - @games.each do |game|
-            = render 'game', game: game
-        - else
-          p There are no games available
+        .turbo-row
+          - if @games.any?
+            - @games.each do |game|
+              = render 'game', game: game
+          - else
+            p There are no games available
