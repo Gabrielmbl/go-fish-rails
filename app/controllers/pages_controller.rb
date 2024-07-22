@@ -7,5 +7,8 @@ class PagesController < ApplicationController
   end
 
   def stats
+    @users = User.all
+    @games = Game.all
+    @game_users = GameUser.all
   end
 end

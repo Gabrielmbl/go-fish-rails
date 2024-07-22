@@ -100,7 +100,7 @@ class GoFish
                             round_result = RoundResult.new(id: (round_results.length + 1), player_name: round_player.name, opponent_name: opponent.name, rank: card_rank,
                                                            rank_drawn: card.rank, suit_drawn: card.suit, book_rank:, game_winner: game_winner&.name)
                           end)
-    skip_turn if current_player.hand.empty?
+    skip_turn
     round_result.round_result_log
   end
 
@@ -129,9 +129,9 @@ class GoFish
   end
 
   def skip_turn
-    player_name = current_player.name
-    switch_players
-    round_results.unshift(RoundResult.new(id: (round_results.length + 1), player_name:))
+    return if game_winner
+
+    switch_players until current_player.hand.any?
   end
 
   def check_empty_hand_or_draw(current_player = self.current_player)

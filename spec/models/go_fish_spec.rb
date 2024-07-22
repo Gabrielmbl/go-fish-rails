@@ -7,6 +7,12 @@ RSpec.describe GoFish, type: :model do
   let(:player2) { Player.new(user_id: user2.id) }
   let(:p1_id) { player1.user_id }
   let(:p2_id) { player2.user_id }
+  let(:user3) { create(:user) }
+  let(:player3) { Player.new(user_id: user3.id) }
+  let(:user4) { create(:user) }
+  let(:player4) { Player.new(user_id: user4.id) }
+  let(:user5) { create(:user) }
+  let(:player5) { Player.new(user_id: user5.id) }
   let(:go_fish) { GoFish.new(players: [player1, player2]) }
   let(:card1) { Card.new('2', 'Hearts') }
   let(:card2) { Card.new('2', 'Diamonds') }
@@ -308,13 +314,6 @@ RSpec.describe GoFish, type: :model do
   end
 
   describe '#skip_turn' do
-    it 'should switch players' do
-      go_fish.current_player = player1
-      go_fish.skip_turn
-      expect(go_fish.current_player).to eq(player2)
-      expect(go_fish.round_results.last.player_name).to eq(player1.name)
-    end
-
     context 'when there are 3 players in the game, deck is empty, and the next one up has no cards' do
       it 'should skip the next player' do
         player3 = Player.new(user_id: 3)
@@ -326,6 +325,24 @@ RSpec.describe GoFish, type: :model do
         player3.hand = [card8]
         go_fish.play_round!(p1_id, p2_id, '2')
         expect(go_fish.current_player).to eq(player3)
+      end
+    end
+
+    context 'when there are 5 players in the game, deck is empty, only people with cards are player 1 and 5' do
+      it 'should skip the next 3 players' do
+        go_fish.players << player3
+        go_fish.players << player4
+        go_fish.players << player5
+        player1.add_to_hand([card1])
+        player5.add_to_hand([card2])
+        go_fish.current_player = player1
+        go_fish.deck.cards = [card6]
+        player2.hand = []
+        player3.hand = []
+        player4.hand = []
+        player5.hand = [card8]
+        go_fish.play_round!(p1_id, player5.user_id, '2')
+        expect(go_fish.current_player).to eq(player5)
       end
     end
   end

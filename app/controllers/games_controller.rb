@@ -55,6 +55,6 @@ class GamesController < ApplicationController
   private
 
   def game_params
-    params.require(:game).permit(:name, :_method, :authenticity_token, :commit)
+    params.require(:game).permit(:name, :required_number_players, :_method, :authenticity_token, :commit)
   end
 end
