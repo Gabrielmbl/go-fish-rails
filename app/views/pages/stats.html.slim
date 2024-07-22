@@ -5,7 +5,9 @@
     thead
       tr
         th User
-        th Total Games Played
+        th Total Games Joined
+        th Total Games Completed
+        th Total Time Played
         th Wins
         th Losses
         th Win Rate
@@ -13,7 +15,9 @@
       - @users.each do |user|
         tr
           td = user.name
-          td = user.total_games_played
+          td = user.total_games_joined
+          td = user.total_games_completed
+          td = user.total_time_played
           td = user.wins
           td = user.losses
           td = user.win_rate

@@ -19,7 +19,7 @@ namespace :db do
   desc 'Populate database with users and games'
   task populate: :environment do
     puts 'Creating users...'
-    100.times do |i|
+    20.times do |i|
       User.create!(
         email: "user#{i + 1}@example.com",
         password: 'password',
@@ -29,7 +29,7 @@ namespace :db do
 
     user_count = User.count
     puts 'Creating games...'
-    100.times do |i|
+    20.times do |i|
       number_of_users = (2..5).to_a.sample
       offset = rand(user_count - number_of_users)
       users = User.offset(offset).first(number_of_users)

@@ -11,8 +11,17 @@ class User < ApplicationRecord
     email.split('@').first.capitalize
   end
 
-  def total_games_played
+  def total_games_joined
     game_users.count
+  end
+
+  def total_time_played
+    total_time = games.sum(&:duration)
+    total_time.round(5)
+  end
+
+  def total_games_completed
+    games.where.not(finished_at: nil).count
   end
 
   def wins
@@ -20,12 +29,12 @@ class User < ApplicationRecord
   end
 
   def losses
-    total_games_played - wins
+    total_games_completed - wins
   end
 
   def win_rate
-    return 0 if total_games_played.zero?
+    return 0.0 if total_games_completed.zero?
 
-    (wins.to_f / total_games_played * 100).round(2)
+    (wins.to_f / total_games_completed * 100).round(2)
   end
 end
