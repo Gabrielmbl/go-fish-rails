@@ -62,6 +62,8 @@ class GoFish
   end
 
   def handle_go_fish(card_rank)
+    return if deck.cards.empty?
+
     card = fish_for_card
     switch_players if card.rank != card_rank
     card
@@ -98,6 +100,7 @@ class GoFish
                             round_result = RoundResult.new(id: (round_results.length + 1), player_name: round_player.name, opponent_name: opponent.name, rank: card_rank,
                                                            rank_drawn: card.rank, suit_drawn: card.suit, book_rank:, game_winner: game_winner&.name)
                           end)
+    skip_turn if current_player.hand.empty?
     round_result.round_result_log
   end
 
@@ -123,6 +126,12 @@ class GoFish
     current_player_index = players.index(current_player)
     next_player_index = (current_player_index + 1) % players.size
     self.current_player = players[next_player_index]
+  end
+
+  def skip_turn
+    player_name = current_player.name
+    switch_players
+    round_results.unshift(RoundResult.new(id: (round_results.length + 1), player_name:))
   end
 
   def check_empty_hand_or_draw(current_player = self.current_player)

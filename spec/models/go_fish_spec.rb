@@ -306,4 +306,27 @@ RSpec.describe GoFish, type: :model do
       expect(go_fish.can_take_turn?(p1_id)).to be false
     end
   end
+
+  describe '#skip_turn' do
+    it 'should switch players' do
+      go_fish.current_player = player1
+      go_fish.skip_turn
+      expect(go_fish.current_player).to eq(player2)
+      expect(go_fish.round_results.last.player_name).to eq(player1.name)
+    end
+
+    context 'when there are 3 players in the game, deck is empty, and the next one up has no cards' do
+      it 'should skip the next player' do
+        player3 = Player.new(user_id: 3)
+        go_fish.players << player3
+        player1.add_to_hand([card1])
+        go_fish.current_player = player1
+        go_fish.deck.cards = [card6]
+        player2.hand = []
+        player3.hand = [card8]
+        go_fish.play_round!(p1_id, p2_id, '2')
+        expect(go_fish.current_player).to eq(player3)
+      end
+    end
+  end
 end

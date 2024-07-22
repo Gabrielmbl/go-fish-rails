@@ -17,7 +17,11 @@
       button.btn.btn--no-border
         span.material-symbols-outlined square
         | Profile
-      button.btn.btn--no-border
+      = link_to destroy_user_session_path, method: :post, class: "btn btn--no-border" do
+        span.material-symbols-outlined logout
+        | Log Out
+
+      = button_to destroy_user_session_path, method: :delete, style: "color: white;", class: "btn btn--no-border" do
         span.material-symbols-outlined logout
         | Log Out
 

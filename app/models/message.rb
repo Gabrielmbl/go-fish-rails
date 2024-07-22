@@ -51,7 +51,6 @@ class Message
 
     messages << generate_book_messages(player_name, book_rank)['opponent_message'] if book_rank
     messages << generate_winner_messages(game_winner)['opponent_message'] if game_winner
-
     messages
   end
 
