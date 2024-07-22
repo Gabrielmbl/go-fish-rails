@@ -9,12 +9,18 @@ html
     meta name="turbo-refresh-method" content="morph"
     meta name="view-transition" content="same-origin"
     meta content="width=device-width, initial-scale=1" name="viewport"
-  body.app-body
-    .app__header
-      = render "layouts/navbar"
-    #flash
-      = render "layouts/flash"
-    = turbo_frame_tag 'modal'
-    = turbo_frame_tag 'panel'
-    = render 'confirm'
-    = yield
+    - game_show_page = controller_name == 'games' && action_name == 'show'
+    - app_class = game_show_page ? 'app-body' : 'app-with-sidebar'
+  body class=app_class
+    - if game_show_page
+      .app__header
+        = render "layouts/navbar"
+    - else
+      = render "layouts/sidebar"
+    .app-body
+      #flash
+        = render "layouts/flash"
+      = turbo_frame_tag 'modal'
+      = turbo_frame_tag 'panel'
+      = render 'confirm'
+      = yield

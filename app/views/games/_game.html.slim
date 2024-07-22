@@ -6,6 +6,7 @@
       .game-actions
         - if game.enough_players?
           span The Game is Full
+          span< #{game.users.count}/#{game.required_number_players} Players</span>
         - else
           span< #{game.users.count}/#{game.required_number_players} Players</span>
         = button_to "Delete",
@@ -24,10 +25,14 @@
       span> #{game.name}
 
       .game-actions
-        span> #{game.users.count}/#{game.required_number_players} Players
-        = button_to "Join",
-                    game_game_users_path(game),
-                    method: :post,
-                    class: "btn btn--medium",
-                    data: { turbo_frame: "_top" }
+        - if game.enough_players?
+            span The Game is Full
+            span< #{game.users.count}/#{game.required_number_players} Players</span>
+        - else
+          span> #{game.users.count}/#{game.required_number_players} Players
+          = button_to "Join",
+                      game_game_users_path(game),
+                      method: :post,
+                      class: "btn btn--medium",
+                      data: { turbo_frame: "_top" }
 

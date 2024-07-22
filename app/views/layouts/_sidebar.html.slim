@@ -1,0 +1,20 @@
+.sidebar.sidebar--drawer
+  .sidebar__content.sidebar__content--start
+    .sidebar-header
+      = link_to games_path('/index'), class: "go-fish-logo" do
+      | Go Fish
+    = link_to games_path('/index'), class: "btn btn--no-border" do
+      span.material-symbols-outlined circle
+      | Games
+    = link_to stats_path('/stats'), class: "btn btn--no-border" do
+      span.material-symbols-outlined change_history
+      | Stats
+
+  .sidebar__content.sidebar__content--end
+    .divider.divider--medium
+    button.btn.btn--no-border
+      span.material-symbols-outlined square
+      | Profile
+    = button_to destroy_user_session_path, method: :delete, style: "color: var(--op-color-primary-on-plus-max);", class: "btn btn--no-border full-width text-justify-left" do
+      span.material-symbols-outlined logout
+      | Log Out

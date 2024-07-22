@@ -10,6 +10,9 @@ Rails.application.routes.draw do
   # root "posts#index"
 
   root to: "pages#home"
+
+  get 'stats', to: 'pages#stats', as: 'stats'
+
   resources :games do
     resources :game_users, only: %i[create destroy]
     resources :rounds, only: %i[create]
