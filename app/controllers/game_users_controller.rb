@@ -13,6 +13,17 @@ class GameUsersController < ApplicationController
     end
   end
 
+  def update
+    @game = Game.find(params[:game_id])
+    @game_user = @game.game_users.find_bu(user: current_user)
+
+    if @game_user.update(winner: true)
+      redirect_to @game, notice: 'You have won the game.'
+    else
+      redirect_to @game, alert: 'Unable to set that you won the game.'
+    end
+  end
+
   def destroy
     @game = Game.find(params[:game_id])
     @game_user = @game.game_users.find_by(user: current_user)

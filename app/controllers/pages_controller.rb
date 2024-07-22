@@ -7,8 +7,8 @@ class PagesController < ApplicationController
   end
 
   def stats
-    @users = User.all
-    @games = Game.all
-    @game_users = GameUser.all
+    @users = User.all.sort do |a, b|
+      [b.win_rate, b.wins] <=> [a.win_rate, a.wins]
+    end
   end
 end

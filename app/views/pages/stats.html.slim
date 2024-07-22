@@ -1,4 +1,6 @@
 .stats-body
+  .stats-header
+    span Leaderboard
   table.table-primary.table--fixed-layout.table--default-density.table--sticky-header
     thead
       tr
@@ -6,10 +8,12 @@
         th Total Games Played
         th Wins
         th Losses
+        th Win Rate
     tbody
       - @users.each do |user|
         tr
-          td = user.email
+          td = user.name
           td = user.total_games_played
           td = user.wins
           td = user.losses
+          td = user.win_rate

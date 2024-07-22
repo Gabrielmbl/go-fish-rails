@@ -30,10 +30,15 @@ class Game < ApplicationRecord
 
   def play_round!(user_id, opponent_id, card_rank)
     go_fish.play_round!(user_id, opponent_id, card_rank)
+    determine_winner!(go_fish.game_winner.user_id) if go_fish.game_winner
     save!
   end
 
   def enough_players?
     users.count == required_number_players
+  end
+
+  def determine_winner!(user_id)
+    game_users.find_by(user_id:).update(winner: true)
   end
 end

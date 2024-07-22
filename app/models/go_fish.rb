@@ -119,7 +119,7 @@ class GoFish
   end
 
   def compare_book_values(players_with_highest_number_of_books)
-    self.game_winner = players_with_highest_number_of_books.max_by { |player| player.score }
+    self.game_winner = players_with_highest_number_of_books.max_by(&:score)
   end
 
   def switch_players
