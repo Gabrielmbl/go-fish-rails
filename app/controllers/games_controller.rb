@@ -1,7 +1,7 @@
 class GamesController < ApplicationController
   def index
-    @games = Game.ordered
-    @user_games = current_user.games
+    @games = Game.includes(:users).ordered
+    @user_games = current_user.games.includes(:users)
   end
 
   def show
