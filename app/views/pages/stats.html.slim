@@ -7,17 +7,17 @@
         th User
         th Total Games Joined
         th Total Games Completed
-        th Total Time Played (Hours)
+        th Total Time Played (Seconds)
         th Wins
         th Losses
         th Win Rate
     tbody
-      - @users.each do |user|
+      - @leaderboard.each do |entry|
         tr
-          td = user.name
-          td = user.total_games_joined
-          td = user.total_games_completed
-          td = user.total_time_played
-          td = user.wins
-          td = user.losses
-          td = user.win_rate
+          td = entry.email
+          td = entry.total_games_joined
+          td = entry.total_games_completed
+          td = entry.total_time_played
+          td = entry.wins
+          td = entry.losses
+          td = entry.win_ratio

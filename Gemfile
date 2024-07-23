@@ -4,6 +4,8 @@ ruby '3.2.2'
 
 gem 'json_matchers'
 
+gem 'scenic'
+
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem 'rails', '~> 7.1.3', '>= 7.1.3.4'
 
