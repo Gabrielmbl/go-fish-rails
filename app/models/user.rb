@@ -12,7 +12,11 @@ class User < ApplicationRecord
   end
 
   def total_games_joined
-    game_users.count
+    game_users.size
+  end
+
+  def total_games_completed
+    games.select(&:finished_at).size
   end
 
   def total_time_played
@@ -20,12 +24,8 @@ class User < ApplicationRecord
     total_time.round(5)
   end
 
-  def total_games_completed
-    games.where.not(finished_at: nil).count
-  end
-
   def wins
-    game_users.where(winner: true).count
+    game_users.select(&:winner).size
   end
 
   def losses

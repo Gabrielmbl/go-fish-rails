@@ -30,7 +30,6 @@ class Game < ApplicationRecord
 
   def play_round!(user_id, opponent_id, card_rank)
     go_fish.play_round!(user_id, opponent_id, card_rank)
-    update(updated_at: Time.zone.now)
     if go_fish.game_winner
       determine_winner!(go_fish.game_winner.user_id)
       update(finished_at: Time.zone.now)
