@@ -1,6 +1,6 @@
 class GamesController < ApplicationController
   def index
-    @games = Game.includes(:users).ordered
+    @games = Game.includes(:users).ordered.page(params[:page]).per(10)
     @user_games = current_user.games.includes(:users)
   end
 

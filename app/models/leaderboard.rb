@@ -1,3 +1,5 @@
+# TODO: Make tests for this model
+# TODO: Add sorting by clicking on the column headers with ransack
 class Leaderboard < ApplicationRecord
   self.primary_key = :user_id
 

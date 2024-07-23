@@ -22,3 +22,5 @@
             = render 'game', game: game
         - else
           p There are no games available
+  .pagination
+    = paginate @games

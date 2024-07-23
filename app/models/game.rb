@@ -8,6 +8,7 @@ class Game < ApplicationRecord
   validates :required_number_players, presence: true, numericality: { only_integer: true, greater_than: 1 }
 
   scope :ordered, -> { order(id: :desc) }
+  scope :joinable, -> { order(created_at: desc).where(finished_at: nil).where.not(started_at: nil) }
   after_update_commit lambda {
                         users.each do |user|
                           broadcast_refresh_to "games:#{id}:users:#{user.id}"

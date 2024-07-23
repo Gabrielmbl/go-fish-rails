@@ -84,3 +84,5 @@ group :development, :test do
   gem 'rubocop'
   gem 'rubocop-rails'
 end
+
+gem "kaminari", "~> 1.2"
