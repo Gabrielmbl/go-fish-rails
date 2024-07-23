@@ -7,6 +7,7 @@ class PagesController < ApplicationController
   end
 
   def stats
-    @leaderboard = Leaderboard.order(win_ratio: :desc, wins: :desc)
+    @q = Leaderboard.ransack(params[:q])
+    @leaderboard = @q.result.order(win_ratio: :desc, wins: :desc)
   end
 end

@@ -8,3 +8,8 @@
 .stats-header {
   font-size: var(--op-font-4x-large);
 }
+
+.ransack-filter {
+  display: flex;
+  flex-direction: column;
+}
