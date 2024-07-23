@@ -7,8 +7,14 @@ class User < ApplicationRecord
   has_many :game_users
   has_many :games, through: :game_users
 
+  before_save :set_name
+
   def name
     email.split('@').first.capitalize
+  end
+
+  def set_name
+    self.name = email.split('@').first.capitalize
   end
 
   def total_games_joined

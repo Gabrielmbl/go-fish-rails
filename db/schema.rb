@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_23_190815) do
+ActiveRecord::Schema[7.1].define(version: 2024_07_23_201845) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -43,6 +43,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_23_190815) do
     t.datetime "remember_created_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "name"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
@@ -53,6 +54,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_23_190815) do
   create_view "leaderboards", sql_definition: <<-SQL
       SELECT users.id AS user_id,
       users.email,
+      users.name AS user_name,
       COALESCE(joined_subquery.total_games_joined, (0)::bigint) AS total_games_joined,
       COALESCE(completed_subquery.total_games_completed, (0)::bigint) AS total_games_completed,
       COALESCE(total_time_subquery.total_time_played, (0)::numeric) AS total_time_played,
@@ -122,7 +124,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_23_190815) do
                JOIN game_users ON ((game_users.user_id = users_1.id)))
                JOIN games ON ((games.id = game_users.game_id)))
             WHERE (games.finished_at IS NOT NULL)
-            GROUP BY users_1.id, users_1.email) win_ratio_subquery ON ((users.id = win_ratio_subquery.user_id)))
-    ORDER BY COALESCE(win_ratio_subquery.win_ratio, (0)::numeric) DESC;
+            GROUP BY users_1.id, users_1.email) win_ratio_subquery ON ((users.id = win_ratio_subquery.user_id)));
   SQL
 end

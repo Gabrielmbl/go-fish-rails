@@ -14,7 +14,7 @@
     tbody
       - @leaderboard.each do |entry|
         tr
-          td = entry.email
+          td = entry.user_name
           td = entry.total_games_joined
           td = entry.total_games_completed
           td = entry.total_time_played
