@@ -10,16 +10,18 @@
   table.table-primary.table--fixed-layout.table--default-density.table--sticky-header
     thead
       tr
-        th User
-        th Total Games Joined
-        th Total Games Completed
-        th Total Time Played (Seconds)
-        th Wins
-        th Losses
-        th Winning Percentage
+        th Rank
+        th = sort_link(@q, :user_name, 'User')
+        th = sort_link(@q, :total_games_joined, 'Total Games Joined')
+        th = sort_link(@q, :total_games_completed, 'Total Games Completed')
+        th = sort_link(@q, :total_time_played, 'Total Time Played (Seconds)')
+        th = sort_link(@q, :wins, 'Wins')
+        th = sort_link(@q, :losses, 'Losses')
+        th = sort_link(@q, :win_ratio, 'Winning Percentage')
     tbody
-      - @leaderboard.each do |entry|
+      - @leaderboard.each_with_index do |entry, index|
         tr
+          td = (index + 1) + ((@leaderboard.current_page - 1) * @leaderboard.limit_value)
           td = entry.user_name
           td = entry.total_games_joined
           td = entry.total_games_completed
