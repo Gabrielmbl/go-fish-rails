@@ -124,7 +124,7 @@ class Message
 
   def self.generate_winner_messages(game_winner)
     messages = {}
-    messages['player_message'] = Message.new('game_feedback', 'You won the game!')
+    messages['player_message'] = Message.new('game_feedback', "#{game_winner} won the game!")
     messages['opponent_message'] = Message.new('game_feedback', "#{game_winner} won the game!")
     messages['others_message'] = Message.new('game_feedback', "#{game_winner} won the game!")
     messages

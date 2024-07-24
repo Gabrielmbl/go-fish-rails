@@ -86,44 +86,18 @@ RSpec.describe 'Games', type: :system do
         sleep 0.2
         ask_for_card
         expect(page).to have_text 'You made a book of 4s'
-        expect(page).to have_text 'You won the game!'
+        expect(page).to have_text 'won the game!'
       end
 
-      it 'should display modal for there is a winner and allow user to go the home page', :chrome do
+      it 'should display modal for there is a winner and allow user to go the home page' do
         winning_scenario
         visit game_path(game)
         sleep 0.2
         ask_for_card
-        expect(page).to have_text 'You won the game!'
+        expect(page).to have_text 'won the game!'
         expect(page).to have_text 'There is a winner!'
         all(:link_or_button, 'Home').last.click
         expect(page).to have_text 'New game'
-      end
-    end
-  end
-
-  context 'when there are 3 playaers in the game' do
-    before do
-      game3.users << user
-      game3.users << opponent
-      game3.users << third_user
-      game3.start!
-      visit game_path(game3)
-      game3.reload
-    end
-
-    context 'when the current player has an empty hand and the deck is empty', :chrome do
-      xit 'skips their turn' do
-        game3.go_fish.deck.cards = []
-        game3.go_fish.players.first.hand = [Card.new('3', 'Hearts')]
-        game3.go_fish.players[1].hand = []
-        game3.go_fish.players.last.hand = [Card.new('4', 'Hearts')]
-        game3.go_fish.current_player = game3.go_fish.players.first
-        game3.save
-        game3.reload
-        visit game_path(game3)
-        ask_for_card(game3)
-        expect(game3.go_fish.current_player).to eq game3.go_fish.players.last
       end
     end
   end

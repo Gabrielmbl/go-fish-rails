@@ -43,9 +43,17 @@ class GoFish
     players = Player.load(payload['players'])
     deck = Deck.load(payload['deck'])
     current_player = Player.find_player(players, payload['current_player'])
-    game_winner = Player.find_player(players, payload['game_winner'])
+    game_winner = handle_game_winner_payload(players, payload['game_winner'])
     round_results = payload['round_results']&.map { |result| RoundResult.load(result) }
     GoFish.new(players:, deck:, current_player:, game_winner:, round_results:)
+  end
+
+  def self.handle_game_winner_payload(players, payload)
+    if payload.is_a?(Array)
+      payload.map { |winner| Player.find_player(players, winner) }
+    else
+      Player.find_player(players, payload)
+    end
   end
 
   def play_round!(user_id, opponent_id, card_rank)
@@ -93,15 +101,31 @@ class GoFish
     book_rank = round_player.add_to_books
     check_for_winner
     check_empty_hand_or_draw
-    round_results.unshift(if card.nil?
-                            round_result = RoundResult.new(id: (round_results.length + 1), player_name: round_player.name, opponent_name: opponent.name, rank: card_rank,
-                                                           book_rank:, game_winner: game_winner&.name)
-                          else
-                            round_result = RoundResult.new(id: (round_results.length + 1), player_name: round_player.name, opponent_name: opponent.name, rank: card_rank,
-                                                           rank_drawn: card.rank, suit_drawn: card.suit, book_rank:, game_winner: game_winner&.name)
-                          end)
+    game_winner_names = determine_winner_names
+    round_result = create_round_result(round_player, opponent, card_rank, card, book_rank, game_winner_names)
     skip_turn
     round_result.round_result_log
+  end
+
+  def create_round_result(round_player, opponent, card_rank, card, book_rank, game_winner_names)
+    round_results.unshift(if card.nil?
+                            round_result = RoundResult.new(id: (round_results.length + 1), player_name: round_player.name, opponent_name: opponent.name, rank: card_rank,
+                                                           book_rank:, game_winner: game_winner_names)
+                          else
+                            round_result = RoundResult.new(id: (round_results.length + 1), player_name: round_player.name, opponent_name: opponent.name, rank: card_rank,
+                                                           rank_drawn: card.rank, suit_drawn: card.suit, book_rank:, game_winner: game_winner_names)
+                          end)
+    round_result
+  end
+
+  def determine_winner_names
+    if game_winner.is_a?(Array)
+      game_winner.map(&:name).join(', ')
+    elsif game_winner
+      game_winner.name
+    else
+      nil
+    end
   end
 
   def check_for_winner
@@ -119,7 +143,9 @@ class GoFish
   end
 
   def compare_book_values(players_with_highest_number_of_books)
-    self.game_winner = players_with_highest_number_of_books.max_by(&:score)
+    highest_book_score = players_with_highest_number_of_books.map(&:score).max
+    winners = players_with_highest_number_of_books.select { |player| player.score == highest_book_score }
+    self.game_winner = winners.size == 1 ? winners.first : winners
   end
 
   def switch_players

@@ -117,6 +117,30 @@ RSpec.describe GoFish, type: :model do
         compare_books(loaded_go_fish)
       end
 
+      it 'returns a GoFish object with the same winners' do
+        tie_scenario
+        go_fish.check_for_winner
+        json = go_fish.as_json
+        loaded_go_fish = GoFish.load(json)
+        expect(loaded_go_fish.game_winner.first.user_id).to eq(go_fish.game_winner.first.user_id)
+        expect(loaded_go_fish.game_winner.last.user_id).to eq(go_fish.game_winner.last.user_id)
+        expect(loaded_go_fish.game_winner.first.score).to eq(go_fish.game_winner.first.score)
+        expect(loaded_go_fish.game_winner.last.score).to eq(go_fish.game_winner.last.score)
+      end
+
+      it 'returns a GoFish object with the correct winner' do
+        player1.hand = []
+        player2.hand = []
+        player1.books = [Book.new([card1, card2, card3, card4])]
+        player2.books = []
+        go_fish.deck.cards = []
+        go_fish.check_for_winner
+        json = go_fish.as_json
+        loaded_go_fish = GoFish.load(json)
+        expect(loaded_go_fish.game_winner.user_id).to eq(go_fish.game_winner.user_id)
+        expect(loaded_go_fish.game_winner.score).to eq(go_fish.game_winner.score)
+      end
+
       def compare_books(loaded_go_fish)
         expect(loaded_go_fish.players[0].books.map(&:cards)).to eq(go_fish.players[0].books.map(&:cards))
         expect(loaded_go_fish.players[1].books.map(&:cards)).to eq(go_fish.players[1].books.map(&:cards))
@@ -345,5 +369,24 @@ RSpec.describe GoFish, type: :model do
         expect(go_fish.current_player).to eq(player5)
       end
     end
+  end
+  context 'when there is a tie in number of books and rank value' do
+    it 'should have both players as winners' do
+      tie_scenario
+      go_fish.check_for_winner
+      expect(go_fish.game_winner).to match_array([player1, player2])
+    end
+  end
+
+  def tie_scenario
+    go_fish.players << player3
+    player1.hand = []
+    player2.hand = []
+    player3.hand = []
+    go_fish.deck.cards = []
+    player1.books = [Book.new([Card.new('2', 'Hearts'), Card.new('2', 'Diamonds'), Card.new('2', 'Spades'), Card.new('2', 'Clubs')]),
+Book.new([Card.new('J', 'Hearts'), Card.new('J', 'Diamonds'), Card.new('J', 'Spades'), Card.new('J', 'Clubs')])]
+    player2.books = [Book.new([Card.new('3', 'Hearts'), Card.new('3', 'Diamonds'), Card.new('3', 'Spades'), Card.new('3', 'Clubs')]),
+Book.new([Card.new('10', 'Hearts'), Card.new('10', 'Diamonds'), Card.new('10', 'Spades'), Card.new('10', 'Clubs')])]
   end
 end
