@@ -108,7 +108,11 @@
             = button_tag( material_icon('close', size: 'x-large'), class: 'btn btn--no-border btn--icon btn--pill', data: { action: "toggle#off" })
 
           .modal__body
-            span = "#{@game.go_fish.game_winner.name} wins!"
+            - winner_names = @game.go_fish.determine_winner_names
+            - if winner_names
+              span = "#{winner_names} wins!"
+            - else
+              span = "No winners!"
 
           .modal__footer
             = link_to 'Home', games_path, class: "btn-primary"

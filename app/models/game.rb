@@ -31,10 +31,18 @@ class Game < ApplicationRecord
 
   def play_round!(user_id, opponent_id, card_rank)
     go_fish.play_round!(user_id, opponent_id, card_rank)
+
     if go_fish.game_winner
-      determine_winner!(go_fish.game_winner.user_id)
+      if go_fish.game_winner.is_a?(Array)
+        go_fish.game_winner.each do |winner|
+          determine_winner!(winner.user_id)
+        end
+      else
+        determine_winner!(go_fish.game_winner.user_id)
+      end
       update(finished_at: Time.zone.now)
     end
+
     save!
   end
 

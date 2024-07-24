@@ -12,24 +12,24 @@ def play_random_number_of_rounds(game)
   end
 rescue StandardError => e
   puts "An error occurred: #{e.message}"
-  binding.irb # Open an interactive Ruby session for debugging
+  binding.irb
 end
 
 namespace :db do
   desc 'Populate database with users and games'
   task populate: :environment do
-    puts 'Creating users...'
-    1000.times do |i|
-      User.create!(
-        email: "user#{i + 1}@example.com",
-        password: 'password',
-        password_confirmation: 'password'
-      )
-    end
+    # puts 'Creating users...'
+    # 10_000.times do |i|
+    #   User.create!(
+    #     email: "user#{i + 1}@example.com",
+    #     password: 'password',
+    #     password_confirmation: 'password'
+    #   )
+    # end
 
     user_count = User.count
     puts 'Creating games...'
-    1000.times do |i|
+    10_000.times do |i|
       number_of_users = (2..5).to_a.sample
       offset = rand(user_count - number_of_users)
       users = User.offset(offset).first(number_of_users)
