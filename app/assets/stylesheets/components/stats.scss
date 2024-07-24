@@ -6,10 +6,20 @@
 }
 
 .stats-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--op-space-small);
   font-size: var(--op-font-4x-large);
 }
 
 .ransack-filter {
-  display: flex;
-  flex-direction: column;
+  .form-inline {
+    display: flex;
+    gap: var(--op-space-medium);
+  }
+
+  .ransack-filter__buttons {
+    display: flex;
+    gap: var(--op-space-small);
+  }
 }

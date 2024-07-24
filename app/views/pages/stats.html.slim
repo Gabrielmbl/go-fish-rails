@@ -5,8 +5,9 @@
       = search_form_for @q, url: stats_path, method: :get, class: 'form-inline' do |f|
         = f.label :user_name_cont, 'Filter by Name:', class: 'sr-only'
         = f.search_field :user_name_cont, class: 'form-control', placeholder: 'Search by name'
-        = f.submit 'Search', class: 'btn btn-primary'
-      = button_to 'Clear', stats_path, method: :get, class: 'btn btn-secondary'
+        .ransack-filter__buttons
+          = f.submit 'Search', class: 'btn btn-primary'
+          = link_to 'Clear', stats_path, class: 'btn btn-secondary'
   table.table-primary.table--fixed-layout.table--default-density.table--sticky-header
     thead
       tr
