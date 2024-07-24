@@ -1,0 +1,13 @@
+.status-body {
+  display: flex;
+  flex-direction: column;
+  padding: var(--op-space-2x-large) var(--op-space-3x-large) var(--op-space-2x-large) var(--op-space-3x-large);
+  gap: var(--op-space-x-large);
+}
+
+.status-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--op-space-small);
+  font-size: var(--op-font-4x-large);
+}

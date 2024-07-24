@@ -13,6 +13,8 @@ class Game < ApplicationRecord
                         users.each do |user|
                           broadcast_refresh_to "games:#{id}:users:#{user.id}"
                         end
+                        broadcast_refresh_to 'status' if !started_at.nil? && finished_at.nil?
+                        broadcast_refresh_to 'history' unless finished_at.nil?
                       }
 
   has_many :game_users, dependent: :destroy

@@ -1,36 +1,36 @@
-= turbo_stream_from "history"
+= turbo_stream_from "status"
 
-.history-body
-  .history-header
-    span History
+.status-body
+  .status-header
+    span Status
     .ransack-filter
-      = search_form_for @q, url: history_path, method: :get, class: 'form-inline' do |f|
+      = search_form_for @q, url: status_path, method: :get, class: 'form-inline' do |f|
         = f.label :name_cont, 'Filter by Name:', class: 'sr-only'
         = f.search_field :name_cont, class: 'form-control', placeholder: 'Search by name'
         .ransack-filter__buttons
           = f.submit 'Search', class: 'btn btn-primary'
-          = link_to 'Clear', history_path, class: 'btn btn-secondary'
+          = link_to 'Clear', status_path, class: 'btn btn-secondary'
   table.table-primary.table--fixed-layout.table--default-density.table--sticky-header
     thead
       tr
         th = sort_link(@q, :id, 'Game ID')
         th = sort_link(@q, :name, 'Game Name')
-        th = sort_link(@q, :started_at, 'Game Start Time')
-        th = sort_link(@q, :finished_at, 'Game End Time')
-        th Game Duration
         th Number of Rounds Played
-        th Game Winner
+        th Current Scores
+        th Who's Turn
         th Players
     tbody
       - @games.each do |game|
         tr
           td = game.id
           td = game.name
-          td = game.started_at
-          td = game.finished_at
-          td = game.duration
-          td.text-center = game.number_of_rounds_played
-          td = game.go_fish.determine_winner_names
+          td = game.number_of_rounds_played
+          td
+            - scores = game.go_fish.determine_scores
+            - scores.each do |player, score|
+              = "#{player}: #{score['number_of_books']} book(s), #{score['score']} points"
+              br
+          td = game.go_fish.current_player.name
           td
             = game.users.map(&:name).join(', ')
 

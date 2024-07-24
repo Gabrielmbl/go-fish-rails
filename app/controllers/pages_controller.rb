@@ -15,5 +15,10 @@ class PagesController < ApplicationController
     @q = Game.ransack(params[:q])
     @games = @q.result.order(created_at: :desc).page(params[:page]).per(12)
   end
+
+  def status
+    @q = Game.ransack(params[:q])
+    @games = @q.result.order(created_at: :desc).page(params[:page]).per(12)
+  end
   
 end

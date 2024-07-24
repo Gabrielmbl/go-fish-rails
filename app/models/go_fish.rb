@@ -128,6 +128,14 @@ class GoFish
     end
   end
 
+  def determine_scores
+    scores = {}
+    players.each do |player|
+      scores[player.name] = { 'number_of_books' => player.books.count, 'score' => player.score }
+    end
+    scores
+  end
+
   def check_for_winner
     return unless deck.cards.empty?
 

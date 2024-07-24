@@ -378,6 +378,19 @@ RSpec.describe GoFish, type: :model do
     end
   end
 
+  it 'should calculate the score for a player' do
+    go_fish.players << player3
+    player1.books = [Book.new([card1, card2, card3, card4])]
+    player2.books = [Book.new([card5, card6, card7, card8])]
+    player3.books = [Book.new([card9, card10, card11, card12]), Book.new([card13, card14, card15, card16])]
+    expect(go_fish.determine_scores[player1.name]['number_of_books']).to eq(1)
+    expect(go_fish.determine_scores[player1.name]['score']).to eq(1)
+    expect(go_fish.determine_scores[player2.name]['number_of_books']).to eq(1)
+    expect(go_fish.determine_scores[player2.name]['score']).to eq(2)
+    expect(go_fish.determine_scores[player3.name]['number_of_books']).to eq(2)
+    expect(go_fish.determine_scores[player3.name]['score']).to eq(16)
+  end
+
   def tie_scenario
     go_fish.players << player3
     player1.hand = []
