@@ -15,7 +15,7 @@
         th = sort_link(@q, :user_name, 'User')
         th = sort_link(@q, :total_games_joined, 'Total Games Joined')
         th = sort_link(@q, :total_games_completed, 'Total Games Completed')
-        th = sort_link(@q, :total_time_played, 'Total Time Played (Seconds)')
+        th = sort_link(@q, :total_time_played, 'Total Time Played')
         th = sort_link(@q, :wins, 'Wins')
         th = sort_link(@q, :losses, 'Losses')
         th = sort_link(@q, :win_ratio, 'Winning Percentage')
@@ -26,7 +26,7 @@
           td = entry.user_name
           td = entry.total_games_joined
           td = entry.total_games_completed
-          td = entry.total_time_played
+          td = entry.formatted_total_time_played
           td = entry.wins
           td = entry.losses
           td = entry.win_ratio
