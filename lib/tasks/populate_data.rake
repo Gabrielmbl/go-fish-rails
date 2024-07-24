@@ -1,9 +1,11 @@
+# TODO: This whole thing into a class
 def play_random_number_of_rounds(game)
   play_to_completion = [true, false].sample
   number_of_rounds = play_to_completion ? 1000 : rand(5..15)
   number_of_rounds.times do
     break if game.go_fish.game_winner
 
+    # TODO: Extract this into a class
     current_player = game.go_fish.current_player
     opponents = game.go_fish.players.reject { |player| player.user_id == current_player.user_id }
     opponent_id = opponents.sample.user_id
@@ -18,14 +20,15 @@ end
 namespace :db do
   desc 'Populate database with users and games'
   task populate: :environment do
-    # puts 'Creating users...'
-    # 10_000.times do |i|
-    #   User.create!(
-    #     email: "user#{i + 1}@example.com",
-    #     password: 'password',
-    #     password_confirmation: 'password'
-    #   )
-    # end
+    # TODO: split into two different methods
+    puts 'Creating users...'
+    10_000.times do |i|
+      User.create!(
+        email: "user#{i + 1}@example.com",
+        password: 'password',
+        password_confirmation: 'password'
+      )
+    end
 
     user_count = User.count
     puts 'Creating games...'
