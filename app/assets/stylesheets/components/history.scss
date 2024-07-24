@@ -1,11 +1,11 @@
-.stats-body {
+.history-body {
   display: flex;
   flex-direction: column;
   padding: var(--op-space-2x-large) var(--op-space-3x-large) var(--op-space-2x-large) var(--op-space-3x-large);
   gap: var(--op-space-x-large);
 }
 
-.stats-header {
+.history-header {
   display: flex;
   flex-direction: column;
   gap: var(--op-space-small);

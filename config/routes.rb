@@ -13,6 +13,8 @@ Rails.application.routes.draw do
 
   get 'stats', to: 'pages#stats', as: 'stats'
 
+  get 'history', to: 'pages#history', as: 'history'
+
   resources :games do
     resources :game_users, only: %i[create destroy]
     resources :rounds, only: %i[create]

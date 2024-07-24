@@ -11,6 +11,6 @@ class Leaderboard < ApplicationRecord
   end
 
   def formatted_total_time_played
-    Time.at(total_time_played).utc.strftime('%H:%M:%S')
+    Time.at(total_time_played).utc.strftime('%Hh:%Mm:%Ss')
   end
 end

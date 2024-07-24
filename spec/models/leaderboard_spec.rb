@@ -1,5 +1,5 @@
 require 'rails_helper'
-
+# TODO: Implement testing with a game that is not over yet
 RSpec.describe Leaderboard, type: :model do
   let!(:game) { create(:game, name: 'Game1') }
   let(:user) { create(:user) }

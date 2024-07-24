@@ -10,4 +10,10 @@ class PagesController < ApplicationController
     @q = Leaderboard.ransack(params[:q])
     @leaderboard = @q.result.order(win_ratio: :desc, wins: :desc).page(params[:page]).per(12)
   end
+
+  def history
+    @q = Game.ransack(params[:q])
+    @games = @q.result.order(created_at: :desc).page(params[:page]).per(12)
+  end
+  
 end
