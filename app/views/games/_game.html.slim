@@ -1,7 +1,7 @@
 = turbo_frame_tag game do
   .game-row
     - if game.users.include?(current_user)
-      = game.name
+      span translate="no" = game.name
       
       .game-actions
         - if game.enough_players?
@@ -18,11 +18,11 @@
                   class: "btn btn-light"
         = link_to game_path(game), class: "btn btn--medium", data: { turbo_frame: "_top" } do
           |  Play Now
-          .material-symbols-outlined.accordion__marker arrow_right
+          = material_icon('arrow_right')
                 
                 
     - else
-      span> #{game.name}
+      span translate="no" = game.name
 
       .game-actions
         - if game.enough_players?

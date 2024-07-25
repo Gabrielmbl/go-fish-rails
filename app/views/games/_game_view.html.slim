@@ -4,7 +4,7 @@
       = link_to games_path('/index'), class: "btn btn--pill btn--icon btn--no-border btn--small back-arrow" do
         | &nbsp;
         | &#8592;
-      span= @game.name
+      span translate="no" = game.name
     .go-fish-panel__body.go-fish-panel__body--game-board
       .players-decks__header
         span Players
@@ -13,8 +13,8 @@
         - @game.go_fish.players.each do |player|
           details.accordion
             summary
-              span.material-symbols-outlined.accordion__marker arrow_right
-              span.go-fish- #{player.name}
+              = material_icon('arrow_right')
+              span.go-fish- translate="no" = player.name
               .flex.gap-lg
                 span
                   | Cards:
@@ -41,7 +41,9 @@
   .go-fish-panel.go-fish-panel--game-feed
     .go-fish-panel__header.go-fish-panel__header--game-feed
       span Game Feed
-      button.btn.btn-primary.btn--small = "#{@game.go_fish.current_player.name}'s Turn"
+      button.btn.btn-primary.btn--small
+        span translate="no" = "#{@game.go_fish.current_player.name}"
+        | 's Turn
     .go-fish-panel__body.go-fish-panel__body--game-feed
       .notifications data-controller="notifications"
         - @game.go_fish.round_results&.each_with_index do |result, index|

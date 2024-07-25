@@ -25,13 +25,13 @@
       - @games.each do |game|
         tr
           td = game.id
-          td = game.name
+          td translate="no" = game.name
           td = game.number_of_rounds_played
           td
             - scores = game.go_fish.determine_scores
             - scores.each do |player, score|
-              = "#{player}: #{score['number_of_books']} book(s), #{score['score']} points"
+              span translate="no" = "#{player}"
+              | : #{score['number_of_books']} book(s), #{score['score']} points
               br
-          td = game.go_fish.current_player.name
-          td
-            = game.users.map(&:name).join(', ')
+          td translate="no" = game.go_fish.current_player.name
+          td translate="no" = game.users.map(&:name).join(', ')

@@ -5,23 +5,23 @@
         = image_tag "Go-Fish-Logo.png", alt: "Go Fish Logo"
     .divider.divider--medium
     = link_to games_path, class: "btn btn--no-border" do
-      span.material-symbols-outlined joystick
+      = material_icon('joystick')
       | Games
     = link_to stats_path, class: "btn btn--no-border" do
-      span.material-symbols-outlined query_stats
+      = material_icon('query_stats')
       | Stats
     = link_to history_path, class: "btn btn--no-border" do
-      span.material-symbols-outlined history
+      = material_icon('history')
       | History
     = link_to status_path, class: "btn btn--no-border" do
-      span.material-symbols-outlined set_meal
+      = material_icon('set_meal')
       | Status
 
   .sidebar__content.sidebar__content--end
     .divider.divider--medium
     button.btn.btn--no-border
-      span.material-symbols-outlined person_book
+      = material_icon('person_book')
       | Profile
-    = button_to destroy_user_session_path, method: :delete, style: "color: var(--op-color-primary-on-plus-max);", class: "btn btn--no-border full-width text-justify-left" do
-      span.material-symbols-outlined logout
+    = button_to destroy_user_session_path, method: :delete, style: "color: var(--op-color-primary-on-plus-max);", class: "btn btn--no-border full-width text-justify-left", data: { turbo: false } do
+      = material_icon('logout')
       | Log Out

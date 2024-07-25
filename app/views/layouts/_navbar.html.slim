@@ -1,10 +1,10 @@
 header.navbar
   - if user_signed_in?
     .navbar__name
-      = link_to games_path('/index'), class: "go-fish-logo" do
+      = link_to games_path('/index'), class: "go-fish-logo", translate: "no" do
         | Go Fish
       .divider-vertical
-      = current_user.name
+      span translate="no" = current_user.name
     = button_to "Sign out", destroy_user_session_path, method: :delete, class: "btn btn--dark"
   - else
     = link_to "Sign in", new_user_session_path, class: "btn btn--dark navbar__right"

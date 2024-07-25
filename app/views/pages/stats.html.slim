@@ -23,7 +23,7 @@
       - @leaderboard.each_with_index do |entry, index|
         tr
           td = (index + 1) + ((@leaderboard.current_page - 1) * @leaderboard.limit_value)
-          td = entry.user_name
+          td translate="no" = entry.user_name
           td = entry.total_games_joined
           td = entry.total_games_completed
           td = entry.formatted_total_time_played
