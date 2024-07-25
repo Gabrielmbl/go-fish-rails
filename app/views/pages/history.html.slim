@@ -20,6 +20,7 @@
         th Game Duration
         th Number of Rounds Played
         th Game Winner
+        th Scores
         th Players
     tbody
       - @games.each do |game|
@@ -31,6 +32,11 @@
           td = game.duration
           td.text-center = game.number_of_rounds_played
           td = game.go_fish.determine_winner_names
+          td
+            - scores = game.go_fish.determine_scores
+            - scores.each do |player, score|
+              = "#{player}: #{score['number_of_books']} book(s), #{score['score']} points"
+              br
           td
             = game.users.map(&:name).join(', ')
 

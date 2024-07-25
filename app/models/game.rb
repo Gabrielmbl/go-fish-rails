@@ -9,10 +9,12 @@ class Game < ApplicationRecord
 
   scope :ordered, -> { order(id: :desc) }
   scope :joinable, -> { order(created_at: :desc).where(finished_at: nil).where.not(started_at: nil) }
+  scope :finished, -> { where.not(finished_at: nil) }
   after_update_commit lambda {
                         users.each do |user|
                           broadcast_refresh_to "games:#{id}:users:#{user.id}"
                         end
+                        # TODO: Figure out how to broadcast only to the user that is on that page
                         broadcast_refresh_to 'status' if !started_at.nil? && finished_at.nil?
                         broadcast_refresh_to 'history' unless finished_at.nil?
                       }

@@ -42,14 +42,6 @@ RSpec.describe 'Games', type: :system do
     expect(page).to have_text 'Capybara game edited'
   end
 
-  xit 'destroys a game' do
-    join_game
-    sleep 0.2
-    click_on 'Delete', match: :first
-    visit games_path
-    expect(page).not_to have_text game.name
-  end
-
   context 'when there are two players in the game' do
     before do
       game.users << user

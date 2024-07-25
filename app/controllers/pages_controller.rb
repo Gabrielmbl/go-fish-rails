@@ -12,7 +12,7 @@ class PagesController < ApplicationController
   end
 
   def history
-    @q = Game.ransack(params[:q])
+    @q = Game.finished.ransack(params[:q])
     @games = @q.result.order(created_at: :desc).page(params[:page]).per(12)
   end
 
@@ -20,5 +20,4 @@ class PagesController < ApplicationController
     @q = Game.ransack(params[:q])
     @games = @q.result.order(created_at: :desc).page(params[:page]).per(12)
   end
-  
 end

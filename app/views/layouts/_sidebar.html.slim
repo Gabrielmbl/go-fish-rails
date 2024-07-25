@@ -1,25 +1,26 @@
 .sidebar.sidebar--drawer
   .sidebar__content.sidebar__content--start
     .sidebar-header
-      = link_to games_path('/index'), class: "go-fish-logo" do
-      | Go Fish
-    = link_to games_path('/index'), class: "btn btn--no-border" do
-      span.material-symbols-outlined circle
+      = link_to games_path do
+        = image_tag "Go-Fish-Logo.png", alt: "Go Fish Logo"
+    .divider.divider--medium
+    = link_to games_path, class: "btn btn--no-border" do
+      span.material-symbols-outlined joystick
       | Games
-    = link_to stats_path('/stats'), class: "btn btn--no-border" do
-      span.material-symbols-outlined change_history
+    = link_to stats_path, class: "btn btn--no-border" do
+      span.material-symbols-outlined query_stats
       | Stats
-    = link_to history_path('/history'), class: "btn btn--no-border" do
-      span.material-symbols-outlined circle
+    = link_to history_path, class: "btn btn--no-border" do
+      span.material-symbols-outlined history
       | History
-    = link_to status_path('/status'), class: "btn btn--no-border" do
-      span.material-symbols-outlined circle
+    = link_to status_path, class: "btn btn--no-border" do
+      span.material-symbols-outlined set_meal
       | Status
 
   .sidebar__content.sidebar__content--end
     .divider.divider--medium
     button.btn.btn--no-border
-      span.material-symbols-outlined square
+      span.material-symbols-outlined person_book
       | Profile
     = button_to destroy_user_session_path, method: :delete, style: "color: var(--op-color-primary-on-plus-max);", class: "btn btn--no-border full-width text-justify-left" do
       span.material-symbols-outlined logout
