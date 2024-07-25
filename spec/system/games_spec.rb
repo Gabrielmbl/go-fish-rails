@@ -28,7 +28,6 @@ RSpec.describe 'Games', type: :system do
     click_on 'Create Game'
 
     expect(page).to have_text 'Game was successfully created.'
-    expect(page).to have_text 'Waiting for game to start...'
   end
 
   it 'edits a game' do
@@ -100,7 +99,6 @@ RSpec.describe 'Games', type: :system do
 
     click_on 'Join', match: :first
     expect(page).to have_text 'You have joined the game.'
-    expect(page).to have_text 'Waiting for game to start...'
   end
 
   def join_game

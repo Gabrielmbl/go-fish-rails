@@ -9,6 +9,8 @@ class Game < ApplicationRecord
 
   scope :ordered, -> { order(id: :desc) }
   scope :joinable, -> { order(created_at: :desc).where(finished_at: nil).where.not(started_at: nil) }
+  scope :in_progress, -> { order(created_at: :desc).where.not(started_at: nil).where(finished_at: nil) }
+  scope :no_games, -> { where(created_at: nil) }
   scope :finished, -> { where.not(finished_at: nil) }
   after_update_commit lambda {
                         users.each do |user|

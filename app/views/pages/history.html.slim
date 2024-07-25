@@ -10,6 +10,8 @@
         .ransack-filter__buttons
           = f.submit 'Search', class: 'btn btn-primary'
           = link_to 'Clear', history_path, class: 'btn btn-secondary'
+  .pagination
+    = paginate @games
   table.table-primary.table--fixed-layout.table--default-density.table--sticky-header
     thead
       tr
@@ -39,6 +41,3 @@
               br
           td
             = game.users.map(&:name).join(', ')
-
-  .pagination
-    = paginate @games

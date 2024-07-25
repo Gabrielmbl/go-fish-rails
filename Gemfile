@@ -86,3 +86,5 @@ group :development, :test do
 end
 
 gem "kaminari", "~> 1.2"
+
+gem "dockerfile-rails", ">= 1.6", :group => :development

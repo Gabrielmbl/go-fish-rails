@@ -26,7 +26,10 @@ class GamesController < ApplicationController
 
     if @game.save
       @game.users << current_user
-      redirect_to @game, notice: 'Game was successfully created.'
+      respond_to do |format|
+        format.html { redirect_to games_path, notice: 'Game was successfully created.' }
+        format.turbo_stream { flash.now[:notice] = 'Game was successfully created.' }
+      end
     else
       render :new, status: :unprocessable_entity, layout: 'modal'
     end
@@ -36,7 +39,10 @@ class GamesController < ApplicationController
     @game = Game.find(params[:id])
 
     if @game.update(game_params)
-      redirect_to games_path, notice: 'Game was successfully updated.'
+      respond_to do |format|
+        format.html { redirect_to games_path, notice: 'Game was successfully updated.' }
+        format.turbo_stream { flash.now[:notice] = 'Game was successfully updated.' }
+      end
     else
       render :edit, status: :unprocessable_entity, layout: 'modal'
     end

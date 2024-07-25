@@ -8,6 +8,7 @@ html
     = javascript_include_tag 'application', 'data-turbo-track': 'reload', defer: true
     meta name="turbo-refresh-method" content="morph"
     meta name="view-transition" content="same-origin"
+    meta name="turbo-refresh-scroll" content="preserve"
     meta content="width=device-width, initial-scale=1" name="viewport"
     - game_show_page = controller_name == 'games' && action_name == 'show'
     - app_class = game_show_page ? 'app-body' : 'app-with-sidebar'
@@ -23,4 +24,8 @@ html
       = turbo_frame_tag 'modal'
       = turbo_frame_tag 'panel'
       = render 'confirm'
-      = yield
+      - if game_show_page
+        = yield
+      - else
+        .app__content
+          = yield

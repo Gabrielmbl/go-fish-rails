@@ -1,0 +1,37 @@
+.game-view
+  .go-fish-panel.go-fish-panel--game-board
+    .go-fish-panel__header.go-fish-panel__header--game-board
+      = link_to games_path('/index'), class: "btn btn--pill btn--icon btn--no-border btn--small back-arrow" do
+        | &nbsp;
+        | &#8592;
+      span= @game.name
+    .go-fish-panel__body.go-fish-panel__body--game-board
+      .players-decks__header
+        span Players
+      .divider.divider--medium
+      .players-hands
+                  
+  .go-fish-panel.go-fish-panel--game-feed
+    .go-fish-panel__header.go-fish-panel__header--game-feed
+      span Game Feed
+    .go-fish-panel__body.go-fish-panel__body--game-feed
+      .notifications data-controller="notifications"
+      = form_for @game, url: game_rounds_path(@game), method: :create do |f|
+        .actions
+          .actions__input-collection
+            .form-group
+              = label_tag :opponent_id, "Player", class: "form-label"
+            .form-group
+              span.form-label Card Rank
+              .rank-selector(data-controller="rank")
+                = hidden_field_tag :rank, '', data: { "rank-target": 'input' }
+
+  .go-fish-panel.go-fish-panel--player-hand.go-fish-panel--bottom-row
+    .go-fish-panel__header.go-fish-panel__header-title
+      span Your Hand
+    .card-tray
+
+  .go-fish-panel.go-fish-panel--player-books.go-fish-panel--bottom-row
+    .go-fish-panel__header.go-fish-panel__header-title
+      span Your Books
+    .card-tray
