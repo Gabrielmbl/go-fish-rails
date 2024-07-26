@@ -42,8 +42,7 @@
     .go-fish-panel__header.go-fish-panel__header--game-feed
       span Game Feed
       button.btn.btn-primary.btn--small
-        span translate="no" = "#{@game.go_fish.current_player.name}"
-        | 's Turn
+        span translate="no" = "#{@game.go_fish.current_player.name}'s Turn"
     .go-fish-panel__body.go-fish-panel__body--game-feed
       .notifications data-controller="notifications"
         - @game.go_fish.round_results&.each_with_index do |result, index|
